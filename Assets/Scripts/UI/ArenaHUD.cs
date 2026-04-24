@@ -19,8 +19,8 @@ namespace SlotDefense
         {
             if (GameManager.Instance == null) return;
             var b = GameManager.Instance.Battle;
-            playerHpSlider.value = b.PlayerHp / 1000f;
-            enemyHpSlider.value = b.EnemyHp / 1000f;
+            playerHpSlider.value = b.PlayerHp / b.MaxVillageHp;
+            enemyHpSlider.value = b.EnemyHp / b.MaxVillageHp;
 
             var t = Mathf.Max(0f, b.TimeRemaining);
             timerText.text = $"{(int)(t / 60f)}:{(int)(t % 60f):00}";

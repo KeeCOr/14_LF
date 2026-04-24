@@ -6,13 +6,16 @@ namespace SlotDefense
         private float _playerHp;
         private float _enemyHp;
         private float _timeRemaining;
+        private readonly float _maxVillageHp;
 
         public float PlayerHp => _playerHp;
         public float EnemyHp => _enemyHp;
         public float TimeRemaining => _timeRemaining;
+        public float MaxVillageHp => _maxVillageHp;
 
         public BattleManager(float villageHp, float battleDuration)
         {
+            _maxVillageHp = villageHp;
             _playerHp = villageHp;
             _enemyHp = villageHp;
             _timeRemaining = battleDuration;

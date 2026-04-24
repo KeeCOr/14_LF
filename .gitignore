@@ -1,0 +1,29 @@
+# Unity generated
+Library/
+Temp/
+Obj/
+Logs/
+MemoryCaptures/
+UserSettings/
+
+# Build output
+Build/
+Builds/
+
+# Visual Studio / Rider
+.vs/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+ExportedObj/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# vsconfig (editor-local)
+.vsconfig

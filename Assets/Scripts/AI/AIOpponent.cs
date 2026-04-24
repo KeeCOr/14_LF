@@ -26,6 +26,8 @@ namespace SlotDefense
             _deck = new DeckSystem(deckConfig.cards);
             _slotMachine = new SlotMachineSystem(xpPerSpin: 80f);
             _rng = new Random();
+            _spinTimer = spinInterval;
+            _placeTimer = placeInterval;
         }
 
         private void OnEnable() => GameEvents.OnMonsterKilled += OnMonsterKilled;

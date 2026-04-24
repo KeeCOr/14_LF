@@ -10,6 +10,8 @@ namespace SlotDefense
         private readonly Queue<(MonsterConfig config, bool toPlayerArena)> _queue = new();
         private float _timer;
 
+        private void Awake() => _timer = transferDelay;
+
         private void OnEnable() => GameEvents.OnMonsterKilled += EnqueueTransfer;
         private void OnDisable() => GameEvents.OnMonsterKilled -= EnqueueTransfer;
 
