@@ -1,7 +1,9 @@
 {
     "name": "SlotDefense",
     "rootNamespace": "SlotDefense",
-    "references": [],
+    "references": [
+        "Unity.TextMeshPro"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
