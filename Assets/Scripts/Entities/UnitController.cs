@@ -45,6 +45,7 @@ namespace SlotDefense
 
         private void TryAttack()
         {
+            if (_target == null || _target.IsDead) return;
             _attackCooldown -= Time.deltaTime;
             var dist = Vector2.Distance(transform.position, _target.transform.position);
             if (dist > _stats.attackRange || _attackCooldown > 0f) return;
