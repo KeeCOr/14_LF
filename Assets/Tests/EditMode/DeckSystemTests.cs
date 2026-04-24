@@ -58,7 +58,7 @@ public class DeckSystemTests
     {
         var deck = MakeDeck(3);
         var system = new DeckSystem(deck);
-        var rng = new Random(42);
+        var rng = new System.Random(42);
         var reels = system.DrawReels(rng);
         Assert.AreEqual(3, reels.Length);
         foreach (var r in reels) Assert.Contains(r, deck);
