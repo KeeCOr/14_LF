@@ -18,14 +18,14 @@ namespace SlotDefense
 
         public static GameManager Instance { get; private set; }
 
-        private Random _rng;
+        private System.Random _rng;
         private bool _battleActive;
 
         private void Awake()
         {
             if (Instance != null) { Destroy(gameObject); return; }
             Instance = this;
-            _rng = new Random();
+            _rng = new System.Random();
             Battle = new BattleManager(villageHp, battleDuration);
             SlotMachine = new SlotMachineSystem(xpPerSpin);
             Hand = new HandSystem(4);

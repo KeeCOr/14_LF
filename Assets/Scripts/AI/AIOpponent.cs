@@ -18,14 +18,14 @@ namespace SlotDefense
         private SlotMachineSystem _slotMachine;
         private float _spinTimer;
         private float _placeTimer;
-        private Random _rng;
+        private System.Random _rng;
 
         private void Awake()
         {
             _hand = new HandSystem(4);
             _deck = new DeckSystem(deckConfig.cards);
             _slotMachine = new SlotMachineSystem(xpPerSpin: 80f);
-            _rng = new Random();
+            _rng = new System.Random();
             _spinTimer = spinInterval;
             _placeTimer = placeInterval;
         }
