@@ -79,6 +79,7 @@ namespace SlotDefense
 
         private void HandleMonsterKilled(bool isPlayerArena, MonsterConfig config)
         {
+            if (config == null || SlotMachine == null) return;
             if (isPlayerArena) SlotMachine.AddXP(config.xpReward);
         }
 

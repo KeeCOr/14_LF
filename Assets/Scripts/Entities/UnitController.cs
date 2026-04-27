@@ -11,23 +11,25 @@ namespace SlotDefense
         private Portal _portal;
         private HpBar _hpBar;
 
-        private void Awake()
-        {
-            _hpBar = gameObject.AddComponent<HpBar>();
-            _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
-        }
-
+        // Init은 Instantiate 직후 (비활성 상태에서) 호출됨.
+        // 여기서 HpBar를 생성해야 템플릿에 HpBar가 붙지 않음.
         public void Init(UnitStats stats, bool isPlayerUnit = false, Portal portal = null)
         {
-            _stats = stats;
+            _stats    = stats;
             _currentHp = stats.hp;
-            _maxX = isPlayerUnit ? 0f : float.MaxValue;
-            _portal = portal;
+            _maxX     = isPlayerUnit ? 0f : float.MaxValue;
+            _portal   = portal;
+
+            if (_hpBar == null)
+            {
+                _hpBar = gameObject.AddComponent<HpBar>();
+                _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
+            }
         }
 
         private void Update()
         {
-            if (_currentHp <= 0f) return;
+            if (_stats == null || _currentHp <= 0f) return;
             _attackCooldown -= Time.deltaTime;
 
             AcquireTarget();
@@ -55,7 +57,7 @@ namespace SlotDefense
         private void MoveToward(Vector3 target)
         {
             if (InRange(target)) return;
-            var dir = (target - transform.position).normalized;
+            var dir  = (target - transform.position).normalized;
             var next = transform.position + dir * _stats.moveSpeed * Time.deltaTime;
             if (next.x > _maxX) next.x = _maxX;
             transform.position = next;
@@ -79,6 +81,7 @@ namespace SlotDefense
 
         public void TakeDamage(float amount)
         {
+            if (_stats == null) return;
             _currentHp -= amount;
             _hpBar?.SetRatio(_currentHp / _stats.hp);
             if (_currentHp <= 0f) Destroy(gameObject);

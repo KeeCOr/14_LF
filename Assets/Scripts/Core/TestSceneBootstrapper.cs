@@ -75,14 +75,15 @@ namespace SlotDefense
             var portalComp = portalGo.AddComponent<Portal>();
             portalComp.eliteConfig = eliteCfg;
 
-            // --- Entity templates (inactive) ---
+            // 비활성화를 AddComponent 전에 해야 Awake()가 실행되지 않음.
+            // (Awake에서 HpBar를 생성하면 config=null인 템플릿에 붙어 NullRef 발생)
             var mTemplate = MakeTemplate("MonsterTemplate", Color.red,  new Vector3(-999, -999, 0));
-            mTemplate.AddComponent<MonsterController>();
             mTemplate.SetActive(false);
+            mTemplate.AddComponent<MonsterController>();
 
             var uTemplate = MakeTemplate("UnitTemplate", Color.cyan, new Vector3(-999, -999, 0));
-            uTemplate.AddComponent<UnitController>();
             uTemplate.SetActive(false);
+            uTemplate.AddComponent<UnitController>();
 
             // --- GameManager ---
             var gmGo = new GameObject("GameManager");

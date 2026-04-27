@@ -15,18 +15,20 @@ namespace SlotDefense
         public bool IsDead => _currentHp <= 0f;
         public MonsterConfig Config => config;
 
-        private void Awake()
-        {
-            _hpBar = gameObject.AddComponent<HpBar>();
-            _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
-        }
-
+        // Init은 Instantiate 직후 (비활성 상태에서) 호출됨.
+        // Awake가 아닌 여기서 HpBar를 생성해야 템플릿에 HpBar가 붙지 않음.
         public void Init(MonsterConfig cfg, Village village, bool playerArena)
         {
-            config = cfg;
-            targetVillage = village;
+            config         = cfg;
+            targetVillage  = village;
             isInPlayerArena = playerArena;
-            _currentHp = cfg.hp;
+            _currentHp     = cfg.hp;
+
+            if (_hpBar == null)
+            {
+                _hpBar = gameObject.AddComponent<HpBar>();
+                _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
+            }
         }
 
         private void Update()
@@ -53,6 +55,7 @@ namespace SlotDefense
 
         public void TakeDamage(float amount)
         {
+            if (config == null) return;
             _currentHp -= amount;
             _hpBar?.SetRatio(_currentHp / config.hp);
             if (_currentHp <= 0f) Die();
@@ -60,7 +63,8 @@ namespace SlotDefense
 
         private void Die()
         {
-            GameEvents.MonsterKilled(isInPlayerArena, config);
+            if (config != null)
+                GameEvents.MonsterKilled(isInPlayerArena, config);
             Destroy(gameObject);
         }
     }
