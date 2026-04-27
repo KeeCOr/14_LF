@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 namespace SlotDefense
 {
     public class HandUI : MonoBehaviour
     {
         public Button[] cardButtons;
         public Image[] cardIcons;
-        public TextMeshProUGUI[] cardNames;
+        public Text[] cardNames;
         public ArenaSystem arenaSystem;
 
         private void OnEnable() => GameEvents.OnCardObtained += RefreshHand;
@@ -38,7 +37,7 @@ namespace SlotDefense
                 cardButtons[i].interactable = card != null;
                 cardIcons[i].sprite = card?.icon;
                 cardNames[i].text = card != null
-                    ? (isSelected ? $"{card.cardName}\n▶ 배치 클릭" : card.cardName)
+                    ? (isSelected ? $"{card.cardName}\n> 배치 클릭" : card.cardName)
                     : "---";
                 cardIcons[i].gameObject.SetActive(card != null);
                 if (cardButtons[i].targetGraphic is Image bg)

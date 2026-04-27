@@ -8,8 +8,11 @@ namespace SlotDefense
         public static event Action<bool, float> OnVillageDamaged;
         public static event Action<BuffEffect> OnGlobalBuffApplied;
         public static event Action<CardData, CardTier> OnCardObtained;
+        public static event Action<CardData[], SlotResult> OnSpinCompleted;
         public static event Action<BattleResult> OnBattleEnded;
 
+        public static void SpinCompleted(CardData[] reels, SlotResult result) =>
+            OnSpinCompleted?.Invoke(reels, result);
         public static void MonsterKilled(bool isPlayerArena, MonsterConfig config) =>
             OnMonsterKilled?.Invoke(isPlayerArena, config);
         public static void VillageDamaged(bool isPlayer, float amount) =>

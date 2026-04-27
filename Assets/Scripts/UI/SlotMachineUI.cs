@@ -1,26 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 namespace SlotDefense
 {
     public class SlotMachineUI : MonoBehaviour
     {
         public Image[] reelImages;
-        public TextMeshProUGUI[] reelNames;
+        public Text[] reelNames;   // 3개: 각 릴에 뽑힌 카드 이름 표시
         public Button spinButton;
-        public TextMeshProUGUI resultText;
+        public Text resultText;
 
         private void Start() => spinButton.onClick.AddListener(OnSpinClicked);
 
         private void OnEnable()
         {
-            GameEvents.OnCardObtained += OnCardObtained;
+            GameEvents.OnSpinCompleted  += OnSpinCompleted;
+            GameEvents.OnCardObtained   += OnCardObtained;
             GameEvents.OnGlobalBuffApplied += OnBuffApplied;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnCardObtained -= OnCardObtained;
+            GameEvents.OnSpinCompleted  -= OnSpinCompleted;
+            GameEvents.OnCardObtained   -= OnCardObtained;
             GameEvents.OnGlobalBuffApplied -= OnBuffApplied;
         }
 
@@ -29,7 +30,7 @@ namespace SlotDefense
             if (GameManager.Instance == null) return;
             int charges = GameManager.Instance.SlotMachine.SpinCharges;
             spinButton.interactable = charges > 0;
-            var label = spinButton.GetComponentInChildren<TextMeshProUGUI>();
+            var label = spinButton.GetComponentInChildren<Text>();
             if (label != null) label.text = $"SPIN (x{charges})";
         }
 
@@ -37,6 +38,12 @@ namespace SlotDefense
         {
             if (GameManager.Instance == null) return;
             GameManager.Instance.TrySpin();
+        }
+
+        private void OnSpinCompleted(CardData[] reels, SlotResult result)
+        {
+            for (int i = 0; i < reelNames.Length && i < reels.Length; i++)
+                if (reelNames[i] != null) reelNames[i].text = reels[i]?.cardName ?? "?";
         }
 
         private void OnCardObtained(CardData card, CardTier tier)

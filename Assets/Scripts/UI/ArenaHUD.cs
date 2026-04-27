@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 namespace SlotDefense
 {
     public class ArenaHUD : MonoBehaviour
@@ -10,10 +9,10 @@ namespace SlotDefense
         public Slider enemyHpSlider;
 
         [Header("Timer")]
-        public TextMeshProUGUI timerText;
+        public Text timerText;
 
         [Header("Spin")]
-        public TextMeshProUGUI spinChargesText;
+        public Text spinChargesText;
 
         private void Update()
         {

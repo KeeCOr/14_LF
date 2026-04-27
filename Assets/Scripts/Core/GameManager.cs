@@ -63,6 +63,7 @@ namespace SlotDefense
             if (!SlotMachine.TrySpin()) return;
             var reels = Deck.DrawReels(_rng);
             var slotResult = DeckSystem.EvaluateReels(reels, out var matchedCard);
+            GameEvents.SpinCompleted(reels, slotResult);
             if (slotResult == SlotResult.AllDifferent)
             {
                 var buff = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];

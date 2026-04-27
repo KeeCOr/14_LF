@@ -19,6 +19,7 @@ namespace SlotDefense
         [SerializeField] private float waveInterval = 5f;
 
         public GameObject unitPrefab;
+        public Portal portal;
 
         private int _selectedHandSlot = -1;
         public int SelectedSlot => _selectedHandSlot;
@@ -60,6 +61,8 @@ namespace SlotDefense
 
             var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0f;
+            // 플레이어 유닛은 좌측(플레이어 진영)에만 배치
+            worldPos.x = Mathf.Min(worldPos.x, -0.5f);
 
             var card = GameManager.Instance.Hand.Use(_selectedHandSlot);
             _selectedHandSlot = -1;
@@ -67,7 +70,7 @@ namespace SlotDefense
             if (card == null || card.cardType != CardType.Unit) return;
 
             var go = Instantiate(unitPrefab, worldPos, Quaternion.identity);
-            go.GetComponent<UnitController>().Init(card.unitStats);
+            go.GetComponent<UnitController>().Init(card.unitStats, isPlayerUnit: true, portal: portal);
             go.SetActive(true);
         }
     }
