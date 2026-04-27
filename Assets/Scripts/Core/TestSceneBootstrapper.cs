@@ -23,10 +23,14 @@ namespace SlotDefense
 
             var deckCfg = Inst<FixedDeckConfig>(d =>
             {
+                // 카드 타입당 하나의 인스턴스를 공유해야 EvaluateReels의 참조 비교(==)가 작동함
+                var swordsman = MakeCard("검사",  hp: 80,  dmg: 15, speed: 2f,   range: 1.5f, rate: 1f);
+                var archer    = MakeCard("궁수",  hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f);
+                var knight    = MakeCard("기사",  hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f);
                 d.cards = new CardData[12];
-                for (int i = 0; i < 4; i++)  d.cards[i]    = MakeCard("Swordsman", hp: 80,  dmg: 15, speed: 2f,   range: 1.5f, rate: 1f);
-                for (int i = 4; i < 8; i++)  d.cards[i]    = MakeCard("Archer",    hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f);
-                for (int i = 8; i < 12; i++) d.cards[i]    = MakeCard("Knight",    hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f);
+                for (int i = 0; i < 4; i++)  d.cards[i]    = swordsman;
+                for (int i = 4; i < 8; i++)  d.cards[i]    = archer;
+                for (int i = 8; i < 12; i++) d.cards[i]    = knight;
             });
 
             var buffCfg = Inst<GlobalBuffConfig>(b =>

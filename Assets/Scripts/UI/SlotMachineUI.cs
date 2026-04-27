@@ -12,6 +12,18 @@ namespace SlotDefense
 
         private void Start() => spinButton.onClick.AddListener(OnSpinClicked);
 
+        private void OnEnable()
+        {
+            GameEvents.OnCardObtained += OnCardObtained;
+            GameEvents.OnGlobalBuffApplied += OnBuffApplied;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OnCardObtained -= OnCardObtained;
+            GameEvents.OnGlobalBuffApplied -= OnBuffApplied;
+        }
+
         private void Update()
         {
             if (GameManager.Instance == null) return;
@@ -25,13 +37,21 @@ namespace SlotDefense
         {
             if (GameManager.Instance == null) return;
             GameManager.Instance.TrySpin();
-            ShowSpinResult();
         }
 
-        private void ShowSpinResult()
+        private void OnCardObtained(CardData card, CardTier tier)
         {
-            resultText.text = "SPIN!";
-            Invoke(nameof(ClearResult), 1.5f);
+            string prefix = tier == CardTier.Enhanced ? "[강화] " : "";
+            ShowResult($"{prefix}{card.cardName} 획득!");
+        }
+
+        private void OnBuffApplied(BuffEffect _) => ShowResult("전체 버프 적용!");
+
+        private void ShowResult(string msg)
+        {
+            resultText.text = msg;
+            CancelInvoke(nameof(ClearResult));
+            Invoke(nameof(ClearResult), 2f);
         }
 
         private void ClearResult() => resultText.text = "";
