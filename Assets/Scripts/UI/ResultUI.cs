@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using TMPro;
 namespace SlotDefense
 {
     public class ResultUI : MonoBehaviour
     {
         public GameObject panel;
-        public TextMeshProUGUI resultText;
+        public Text resultText;
         public Button retryButton;
 
         private void OnEnable() => GameEvents.OnBattleEnded += ShowResult;
