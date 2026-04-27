@@ -9,8 +9,14 @@ namespace SlotDefense
         private MonsterController _target;
         private float _maxX = float.MaxValue;
         private Portal _portal;
+        private HpBar _hpBar;
 
-        // isPlayerUnit=true: 경계선(x=0)을 넘지 않고 포탈을 공격함
+        private void Awake()
+        {
+            _hpBar = gameObject.AddComponent<HpBar>();
+            _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
+        }
+
         public void Init(UnitStats stats, bool isPlayerUnit = false, Portal portal = null)
         {
             _stats = stats;
@@ -74,6 +80,7 @@ namespace SlotDefense
         public void TakeDamage(float amount)
         {
             _currentHp -= amount;
+            _hpBar?.SetRatio(_currentHp / _stats.hp);
             if (_currentHp <= 0f) Destroy(gameObject);
         }
     }

@@ -10,9 +10,16 @@ namespace SlotDefense
         private float _currentHp;
         private float _attackCooldown;
         private const float AttackInterval = 1f;
+        private HpBar _hpBar;
 
         public bool IsDead => _currentHp <= 0f;
         public MonsterConfig Config => config;
+
+        private void Awake()
+        {
+            _hpBar = gameObject.AddComponent<HpBar>();
+            _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
+        }
 
         public void Init(MonsterConfig cfg, Village village, bool playerArena)
         {
@@ -47,6 +54,7 @@ namespace SlotDefense
         public void TakeDamage(float amount)
         {
             _currentHp -= amount;
+            _hpBar?.SetRatio(_currentHp / config.hp);
             if (_currentHp <= 0f) Die();
         }
 

@@ -11,6 +11,7 @@ namespace SlotDefense
 
         private float _currentHp;
         private SpriteRenderer _sr;
+        private HpBar _hpBar;
 
         public float HpRatio => _currentHp / maxHp;
 
@@ -18,12 +19,13 @@ namespace SlotDefense
         {
             _currentHp = maxHp;
             _sr = GetComponent<SpriteRenderer>();
+            _hpBar = gameObject.AddComponent<HpBar>();
+            _hpBar.Setup(yOffset: 1.15f, width: 0.8f);
         }
 
         private void Update()
         {
             if (_sr == null) return;
-            // 색상으로 HP 시각화: 보라 → 빨강
             _sr.color = Color.Lerp(Color.red, new Color(0.7f, 0.2f, 1f), HpRatio);
         }
 
@@ -31,11 +33,10 @@ namespace SlotDefense
         {
             if (_currentHp <= 0f) return;
             _currentHp = Mathf.Max(0f, _currentHp - amount);
+            _hpBar?.SetRatio(HpRatio);
 
-            // 피격마다 일반 몬스터 소환
             arenaSystem?.SpawnMonsterInArena(isPlayerArena: true);
 
-            // HP 40% 미만이면 정예 몬스터도 추가 소환
             if (HpRatio < eliteThreshold && eliteConfig != null)
                 arenaSystem?.SpawnMonsterInArena(isPlayerArena: true, overrideConfig: eliteConfig);
         }
