@@ -29,7 +29,7 @@ namespace SlotDefense
 
         private void Update()
         {
-            if (_stats == null || _currentHp <= 0f) return;
+            if (_hpBar == null || _currentHp <= 0f) return;
             _attackCooldown -= Time.deltaTime;
 
             AcquireTarget();
@@ -81,7 +81,7 @@ namespace SlotDefense
 
         public void TakeDamage(float amount)
         {
-            if (_stats == null) return;
+            if (_hpBar == null) return;
             _currentHp -= amount;
             _hpBar?.SetRatio(_currentHp / _stats.hp);
             if (_currentHp <= 0f) Destroy(gameObject);
