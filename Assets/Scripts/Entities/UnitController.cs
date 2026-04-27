@@ -30,6 +30,7 @@ namespace SlotDefense
             float nearest = float.MaxValue;
             foreach (var m in FindObjectsOfType<MonsterController>())
             {
+                if (m.IsDead) continue;
                 var dist = Vector2.Distance(transform.position, m.transform.position);
                 if (dist < nearest) { nearest = dist; _target = m; }
             }

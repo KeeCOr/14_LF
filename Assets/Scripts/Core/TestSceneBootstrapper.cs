@@ -59,12 +59,14 @@ namespace SlotDefense
             var pSpawn   = Spawn("PlayerSpawn", new Vector3(-2.5f, 0, 0));
             var eSpawn   = Spawn("EnemySpawn",  new Vector3( 2.5f, 0, 0));
 
-            // --- Entity templates (active, far off-screen so Update no-ops) ---
+            // --- Entity templates (inactive — instantiated clones are activated after Init) ---
             var mTemplate = MakeTemplate("MonsterTemplate", Color.red,  new Vector3(-999, -999, 0));
             mTemplate.AddComponent<MonsterController>();
+            mTemplate.SetActive(false);
 
             var uTemplate = MakeTemplate("UnitTemplate", Color.cyan, new Vector3(-999, -999, 0));
             uTemplate.AddComponent<UnitController>();
+            uTemplate.SetActive(false);
 
             // --- GameManager (inactive until deckConfig assigned) ---
             var gmGo = new GameObject("GameManager");
@@ -125,6 +127,8 @@ namespace SlotDefense
             // ArenaHUD
             var hudGo = Child(canvasGo.transform, "ArenaHUD");
             var hud   = hudGo.AddComponent<ArenaHUD>();
+            LabelTMP(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-340, 523));
+            LabelTMP(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 340, 523));
             hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP",  new Vector2(-340, 490), Color.green);
             hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",   new Vector2( 340, 490), Color.red);
             hud.timerText       = MakeTMP(hudGo.transform,    "Timer",     "3:00", new Vector2(0, 490), 36);
@@ -135,8 +139,9 @@ namespace SlotDefense
             var slotUI = slotGo.AddComponent<SlotMachineUI>();
             slotUI.reelImages = new Image[0];
             slotUI.reelNames  = new TextMeshProUGUI[0];
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN", new Vector2(0, -430), new Vector2(180, 65));
-            slotUI.resultText = MakeTMP(slotGo.transform,   "Result",  "",     new Vector2(0, -390), 24);
+            LabelTMP(slotGo.transform, "SpinDesc", "몬스터 처치 -> XP 충전 -> 버튼 클릭 -> 카드 획득", new Vector2(0, -360));
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN", new Vector2(0, -410), new Vector2(220, 60));
+            slotUI.resultText = MakeTMP(slotGo.transform,   "Result",  "",     new Vector2(0, -460), 22);
 
             // HandUI — 4 card slots across the bottom
             var handGo = Child(canvasGo.transform, "HandUI");
@@ -145,14 +150,15 @@ namespace SlotDefense
             handUI.cardButtons = new Button[4];
             handUI.cardIcons   = new Image[4];
             handUI.cardNames   = new TextMeshProUGUI[4];
+            LabelTMP(handGo.transform, "HandDesc", "카드 클릭으로 선택 (초록색) -> 게임 화면 클릭으로 유닛 배치", new Vector2(0, -488));
 
             for (int i = 0; i < 4; i++)
             {
                 float xPos = -285f + i * 190f;
                 var cardGo = Child(handGo.transform, $"CardSlot{i}");
                 var rt     = (RectTransform)cardGo.transform;
-                rt.anchoredPosition = new Vector2(xPos, -470f);
-                rt.sizeDelta        = new Vector2(175f, 65f);
+                rt.anchoredPosition = new Vector2(xPos, -520f);
+                rt.sizeDelta        = new Vector2(175f, 60f);
 
                 var bg  = cardGo.AddComponent<Image>();
                 bg.color = new Color(0.2f, 0.25f, 0.45f, 0.9f);
@@ -285,6 +291,14 @@ namespace SlotDefense
 
             slider.fillRect = fillRt;
             return slider;
+        }
+
+        static TextMeshProUGUI LabelTMP(Transform parent, string name, string text, Vector2 pos)
+        {
+            var tmp = MakeTMP(parent, name, text, pos, 17);
+            tmp.color = new Color(0.75f, 0.85f, 1f);
+            ((RectTransform)tmp.transform).sizeDelta = new Vector2(800, 36);
+            return tmp;
         }
 
         static TextMeshProUGUI MakeTMP(Transform parent, string name, string text, Vector2 pos, int fontSize = 24)

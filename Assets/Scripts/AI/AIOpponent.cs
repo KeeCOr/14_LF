@@ -82,6 +82,7 @@ namespace SlotDefense
                     + new Vector3(_rng.Next(-3, 3), _rng.Next(-2, 2), 0);
                 var go = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
                 go.GetComponent<UnitController>().Init(card.unitStats);
+                go.SetActive(true);
                 break;
             }
         }

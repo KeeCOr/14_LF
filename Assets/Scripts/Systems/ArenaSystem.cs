@@ -47,6 +47,7 @@ namespace SlotDefense
             var village = isPlayerArena ? playerVillage : enemyVillage;
             var go = Instantiate(monsterPrefab, spawnPos, Quaternion.identity);
             go.GetComponent<MonsterController>().Init(cfg, village, isPlayerArena);
+            go.SetActive(true);
         }
 
         public void SelectHandSlot(int slotIndex) => _selectedHandSlot = slotIndex;
@@ -67,6 +68,7 @@ namespace SlotDefense
 
             var go = Instantiate(unitPrefab, worldPos, Quaternion.identity);
             go.GetComponent<UnitController>().Init(card.unitStats);
+            go.SetActive(true);
         }
     }
 }
