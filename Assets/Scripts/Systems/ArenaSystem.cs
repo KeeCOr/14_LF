@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 namespace SlotDefense
 {
@@ -20,6 +21,7 @@ namespace SlotDefense
         public GameObject unitPrefab;
 
         private int _selectedHandSlot = -1;
+        public int SelectedSlot => _selectedHandSlot;
 
         private void Start()
         {
@@ -53,6 +55,7 @@ namespace SlotDefense
         {
             if (_selectedHandSlot < 0) return;
             if (!Input.GetMouseButtonDown(0)) return;
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
             var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0f;

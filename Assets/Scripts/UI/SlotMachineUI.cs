@@ -15,7 +15,10 @@ namespace SlotDefense
         private void Update()
         {
             if (GameManager.Instance == null) return;
-            spinButton.interactable = GameManager.Instance.SlotMachine.SpinCharges > 0;
+            int charges = GameManager.Instance.SlotMachine.SpinCharges;
+            spinButton.interactable = charges > 0;
+            var label = spinButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) label.text = $"SPIN (x{charges})";
         }
 
         private void OnSpinClicked()

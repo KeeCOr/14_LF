@@ -102,6 +102,7 @@ namespace SlotDefense
             ai.arenaSystem = arena;
             ai.unitPrefab  = uTemplate;
             aiGo.SetActive(true);
+            ai.AddStarterXP(240f); // 3 spins at 80 XP each
 
             // --- UI ---
             BuildUI(arena);

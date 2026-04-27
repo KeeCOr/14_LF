@@ -69,6 +69,8 @@ namespace SlotDefense
                 _hand.TryAdd(matched);
         }
 
+        public void AddStarterXP(float amount) => _slotMachine.AddXP(amount);
+
         private void PlaceRandomUnit()
         {
             for (int i = 0; i < 4; i++)

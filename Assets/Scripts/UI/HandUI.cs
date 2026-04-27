@@ -24,16 +24,25 @@ namespace SlotDefense
 
         private void Update() => RefreshDisplay();
 
+        private static readonly Color ColorNormal   = new Color(0.2f, 0.25f, 0.45f, 0.9f);
+        private static readonly Color ColorSelected = new Color(0.2f, 0.65f, 0.25f, 0.9f);
+
         private void RefreshDisplay()
         {
             if (GameManager.Instance == null) return;
+            int selected = arenaSystem != null ? arenaSystem.SelectedSlot : -1;
             for (int i = 0; i < cardButtons.Length; i++)
             {
                 var card = GameManager.Instance.Hand.GetSlot(i);
+                bool isSelected = selected == i && card != null;
                 cardButtons[i].interactable = card != null;
                 cardIcons[i].sprite = card?.icon;
-                cardNames[i].text = card?.cardName ?? "";
+                cardNames[i].text = card != null
+                    ? (isSelected ? $"{card.cardName}\n▶ 배치 클릭" : card.cardName)
+                    : "---";
                 cardIcons[i].gameObject.SetActive(card != null);
+                if (cardButtons[i].targetGraphic is Image bg)
+                    bg.color = isSelected ? ColorSelected : ColorNormal;
             }
         }
 
