@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 namespace SlotDefense
 {
     public class GameManager : MonoBehaviour
@@ -19,6 +20,10 @@ namespace SlotDefense
         public static GameManager Instance { get; private set; }
 
         private System.Random _rng;
+        private CardData[]  _pendingReels;
+        private SlotResult  _pendingSlotResult;
+        private CardData    _pendingCard;
+        private CardTier    _pendingTier;
         private bool _battleActive;
 
         private void Awake()
@@ -34,14 +39,16 @@ namespace SlotDefense
 
         private void OnEnable()
         {
-            GameEvents.OnMonsterKilled += HandleMonsterKilled;
-            GameEvents.OnVillageDamaged += HandleVillageDamaged;
+            GameEvents.OnMonsterKilled   += HandleMonsterKilled;
+            GameEvents.OnVillageDamaged  += HandleVillageDamaged;
+            GameEvents.OnGlobalBuffApplied += HandleGlobalBuff;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnMonsterKilled -= HandleMonsterKilled;
-            GameEvents.OnVillageDamaged -= HandleVillageDamaged;
+            GameEvents.OnMonsterKilled   -= HandleMonsterKilled;
+            GameEvents.OnVillageDamaged  -= HandleVillageDamaged;
+            GameEvents.OnGlobalBuffApplied -= HandleGlobalBuff;
         }
 
         private void Update()
@@ -58,23 +65,46 @@ namespace SlotDefense
 
         public void StartBattle() => _battleActive = true;
 
-        public void TrySpin()
+        public bool TryBeginSpin()
         {
-            if (!SlotMachine.TrySpin()) return;
-            var reels = Deck.DrawReels(_rng);
-            var slotResult = DeckSystem.EvaluateReels(reels, out var matchedCard);
-            GameEvents.SpinCompleted(reels, slotResult);
-            if (slotResult == SlotResult.AllDifferent)
+            if (!SlotMachine.TrySpin()) return false;
+            _pendingReels = Deck.DrawReels(_rng);
+            _pendingSlotResult = DeckSystem.EvaluateReels(_pendingReels, out var matchedCard);
+            if (_pendingSlotResult == SlotResult.AllDifferent)
             {
-                var buff = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
-                GameEvents.GlobalBuffApplied(buff);
+                var buffEffect = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
+                var buffCard = ScriptableObject.CreateInstance<CardData>();
+                buffCard.cardName      = "전투 버프";
+                buffCard.cardType      = CardType.Buff;
+                buffCard.buffEffect    = buffEffect;
+                buffCard.placementCost = 0;
+                _pendingCard = buffCard;
+                _pendingTier = CardTier.Normal;
             }
             else
             {
-                var tier = slotResult == SlotResult.Triple ? CardTier.Enhanced : CardTier.Normal;
-                if (Hand.TryAdd(matchedCard))
-                    GameEvents.CardObtained(matchedCard, tier);
+                _pendingCard = matchedCard;
+                _pendingTier = _pendingSlotResult == SlotResult.Triple ? CardTier.Enhanced : CardTier.Normal;
             }
+            return true;
+        }
+
+        public (CardData[] reels, SlotResult result) PeekSpin() =>
+            (_pendingReels, _pendingSlotResult);
+
+        public void CommitSpin()
+        {
+            if (_pendingReels == null) return;
+            GameEvents.SpinCompleted(_pendingReels, _pendingSlotResult);
+            if (Hand.TryAdd(_pendingCard))
+                GameEvents.CardObtained(_pendingCard, _pendingTier);
+            _pendingReels = null;
+        }
+
+        public void TrySpin()
+        {
+            if (!TryBeginSpin()) return;
+            CommitSpin();
         }
 
         private void HandleMonsterKilled(bool isPlayerArena, MonsterConfig config)
@@ -87,6 +117,17 @@ namespace SlotDefense
         {
             if (isPlayer) Battle.DamagePlayerVillage(amount);
             else Battle.DamageEnemyVillage(amount);
+        }
+
+        private void HandleGlobalBuff(BuffEffect buff) => StartCoroutine(BuffCoroutine(buff));
+
+        private IEnumerator BuffCoroutine(BuffEffect buff)
+        {
+            UnitController.GlobalDamageMultiplier = buff.attackMultiplier;
+            UnitController.GlobalSpeedMultiplier  = buff.speedMultiplier;
+            yield return new WaitForSeconds(buff.duration);
+            UnitController.GlobalDamageMultiplier = 1f;
+            UnitController.GlobalSpeedMultiplier  = 1f;
         }
     }
 }
