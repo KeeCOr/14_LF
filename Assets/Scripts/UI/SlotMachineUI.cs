@@ -20,7 +20,11 @@ namespace SlotDefense
         private void Start() => spinButton.onClick.AddListener(OnSpinClicked);
 
         private void OnEnable()  => GameEvents.OnGlobalBuffApplied += OnBuffApplied;
-        private void OnDisable() => GameEvents.OnGlobalBuffApplied -= OnBuffApplied;
+        private void OnDisable()
+        {
+            GameEvents.OnGlobalBuffApplied -= OnBuffApplied;
+            CancelInvoke(nameof(ClearResult));
+        }
 
         private void Update()
         {
