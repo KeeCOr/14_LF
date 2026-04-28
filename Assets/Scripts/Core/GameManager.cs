@@ -24,6 +24,7 @@ namespace SlotDefense
         private SlotResult  _pendingSlotResult;
         private CardData    _pendingCard;
         private CardTier    _pendingTier;
+        private bool _hasPendingSpin;
         private bool _battleActive;
 
         private void Awake()
@@ -67,6 +68,7 @@ namespace SlotDefense
 
         public bool TryBeginSpin()
         {
+            if (_hasPendingSpin) return false;
             if (!SlotMachine.TrySpin()) return false;
             _pendingReels = Deck.DrawReels(_rng);
             _pendingSlotResult = DeckSystem.EvaluateReels(_pendingReels, out var matchedCard);
@@ -86,6 +88,7 @@ namespace SlotDefense
                 _pendingCard = matchedCard;
                 _pendingTier = _pendingSlotResult == SlotResult.Triple ? CardTier.Enhanced : CardTier.Normal;
             }
+            _hasPendingSpin = true;
             return true;
         }
 
@@ -99,6 +102,7 @@ namespace SlotDefense
             if (Hand.TryAdd(_pendingCard))
                 GameEvents.CardObtained(_pendingCard, _pendingTier);
             _pendingReels = null;
+            _hasPendingSpin = false;
         }
 
         public void TrySpin()
