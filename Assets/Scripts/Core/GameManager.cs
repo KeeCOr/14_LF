@@ -85,8 +85,29 @@ namespace SlotDefense
             }
             else
             {
-                _pendingCard = matchedCard;
-                _pendingTier = _pendingSlotResult == SlotResult.Triple ? CardTier.Enhanced : CardTier.Normal;
+                if (_pendingSlotResult == SlotResult.Triple)
+                {
+                    var enhanced = ScriptableObject.CreateInstance<CardData>();
+                    enhanced.cardName      = $"[강화] {matchedCard.cardName}";
+                    enhanced.cardType      = matchedCard.cardType;
+                    enhanced.placementCost = matchedCard.placementCost;
+                    enhanced.unitStats     = new UnitStats
+                    {
+                        hp          = matchedCard.unitStats.hp          * 1.5f,
+                        damage      = matchedCard.unitStats.damage      * 1.5f,
+                        moveSpeed   = matchedCard.unitStats.moveSpeed,
+                        attackRange = matchedCard.unitStats.attackRange,
+                        attackRate  = matchedCard.unitStats.attackRate,
+                        sightRange  = matchedCard.unitStats.sightRange
+                    };
+                    _pendingCard = enhanced;
+                    _pendingTier = CardTier.Enhanced;
+                }
+                else
+                {
+                    _pendingCard = matchedCard;
+                    _pendingTier = CardTier.Normal;
+                }
             }
             _hasPendingSpin = true;
             return true;
