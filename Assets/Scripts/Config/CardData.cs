@@ -9,5 +9,7 @@ namespace SlotDefense
         public Sprite icon;
         public UnitStats unitStats;
         public SkillEffect skillEffect;
+        public BuffEffect buffEffect;
+        public int placementCost = 1;
     }
 }

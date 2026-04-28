@@ -27,6 +27,7 @@ namespace SlotDefense
         private static readonly Color ColorNormal   = new Color(0.2f, 0.25f, 0.45f, 0.9f);
         private static readonly Color ColorSelected = new Color(0.2f, 0.65f, 0.25f, 0.9f);
         private static readonly Color ColorBuff     = new Color(0.5f, 0.38f, 0.05f, 0.9f);
+        private static readonly Color ColorSkill    = new Color(0.4f, 0.1f, 0.55f, 0.9f);
         private static readonly Color ColorEnhanced = new Color(1f, 0.85f, 0.1f, 0.9f);
 
         private void RefreshDisplay()
@@ -52,6 +53,11 @@ namespace SlotDefense
                     cardNames[i].text = $"{card.cardName}\n[클릭 → 즉시 발동]";
                     bgColor = ColorBuff;
                 }
+                else if (card.cardType == CardType.Skill)
+                {
+                    cardNames[i].text = $"{card.cardName}\n[클릭 → 즉시 발동]";
+                    bgColor = ColorSkill;
+                }
                 else
                 {
                     string costStr = $"[{card.placementCost}스핀]";
@@ -76,6 +82,14 @@ namespace SlotDefense
             {
                 GameManager.Instance.Hand.Use(index);
                 GameEvents.GlobalBuffApplied(card.buffEffect);
+                return;
+            }
+
+            if (card.cardType == CardType.Skill)
+            {
+                GameManager.Instance.Hand.Use(index);
+                GameManager.Instance.UseSkill(card.skillEffect);
+                ScreenFlash.Instance?.Play(new Color(0.5f, 0.2f, 1f), 0.3f, 0.08f, 0.25f);
                 return;
             }
 

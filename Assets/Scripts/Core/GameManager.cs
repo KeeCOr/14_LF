@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
@@ -98,7 +99,13 @@ namespace SlotDefense
                         moveSpeed   = matchedCard.unitStats.moveSpeed,
                         attackRange = matchedCard.unitStats.attackRange,
                         attackRate  = matchedCard.unitStats.attackRate,
-                        sightRange  = matchedCard.unitStats.sightRange
+                        sightRange  = matchedCard.unitStats.sightRange,
+                        healAmount  = matchedCard.unitStats.healAmount  * 1.5f
+                    };
+                    enhanced.skillEffect = new SkillEffect
+                    {
+                        type   = matchedCard.skillEffect.type,
+                        damage = matchedCard.skillEffect.damage * 1.5f
                     };
                     _pendingCard = enhanced;
                     _pendingTier = CardTier.Enhanced;
@@ -130,6 +137,23 @@ namespace SlotDefense
         {
             if (!TryBeginSpin()) return;
             CommitSpin();
+        }
+
+        public void UseSkill(SkillEffect effect)
+        {
+            switch (effect.type)
+            {
+                case SkillType.LightningArrow:
+                    var alive = new List<MonsterController>();
+                    foreach (var m in FindObjectsOfType<MonsterController>())
+                        if (!m.IsDead) alive.Add(m);
+                    if (alive.Count > 0)
+                        alive[_rng.Next(alive.Count)].TakeDamage(effect.damage);
+                    break;
+                case SkillType.PortalBomb:
+                    FindObjectOfType<Portal>()?.TakeDamage(effect.damage);
+                    break;
+            }
         }
 
         private void HandleMonsterKilled(bool isPlayerArena, MonsterConfig config)

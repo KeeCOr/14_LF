@@ -32,19 +32,25 @@ namespace SlotDefense
                 var knight    = MakeCard("기사",   hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
                 var mage      = MakeCard("마법사", hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
                 var healer    = MakeCard("힐러",   hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
+                var lightning = MakeSkillCard("번개 화살", SkillType.LightningArrow, damage: 80f);
+                var portal    = MakeSkillCard("포탈 폭격", SkillType.PortalBomb,     damage: 120f);
                 swordsman.placementCost = 1;
                 archer.placementCost    = 1;
                 knight.placementCost    = 2;
                 mage.placementCost      = 2;
                 healer.placementCost    = 2;
-                // 5종: 검사×3, 궁수×3, 기사×3, 마법사×3, 힐러×2 = 14장
-                d.cards = new CardData[14];
+                // 7종: 검사×3, 궁수×3, 기사×3, 마법사×3, 힐러×2, 번개화살×2, 포탈폭격×2 = 18장
+                d.cards = new CardData[18];
                 for (int i = 0; i < 3; i++)   d.cards[i]  = swordsman;
                 for (int i = 3; i < 6; i++)   d.cards[i]  = archer;
                 for (int i = 6; i < 9; i++)   d.cards[i]  = knight;
                 for (int i = 9; i < 12; i++)  d.cards[i]  = mage;
                 d.cards[12] = healer;
                 d.cards[13] = healer;
+                d.cards[14] = lightning;
+                d.cards[15] = lightning;
+                d.cards[16] = portal;
+                d.cards[17] = portal;
             });
 
             var buffCfg = Inst<GlobalBuffConfig>(b =>
@@ -266,6 +272,16 @@ namespace SlotDefense
         static T Inst<T>(System.Action<T> init) where T : ScriptableObject
         {
             var obj = ScriptableObject.CreateInstance<T>(); init(obj); return obj;
+        }
+
+        static CardData MakeSkillCard(string name, SkillType type, float damage)
+        {
+            var card = ScriptableObject.CreateInstance<CardData>();
+            card.cardName    = name;
+            card.cardType    = CardType.Skill;
+            card.skillEffect = new SkillEffect { type = type, damage = damage };
+            card.placementCost = 0;
+            return card;
         }
 
         static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f, float heal = 0f)
