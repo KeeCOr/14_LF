@@ -132,6 +132,7 @@ namespace SlotDefense
             ai.deckConfig  = deckCfg;
             ai.buffConfig  = buffCfg;
             ai.arenaSystem = arena;
+            ai.portal      = portalComp;
             ai.unitPrefab  = uTemplate;
             aiGo.SetActive(true);
             ai.AddStarterXP(240f);

@@ -19,6 +19,7 @@ namespace SlotDefense
         private float _spinTimer;
         private float _placeTimer;
         private System.Random _rng;
+        public Portal portal;
 
         private void Awake()
         {
@@ -48,7 +49,8 @@ namespace SlotDefense
 
             if (_placeTimer <= 0f)
             {
-                _placeTimer = placeInterval;
+                float effectiveInterval = (portal != null && portal.HpRatio < 0.4f) ? 2f : placeInterval;
+                _placeTimer = effectiveInterval;
                 PlaceRandomUnit();
             }
         }
@@ -63,10 +65,21 @@ namespace SlotDefense
 
         private void ExecuteSpin()
         {
-            var reels = _deck.DrawReels(_rng);
+            var reels  = _deck.DrawReels(_rng);
             var result = DeckSystem.EvaluateReels(reels, out var matched);
-            if (result != SlotResult.AllDifferent && matched != null)
+            if (result == SlotResult.AllDifferent)
+            {
+                if (buffConfig != null && buffConfig.possibleBuffs.Length > 0)
+                {
+                    var buffEffect = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
+                    // AI는 버프를 즉시 발동 (손패 경유 없이 직접 적용)
+                    GameEvents.GlobalBuffApplied(buffEffect);
+                }
+            }
+            else if (matched != null)
+            {
                 _hand.TryAdd(matched);
+            }
         }
 
         public void AddStarterXP(float amount) => _slotMachine.AddXP(amount);
