@@ -117,6 +117,7 @@ namespace SlotDefense
             arena.monsterConfig    = monsterCfg;
             arena.unitPrefab       = uTemplate;
             arena.portal           = portalComp;
+            arena.eliteMonsterConfig = eliteCfg;
             portalComp.arenaSystem = arena; // 포탈 ↔ 아레나 연결
 
             // --- TransferSystem ---
@@ -165,6 +166,7 @@ namespace SlotDefense
             hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 490), 36);
             hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 450), 28);
             hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 410), 20);
+            hud.stageText = MakeText(hudGo.transform, "Stage", "STAGE 1", new Vector2(0, 370), 22);
 
             // SlotMachineUI
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");

@@ -16,6 +16,7 @@ namespace SlotDefense
 
         [Header("Record")]
         public Text recordText;
+        public Text stageText;
 
         private void Update()
         {
@@ -29,6 +30,8 @@ namespace SlotDefense
 
             spinChargesText.text = $"x{GameManager.Instance.SlotMachine.SpinCharges}";
             if (recordText != null) recordText.text = RecordSystem.Summary();
+            if (stageText != null && FindObjectOfType<ArenaSystem>() is ArenaSystem a)
+                stageText.text = $"STAGE {a.CurrentStage}";
         }
     }
 }
