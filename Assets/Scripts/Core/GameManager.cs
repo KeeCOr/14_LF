@@ -76,7 +76,7 @@ namespace SlotDefense
             {
                 var buffEffect = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
                 var buffCard = ScriptableObject.CreateInstance<CardData>();
-                buffCard.cardName      = "전투 버프";
+                buffCard.cardName      = string.IsNullOrEmpty(buffEffect.displayName) ? "전투 버프" : buffEffect.displayName;
                 buffCard.cardType      = CardType.Buff;
                 buffCard.buffEffect    = buffEffect;
                 buffCard.placementCost = 0;

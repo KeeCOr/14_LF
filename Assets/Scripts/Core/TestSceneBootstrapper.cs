@@ -44,7 +44,12 @@ namespace SlotDefense
             });
 
             var buffCfg = Inst<GlobalBuffConfig>(b =>
-                b.possibleBuffs = new[] { new BuffEffect { attackMultiplier = 1.5f, speedMultiplier = 1.2f, duration = 10f } });
+                b.possibleBuffs = new BuffEffect[]
+                {
+                    new BuffEffect { displayName = "공격 버프", attackMultiplier = 2.0f, speedMultiplier = 1.0f, duration = 8f  },
+                    new BuffEffect { displayName = "속도 버프", attackMultiplier = 1.0f, speedMultiplier = 1.8f, duration = 12f },
+                    new BuffEffect { displayName = "균형 버프", attackMultiplier = 1.5f, speedMultiplier = 1.2f, duration = 10f }
+                });
 
             // --- Camera ---
             if (Camera.main == null)

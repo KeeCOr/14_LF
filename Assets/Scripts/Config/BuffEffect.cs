@@ -7,5 +7,6 @@ namespace SlotDefense
         public float attackMultiplier;
         public float speedMultiplier;
         public float duration;
+        public string displayName;
     }
 }
