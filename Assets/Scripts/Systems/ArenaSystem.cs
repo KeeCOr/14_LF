@@ -27,7 +27,9 @@ namespace SlotDefense
         public int CurrentStage { get; private set; } = 1;
 
         private int _selectedHandSlot = -1;
-        public int SelectedSlot => _selectedHandSlot;
+        private int _selectedSkillSlot = -1;
+        public int SelectedSlot      => _selectedHandSlot;
+        public int SelectedSkillSlot => _selectedSkillSlot;
 
         private void Start()
         {
@@ -78,22 +80,50 @@ namespace SlotDefense
             go.SetActive(true);
         }
 
-        public void SelectHandSlot(int slotIndex) => _selectedHandSlot = slotIndex;
+        public void SelectHandSlot(int slotIndex)
+        {
+            _selectedHandSlot = slotIndex;
+            _selectedSkillSlot = -1;
+        }
+
+        public void SelectSkillSlot(int slotIndex)
+        {
+            _selectedSkillSlot = slotIndex;
+            _selectedHandSlot  = -1;
+        }
 
         private void Update()
         {
-            if (_selectedHandSlot < 0) return;
             if (!Input.GetMouseButtonDown(0)) return;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
-            var card = GameManager.Instance.Hand.GetSlot(_selectedHandSlot);
-            if (card == null || card.cardType != CardType.Unit)
+            var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldPos.z = 0f;
+
+            if (_selectedSkillSlot >= 0)
+            {
+                var card = GameManager.Instance.Hand.GetSlot(_selectedSkillSlot);
+                int slot = _selectedSkillSlot;
+                _selectedSkillSlot = -1;
+                if (card != null && card.cardType == CardType.Skill)
+                {
+                    GameManager.Instance.Hand.Use(slot);
+                    GameManager.Instance.UseSkill(card.skillEffect, worldPos);
+                    ScreenFlash.Instance?.Play(new Color(0.5f, 0.2f, 1f), 0.3f, 0.08f, 0.25f);
+                }
+                return;
+            }
+
+            if (_selectedHandSlot < 0) return;
+
+            var unitCard = GameManager.Instance.Hand.GetSlot(_selectedHandSlot);
+            if (unitCard == null || unitCard.cardType != CardType.Unit)
             {
                 _selectedHandSlot = -1;
                 return;
             }
 
-            if (!GameManager.Instance.SlotMachine.TryConsume(card.placementCost))
+            if (!GameManager.Instance.SlotMachine.TryConsume(unitCard.placementCost))
             {
                 _selectedHandSlot = -1;
                 return;
@@ -102,12 +132,9 @@ namespace SlotDefense
             GameManager.Instance.Hand.Use(_selectedHandSlot);
             _selectedHandSlot = -1;
 
-            var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            worldPos.z = 0f;
             worldPos.x = Mathf.Min(worldPos.x, -0.5f);
-
             var go = Instantiate(unitPrefab, worldPos, Quaternion.identity);
-            go.GetComponent<UnitController>().Init(card.unitStats, isPlayerUnit: true, portal: portal);
+            go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal);
             go.SetActive(true);
         }
     }

@@ -105,7 +105,8 @@ namespace SlotDefense
                     enhanced.skillEffect = new SkillEffect
                     {
                         type   = matchedCard.skillEffect.type,
-                        damage = matchedCard.skillEffect.damage * 1.5f
+                        damage = matchedCard.skillEffect.damage * 1.5f,
+                        radius = matchedCard.skillEffect.radius * 1.3f
                     };
                     _pendingCard = enhanced;
                     _pendingTier = CardTier.Enhanced;
@@ -139,19 +140,23 @@ namespace SlotDefense
             CommitSpin();
         }
 
-        public void UseSkill(SkillEffect effect)
+        public void UseSkill(SkillEffect effect, Vector3 worldPos)
         {
+            float r = effect.radius;
             switch (effect.type)
             {
                 case SkillType.LightningArrow:
-                    var alive = new List<MonsterController>();
                     foreach (var m in FindObjectsOfType<MonsterController>())
-                        if (!m.IsDead) alive.Add(m);
-                    if (alive.Count > 0)
-                        alive[_rng.Next(alive.Count)].TakeDamage(effect.damage);
+                        if (!m.IsDead && Vector2.Distance(worldPos, m.transform.position) <= r)
+                            m.TakeDamage(effect.damage);
                     break;
                 case SkillType.PortalBomb:
-                    FindObjectOfType<Portal>()?.TakeDamage(effect.damage);
+                    var portal = FindObjectOfType<Portal>();
+                    if (portal != null && Vector2.Distance(worldPos, portal.transform.position) <= r)
+                        portal.TakeDamage(effect.damage);
+                    foreach (var m in FindObjectsOfType<MonsterController>())
+                        if (!m.IsDead && Vector2.Distance(worldPos, m.transform.position) <= r)
+                            m.TakeDamage(effect.damage);
                     break;
             }
         }

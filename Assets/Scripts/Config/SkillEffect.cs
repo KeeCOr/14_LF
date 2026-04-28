@@ -8,5 +8,6 @@ namespace SlotDefense
     {
         public SkillType type;
         public float damage;
+        public float radius;
     }
 }

@@ -55,8 +55,11 @@ namespace SlotDefense
                 }
                 else if (card.cardType == CardType.Skill)
                 {
-                    cardNames[i].text = $"{card.cardName}\n[클릭 → 즉시 발동]";
-                    bgColor = ColorSkill;
+                    bool skillSelected = arenaSystem != null && arenaSystem.SelectedSkillSlot == i;
+                    cardNames[i].text = skillSelected
+                        ? $"{card.cardName}\n> 지점 클릭"
+                        : $"{card.cardName}\n[클릭 → 지점 선택]";
+                    bgColor = skillSelected ? new Color(0.7f, 0.3f, 0.9f, 0.95f) : ColorSkill;
                 }
                 else
                 {
@@ -87,9 +90,7 @@ namespace SlotDefense
 
             if (card.cardType == CardType.Skill)
             {
-                GameManager.Instance.Hand.Use(index);
-                GameManager.Instance.UseSkill(card.skillEffect);
-                ScreenFlash.Instance?.Play(new Color(0.5f, 0.2f, 1f), 0.3f, 0.08f, 0.25f);
+                arenaSystem.SelectSkillSlot(index);
                 return;
             }
 

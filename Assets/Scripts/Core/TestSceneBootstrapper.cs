@@ -32,8 +32,8 @@ namespace SlotDefense
                 var knight    = MakeCard("기사",   hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
                 var mage      = MakeCard("마법사", hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
                 var healer    = MakeCard("힐러",   hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
-                var lightning = MakeSkillCard("번개 화살", SkillType.LightningArrow, damage: 80f);
-                var portal    = MakeSkillCard("포탈 폭격", SkillType.PortalBomb,     damage: 120f);
+                var lightning = MakeSkillCard("번개 화살", SkillType.LightningArrow, damage: 80f,  radius: 2.0f);
+                var portal    = MakeSkillCard("포탈 폭격", SkillType.PortalBomb,     damage: 120f, radius: 3.0f);
                 swordsman.placementCost = 1;
                 archer.placementCost    = 1;
                 knight.placementCost    = 2;
@@ -274,12 +274,12 @@ namespace SlotDefense
             var obj = ScriptableObject.CreateInstance<T>(); init(obj); return obj;
         }
 
-        static CardData MakeSkillCard(string name, SkillType type, float damage)
+        static CardData MakeSkillCard(string name, SkillType type, float damage, float radius)
         {
             var card = ScriptableObject.CreateInstance<CardData>();
             card.cardName    = name;
             card.cardType    = CardType.Skill;
-            card.skillEffect = new SkillEffect { type = type, damage = damage };
+            card.skillEffect = new SkillEffect { type = type, damage = damage, radius = radius };
             card.placementCost = 0;
             return card;
         }
