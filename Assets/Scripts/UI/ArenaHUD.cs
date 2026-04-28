@@ -18,6 +18,10 @@ namespace SlotDefense
         public Text recordText;
         public Text stageText;
 
+        private ArenaSystem _arenaSystem;
+
+        private void Awake() => _arenaSystem = FindObjectOfType<ArenaSystem>();
+
         private void Update()
         {
             if (GameManager.Instance == null) return;
@@ -30,8 +34,8 @@ namespace SlotDefense
 
             spinChargesText.text = $"x{GameManager.Instance.SlotMachine.SpinCharges}";
             if (recordText != null) recordText.text = RecordSystem.Summary();
-            if (stageText != null && FindObjectOfType<ArenaSystem>() is ArenaSystem a)
-                stageText.text = $"STAGE {a.CurrentStage}";
+            if (stageText != null && _arenaSystem != null)
+                stageText.text = $"STAGE {_arenaSystem.CurrentStage}";
         }
     }
 }
