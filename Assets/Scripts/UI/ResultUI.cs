@@ -21,14 +21,21 @@ namespace SlotDefense
 
         private void ShowResult(BattleResult result)
         {
+            switch (result)
+            {
+                case BattleResult.PlayerWin:  RecordSystem.RecordWin();  break;
+                case BattleResult.PlayerLose: RecordSystem.RecordLoss(); break;
+                case BattleResult.Draw:       RecordSystem.RecordDraw(); break;
+            }
             panel.SetActive(true);
-            resultText.text = result switch
+            string outcome = result switch
             {
                 BattleResult.PlayerWin  => "VICTORY!",
                 BattleResult.PlayerLose => "DEFEAT",
                 BattleResult.Draw       => "DRAW",
                 _                       => ""
             };
+            resultText.text = $"{outcome}\n{RecordSystem.Summary()}";
         }
     }
 }

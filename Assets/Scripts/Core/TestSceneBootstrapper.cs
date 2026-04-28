@@ -164,6 +164,7 @@ namespace SlotDefense
             hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 340, 490), Color.red);
             hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 490), 36);
             hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 450), 28);
+            hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 410), 20);
 
             // SlotMachineUI
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");

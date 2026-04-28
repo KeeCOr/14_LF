@@ -14,6 +14,9 @@ namespace SlotDefense
         [Header("Spin")]
         public Text spinChargesText;
 
+        [Header("Record")]
+        public Text recordText;
+
         private void Update()
         {
             if (GameManager.Instance == null) return;
@@ -25,6 +28,7 @@ namespace SlotDefense
             timerText.text = $"{(int)(t / 60f)}:{(int)(t % 60f):00}";
 
             spinChargesText.text = $"x{GameManager.Instance.SlotMachine.SpinCharges}";
+            if (recordText != null) recordText.text = RecordSystem.Summary();
         }
     }
 }
