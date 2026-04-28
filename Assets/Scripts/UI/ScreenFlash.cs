@@ -14,6 +14,7 @@ namespace SlotDefense
         {
             Instance = this;
             _overlay = GetComponent<Image>();
+            if (_overlay == null) { Debug.LogError("[ScreenFlash] Image component missing"); return; }
             _overlay.raycastTarget = false;
             SetAlpha(0f);
         }
