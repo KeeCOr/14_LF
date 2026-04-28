@@ -9,5 +9,7 @@ namespace SlotDefense
         public float moveSpeed;
         public float attackRange;
         public float attackRate;
+        public float sightRange;
+        public float healAmount;
     }
 }

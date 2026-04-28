@@ -31,16 +31,20 @@ namespace SlotDefense
                 var archer    = MakeCard("궁수",   hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f,   sight: 8f);
                 var knight    = MakeCard("기사",   hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
                 var mage      = MakeCard("마법사", hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
+                var healer    = MakeCard("힐러",   hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
                 swordsman.placementCost = 1;
                 archer.placementCost    = 1;
                 knight.placementCost    = 2;
                 mage.placementCost      = 2;
-                // 4종 × 3장 = 12장 (AllDifferent 확률 37%로 버프카드 기회 증가)
-                d.cards = new CardData[12];
-                for (int i = 0; i < 3; i++)  d.cards[i]     = swordsman;
-                for (int i = 3; i < 6; i++)  d.cards[i]     = archer;
-                for (int i = 6; i < 9; i++)  d.cards[i]     = knight;
-                for (int i = 9; i < 12; i++) d.cards[i]     = mage;
+                healer.placementCost    = 2;
+                // 5종: 검사×3, 궁수×3, 기사×3, 마법사×3, 힐러×2 = 14장
+                d.cards = new CardData[14];
+                for (int i = 0; i < 3; i++)   d.cards[i]  = swordsman;
+                for (int i = 3; i < 6; i++)   d.cards[i]  = archer;
+                for (int i = 6; i < 9; i++)   d.cards[i]  = knight;
+                for (int i = 9; i < 12; i++)  d.cards[i]  = mage;
+                d.cards[12] = healer;
+                d.cards[13] = healer;
             });
 
             var buffCfg = Inst<GlobalBuffConfig>(b =>
@@ -264,12 +268,12 @@ namespace SlotDefense
             var obj = ScriptableObject.CreateInstance<T>(); init(obj); return obj;
         }
 
-        static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f)
+        static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f, float heal = 0f)
         {
             var card = ScriptableObject.CreateInstance<CardData>();
             card.cardName  = name;
             card.cardType  = CardType.Unit;
-            card.unitStats = new UnitStats { hp = hp, damage = dmg, moveSpeed = speed, attackRange = range, attackRate = rate, sightRange = sight };
+            card.unitStats = new UnitStats { hp = hp, damage = dmg, moveSpeed = speed, attackRange = range, attackRate = rate, sightRange = sight, healAmount = heal };
             return card;
         }
 

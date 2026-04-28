@@ -11,7 +11,7 @@ namespace SlotDefense
         public Button  spinButton;
         public Text    resultText;
 
-        private static readonly string[] SpinPool = { "검사", "궁수", "기사", "마법사" };
+        private static readonly string[] SpinPool = { "검사", "궁수", "기사", "마법사", "힐러" };
         private static readonly Color    GoldColor  = new Color(1f, 0.85f, 0.1f);
         private static readonly Color    WhiteColor = Color.white;
 
