@@ -69,11 +69,11 @@ namespace SlotDefense
             var result = DeckSystem.EvaluateReels(reels, out var matched);
             if (result == SlotResult.AllDifferent)
             {
-                if (buffConfig != null && buffConfig.possibleBuffs.Length > 0)
+                // AllDifferent 시 덱에서 랜덤 카드 하나를 보너스로 추가
+                if (deckConfig != null && deckConfig.cards.Length > 0)
                 {
-                    var buffEffect = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
-                    // AI는 버프를 즉시 발동 (손패 경유 없이 직접 적용)
-                    GameEvents.GlobalBuffApplied(buffEffect);
+                    var bonus = deckConfig.cards[_rng.Next(deckConfig.cards.Length)];
+                    if (bonus.cardType == CardType.Unit) _hand.TryAdd(bonus);
                 }
             }
             else if (matched != null)
