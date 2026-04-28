@@ -99,15 +99,37 @@ namespace SlotDefense
         private void RefreshHand(CardData card, CardTier tier)
         {
             RefreshDisplay();
-            if (tier != CardTier.Enhanced) return;
             for (int i = 0; i < cardButtons.Length; i++)
             {
                 if (GameManager.Instance?.Hand.GetSlot(i) == card)
                 {
-                    StartCoroutine(BlinkSlot(i));
+                    StartCoroutine(PopInSlot(i));
+                    if (tier == CardTier.Enhanced) StartCoroutine(BlinkSlot(i));
                     break;
                 }
             }
+        }
+
+        private IEnumerator PopInSlot(int index)
+        {
+            var t = cardButtons[index].transform;
+            float elapsed = 0f;
+            while (elapsed < 0.15f)
+            {
+                elapsed += Time.deltaTime;
+                float s = Mathf.Lerp(0f, 1.2f, elapsed / 0.15f);
+                t.localScale = new Vector3(s, s, 1f);
+                yield return null;
+            }
+            elapsed = 0f;
+            while (elapsed < 0.07f)
+            {
+                elapsed += Time.deltaTime;
+                float s = Mathf.Lerp(1.2f, 1f, elapsed / 0.07f);
+                t.localScale = new Vector3(s, s, 1f);
+                yield return null;
+            }
+            t.localScale = Vector3.one;
         }
 
         private IEnumerator BlinkSlot(int index)
