@@ -5,10 +5,11 @@ namespace SlotDefense
 {
     public class HandUI : MonoBehaviour
     {
-        public Button[] cardButtons;
-        public Image[] cardIcons;
-        public Text[] cardNames;
+        public Button[]    cardButtons;
+        public Image[]     cardIcons;
+        public Text[]      cardNames;
         public ArenaSystem arenaSystem;
+        public Image       deployZoneOverlay;
 
         private void OnEnable() => GameEvents.OnCardObtained += RefreshHand;
         private void OnDisable() => GameEvents.OnCardObtained -= RefreshHand;
@@ -72,6 +73,14 @@ namespace SlotDefense
 
                 if (cardButtons[i].targetGraphic is Image bg)
                     bg.color = bgColor;
+            }
+
+            if (deployZoneOverlay != null)
+            {
+                int sel = arenaSystem != null ? arenaSystem.SelectedSlot : -1;
+                bool unitPending = sel >= 0 && GameManager.Instance?.Hand.GetSlot(sel)?.cardType == CardType.Unit;
+                float a = unitPending ? 0.22f : 0.05f;
+                deployZoneOverlay.color = new Color(0.3f, 0.75f, 1f, a);
             }
         }
 

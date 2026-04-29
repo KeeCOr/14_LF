@@ -207,23 +207,49 @@ namespace SlotDefense
             slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -355), 24);
             slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN", new Vector2(0, -400), new Vector2(210, 58));
 
+            // 배치 가능 구역 오버레이 (캔버스 맨 앞에 추가해야 게임 콘텐츠 위에 표시되지 않도록 뒤에서 렌더링)
+            var zoneGo  = Child(canvasGo.transform, "DeployZone");
+            var zoneRt  = (RectTransform)zoneGo.transform;
+            zoneRt.anchorMin  = Vector2.zero;
+            zoneRt.anchorMax  = new Vector2(0.48f, 1f);
+            zoneRt.sizeDelta  = Vector2.zero;
+            var zoneImg = zoneGo.AddComponent<Image>();
+            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0.05f);
+            zoneImg.raycastTarget = false;
+            zoneGo.transform.SetSiblingIndex(0); // 맨 뒤에서 렌더링
+
+            // 구역 경계선 (오른쪽 끝 세로선)
+            var borderGo = Child(zoneGo.transform, "Border");
+            var borderRt = (RectTransform)borderGo.transform;
+            borderRt.anchorMin = new Vector2(1f, 0f);
+            borderRt.anchorMax = new Vector2(1f, 1f);
+            borderRt.pivot     = new Vector2(1f, 0.5f);
+            borderRt.sizeDelta = new Vector2(3f, 0f);
+            var borderImg = borderGo.AddComponent<Image>();
+            borderImg.color = new Color(0.3f, 0.75f, 1f, 0.25f);
+            borderImg.raycastTarget = false;
+
+            var zoneLbl = MakeText(zoneGo.transform, "ZoneLabel", "배치 구역", new Vector2(0, 0), 18);
+            zoneLbl.color = new Color(0.4f, 0.8f, 1f, 0.25f);
+
             // HandUI
             var handGo = Child(canvasGo.transform, "HandUI");
             var handUI = handGo.AddComponent<HandUI>();
-            handUI.arenaSystem = arena;
+            handUI.arenaSystem       = arena;
+            handUI.deployZoneOverlay = zoneImg;
             handUI.cardButtons = new Button[4];
             handUI.cardIcons   = new Image[4];
             handUI.cardNames   = new Text[4];
 
-            LabelText(handGo.transform, "HandDesc", "카드 클릭 선택 (초록) -> 화면 클릭으로 유닛 배치", new Vector2(0, -452));
+            LabelText(handGo.transform, "HandDesc", "카드 클릭 선택 → 배치 구역 클릭으로 유닛 배치", new Vector2(0, -415));
 
             for (int i = 0; i < 4; i++)
             {
-                float xPos = -285f + i * 190f;
+                float xPos = -345f + i * 230f;
                 var cardGo = Child(handGo.transform, $"CardSlot{i}");
                 var rt     = (RectTransform)cardGo.transform;
-                rt.anchoredPosition = new Vector2(xPos, -500f);
-                rt.sizeDelta        = new Vector2(175f, 60f);
+                rt.anchoredPosition = new Vector2(xPos, -480f);
+                rt.sizeDelta        = new Vector2(220f, 95f);
 
                 var bg  = cardGo.AddComponent<Image>();
                 bg.color = new Color(0.2f, 0.25f, 0.45f, 0.9f);
@@ -233,12 +259,12 @@ namespace SlotDefense
 
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
-                iconRt.anchoredPosition = new Vector2(-55, 0);
-                iconRt.sizeDelta        = new Vector2(44, 44);
+                iconRt.anchoredPosition = new Vector2(-70, 0);
+                iconRt.sizeDelta        = new Vector2(48, 48);
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                handUI.cardNames[i] = MakeText(cardGo.transform, "Name", "---", new Vector2(20, 0), 18);
+                handUI.cardNames[i] = MakeText(cardGo.transform, "Name", "---", new Vector2(20, 0), 20);
             }
 
             // ResultUI
