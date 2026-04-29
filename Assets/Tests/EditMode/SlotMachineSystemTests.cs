@@ -4,43 +4,42 @@ using SlotDefense;
 public class SlotMachineSystemTests
 {
     [Test]
-    public void AddXP_BelowThreshold_DoesNotGrantSpin()
+    public void Tick_BelowInterval_DoesNotGrantSpin()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
-        sys.AddXP(99f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f);
+        sys.Tick(9.9f);
         Assert.AreEqual(0, sys.SpinCharges);
     }
 
     [Test]
-    public void AddXP_ReachesThreshold_GrantsOneSpin()
+    public void Tick_ReachesInterval_GrantsOneSpin()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
-        sys.AddXP(100f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f);
+        sys.Tick(10f);
         Assert.AreEqual(1, sys.SpinCharges);
     }
 
     [Test]
-    public void AddXP_DoubleThreshold_GrantsTwoSpins()
+    public void Tick_DoubleInterval_GrantsTwoSpins()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
-        sys.AddXP(200f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f);
+        sys.Tick(20f);
         Assert.AreEqual(2, sys.SpinCharges);
     }
 
     [Test]
-    public void AddXP_Accumulates_AcrossMultipleCalls()
+    public void Tick_Accumulates_AcrossMultipleCalls()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
-        sys.AddXP(60f);
-        sys.AddXP(60f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f);
+        sys.Tick(6f);
+        sys.Tick(6f);
         Assert.AreEqual(1, sys.SpinCharges);
     }
 
     [Test]
     public void TrySpin_WithCharge_ReturnsTrueAndDecrementsCharge()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
-        sys.AddXP(100f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f, initialCharges: 1);
         Assert.IsTrue(sys.TrySpin());
         Assert.AreEqual(0, sys.SpinCharges);
     }
@@ -48,7 +47,7 @@ public class SlotMachineSystemTests
     [Test]
     public void TrySpin_WithoutCharge_ReturnsFalse()
     {
-        var sys = new SlotMachineSystem(xpPerSpin: 100f);
+        var sys = new SlotMachineSystem(chargeInterval: 10f);
         Assert.IsFalse(sys.TrySpin());
     }
 }
