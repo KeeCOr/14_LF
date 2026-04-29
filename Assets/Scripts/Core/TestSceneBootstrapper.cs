@@ -70,7 +70,7 @@ namespace SlotDefense
                 cam.orthographic = true;
                 cam.orthographicSize = 7f;
                 cam.clearFlags = CameraClearFlags.SolidColor;
-                cam.backgroundColor = new Color(0.08f, 0.1f, 0.18f);
+                cam.backgroundColor = new Color(0.48f, 0.72f, 0.88f);
                 cam.transform.position = new Vector3(0, 0, -10);
             }
 
@@ -150,8 +150,91 @@ namespace SlotDefense
             ai.unitPrefab  = uTemplate;
             aiGo.SetActive(true);
 
+            // --- Decoration ---
+            BuildDecoration();
+
             // --- UI ---
             BuildUI(arena);
+        }
+
+        // ============================================================
+        //  Scene Decoration (SimpleNaturePack)
+        // ============================================================
+
+        static void BuildDecoration()
+        {
+            var rng = new System.Random(42);
+
+            // 그라운드 타일 — 전장 바닥 (y=-2, z=5, 뒤쪽 레이어)
+            string[] groundNames = { "Ground_01", "Ground_02", "Ground_03" };
+            for (int i = -3; i <= 3; i++)
+            {
+                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{groundNames[Mathf.Abs(i) % 3]}");
+                if (p == null) continue;
+                var g = Instantiate(p);
+                g.transform.position   = new Vector3(i * 5.5f, -2.8f, 5f);
+                g.transform.localScale = new Vector3(3.5f, 2f, 2f);
+            }
+
+            // 배경 나무 — 위쪽 (y=2~4, z=2.5~4)
+            string[] treeNames = { "Tree_01", "Tree_02", "Tree_03", "Tree_04", "Tree_05" };
+            float[] treeXs = { -11f, -8.5f, -6f, -3.5f, -1f, 1f, 3.5f, 6f, 8.5f, 11f };
+            foreach (var x in treeXs)
+            {
+                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{treeNames[rng.Next(treeNames.Length)]}");
+                if (p == null) continue;
+                var t = Instantiate(p);
+                float y     = 1.8f + (float)(rng.NextDouble() * 1.5f);
+                float z     = 2.5f + (float)(rng.NextDouble() * 1.5f);
+                float scale = 1.5f + (float)(rng.NextDouble() * 1.2f);
+                t.transform.position   = new Vector3(x, y, z);
+                t.transform.localScale = Vector3.one * scale;
+            }
+
+            // 바위 — 전장 바닥 (y≈-1.8, z≈1)
+            string[] rockNames = { "Rock_01", "Rock_02", "Rock_03", "Rock_04", "Rock_05" };
+            float[,] rockData = {
+                { -9.5f, -1.9f, 1.0f, 0.55f },
+                { -5.5f, -1.8f, 0.9f, 0.40f },
+                { -0.5f, -1.9f, 0.8f, 0.65f },
+                {  2.0f, -1.8f, 0.9f, 0.50f },
+                {  6.0f, -1.9f, 1.0f, 0.45f },
+                {  9.5f, -1.8f, 0.8f, 0.70f },
+            };
+            for (int i = 0; i < rockData.GetLength(0); i++)
+            {
+                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{rockNames[rng.Next(rockNames.Length)]}");
+                if (p == null) continue;
+                var r = Instantiate(p);
+                r.transform.position   = new Vector3(rockData[i, 0], rockData[i, 1], rockData[i, 2]);
+                r.transform.localScale = Vector3.one * rockData[i, 3];
+            }
+
+            // 덤불 — 전장 앞 (y≈-1.7, z≈1.2)
+            string[] bushNames = { "Bush_01", "Bush_02", "Bush_03" };
+            float[] bushXs = { -10f, -7f, -4f, -1.5f, 1.5f, 4.5f, 7.5f, 10.5f };
+            foreach (var x in bushXs)
+            {
+                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{bushNames[rng.Next(3)]}");
+                if (p == null) continue;
+                var b = Instantiate(p);
+                float z     = 1.0f + (float)(rng.NextDouble() * 0.5f);
+                float scale = 0.55f + (float)(rng.NextDouble() * 0.35f);
+                b.transform.position   = new Vector3(x, -1.7f, z);
+                b.transform.localScale = Vector3.one * scale;
+            }
+
+            // 그루터기 — 전투 분위기 장식
+            var stump = Resources.Load<GameObject>("SimpleNaturePack/Prefabs/Stump_01");
+            if (stump != null)
+            {
+                foreach (var x in new[] { -7f, -3f, 4f, 8f })
+                {
+                    var s = Instantiate(stump);
+                    s.transform.position   = new Vector3(x, -1.85f, 1.4f);
+                    s.transform.localScale = Vector3.one * 0.45f;
+                }
+            }
         }
 
         // ============================================================
