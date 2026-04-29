@@ -11,7 +11,6 @@ namespace SlotDefense
         public GlobalBuffConfig buffConfig;
         [SerializeField] private float villageHp = 1000f;
         [SerializeField] private float battleDuration = 180f;
-        [SerializeField] private float xpPerSpin = 100f;
 
         public BattleManager Battle { get; private set; }
         public SlotMachineSystem SlotMachine { get; private set; }
@@ -34,22 +33,20 @@ namespace SlotDefense
             Instance = this;
             _rng = new System.Random();
             Battle = new BattleManager(villageHp, battleDuration);
-            SlotMachine = new SlotMachineSystem(xpPerSpin);
+            SlotMachine = new SlotMachineSystem(chargeInterval: 12f, initialCharges: 3);
             Hand = new HandSystem(4);
             Deck = new DeckSystem(deckConfig.cards);
         }
 
         private void OnEnable()
         {
-            GameEvents.OnMonsterKilled   += HandleMonsterKilled;
-            GameEvents.OnVillageDamaged  += HandleVillageDamaged;
+            GameEvents.OnVillageDamaged    += HandleVillageDamaged;
             GameEvents.OnGlobalBuffApplied += HandleGlobalBuff;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnMonsterKilled   -= HandleMonsterKilled;
-            GameEvents.OnVillageDamaged  -= HandleVillageDamaged;
+            GameEvents.OnVillageDamaged    -= HandleVillageDamaged;
             GameEvents.OnGlobalBuffApplied -= HandleGlobalBuff;
         }
 
@@ -57,6 +54,7 @@ namespace SlotDefense
         {
             if (!_battleActive) return;
             Battle.Tick(Time.deltaTime);
+            SlotMachine.Tick(Time.deltaTime);
             var result = Battle.GetResult();
             if (result != BattleResult.Ongoing)
             {
@@ -159,12 +157,6 @@ namespace SlotDefense
                             m.TakeDamage(effect.damage);
                     break;
             }
-        }
-
-        private void HandleMonsterKilled(bool isPlayerArena, MonsterConfig config)
-        {
-            if (config == null || SlotMachine == null) return;
-            if (isPlayerArena) SlotMachine.AddXP(config.xpReward);
         }
 
         private void HandleVillageDamaged(bool isPlayer, float amount)

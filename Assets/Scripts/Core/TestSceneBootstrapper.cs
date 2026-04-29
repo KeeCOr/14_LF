@@ -114,7 +114,6 @@ namespace SlotDefense
             gm.deckConfig = deckCfg;
             gm.buffConfig = buffCfg;
             gmGo.SetActive(true);
-            GameManager.Instance.SlotMachine.AddXP(300f); // 시작 스핀 3회
 
             // --- ArenaSystem ---
             var arenaGo = new GameObject("ArenaSystem");
@@ -146,7 +145,6 @@ namespace SlotDefense
             ai.portal      = portalComp;
             ai.unitPrefab  = uTemplate;
             aiGo.SetActive(true);
-            ai.AddStarterXP(240f);
 
             // --- UI ---
             BuildUI(arena);

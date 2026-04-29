@@ -32,7 +32,11 @@ namespace SlotDefense
             var t = Mathf.Max(0f, b.TimeRemaining);
             timerText.text = $"{(int)(t / 60f)}:{(int)(t % 60f):00}";
 
-            spinChargesText.text = $"x{GameManager.Instance.SlotMachine.SpinCharges}";
+            var sm = GameManager.Instance.SlotMachine;
+            int secs = Mathf.CeilToInt(sm.SecondsToNext);
+            spinChargesText.text = sm.SpinCharges > 0
+                ? $"SPIN x{sm.SpinCharges}  (+{secs}s)"
+                : $"SPIN 충전 중 {secs}s...";
             if (recordText != null) recordText.text = RecordSystem.Summary();
             if (stageText != null && _arenaSystem != null)
                 stageText.text = $"STAGE {_arenaSystem.CurrentStage}";

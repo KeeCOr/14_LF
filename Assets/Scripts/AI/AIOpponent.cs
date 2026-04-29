@@ -23,22 +23,21 @@ namespace SlotDefense
 
         private void Awake()
         {
-            _hand = new HandSystem(4);
-            _deck = new DeckSystem(deckConfig.cards);
-            _slotMachine = new SlotMachineSystem(xpPerSpin: 80f);
-            _rng = new System.Random();
-            _spinTimer = spinInterval;
-            _placeTimer = placeInterval;
+            _hand        = new HandSystem(4);
+            _deck        = new DeckSystem(deckConfig.cards);
+            _slotMachine = new SlotMachineSystem(chargeInterval: 3f, initialCharges: 3);
+            _rng         = new System.Random();
+            _spinTimer   = spinInterval;
+            _placeTimer  = placeInterval;
         }
-
-        private void OnEnable() => GameEvents.OnMonsterKilled += OnMonsterKilled;
-        private void OnDisable() => GameEvents.OnMonsterKilled -= OnMonsterKilled;
 
         private void Update() => OnUpdate(Time.deltaTime);
 
         public void OnUpdate(float deltaTime)
         {
-            _spinTimer -= deltaTime;
+            _slotMachine.Tick(deltaTime);
+
+            _spinTimer  -= deltaTime;
             _placeTimer -= deltaTime;
 
             if (_spinTimer <= 0f && _slotMachine.TrySpin())
@@ -55,13 +54,7 @@ namespace SlotDefense
             }
         }
 
-        public void ReceiveTransferredMonster(MonsterConfig monster) =>
-            _slotMachine.AddXP(monster.xpReward);
-
-        private void OnMonsterKilled(bool isPlayerArena, MonsterConfig config)
-        {
-            if (!isPlayerArena) _slotMachine.AddXP(config.xpReward);
-        }
+        public void ReceiveTransferredMonster(MonsterConfig monster) { }
 
         private void ExecuteSpin()
         {
@@ -69,20 +62,17 @@ namespace SlotDefense
             var result = DeckSystem.EvaluateReels(reels, out var matched);
             if (result == SlotResult.AllDifferent)
             {
-                // AllDifferent 시 덱에서 랜덤 카드 하나를 보너스로 추가
                 if (deckConfig != null && deckConfig.cards.Length > 0)
                 {
                     var bonus = deckConfig.cards[_rng.Next(deckConfig.cards.Length)];
                     if (bonus.cardType == CardType.Unit) _hand.TryAdd(bonus);
                 }
             }
-            else if (matched != null)
+            else if (matched != null && matched.cardType == CardType.Unit)
             {
                 _hand.TryAdd(matched);
             }
         }
-
-        public void AddStarterXP(float amount) => _slotMachine.AddXP(amount);
 
         private void PlaceRandomUnit()
         {
