@@ -115,6 +115,10 @@ namespace SlotDefense
             gm.buffConfig = buffCfg;
             gmGo.SetActive(true);
 
+            // 시작 카드 1장 랜덤 지급
+            var startRng = new System.Random();
+            GameManager.Instance.Hand.TryAdd(deckCfg.cards[startRng.Next(deckCfg.cards.Length)]);
+
             // --- ArenaSystem ---
             var arenaGo = new GameObject("ArenaSystem");
             var arena   = arenaGo.AddComponent<ArenaSystem>();
