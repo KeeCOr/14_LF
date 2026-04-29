@@ -257,6 +257,11 @@ namespace SlotDefense
                 btn.targetGraphic = bg;
                 handUI.cardButtons[i] = btn;
 
+                var drag = cardGo.AddComponent<CardDragHandler>();
+                drag.slotIndex  = i;
+                drag.arenaSystem = arena;
+                drag.font        = SharedFont();
+
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
                 iconRt.anchoredPosition = new Vector2(-70, 0);
@@ -280,6 +285,35 @@ namespace SlotDefense
             resultUI.panel       = panelGo;
             resultUI.resultText  = MakeText(panelGo.transform, "ResultText", "", Vector2.zero, 70);
             resultUI.retryButton = MakeButton(panelGo.transform, "RetryBtn", "RETRY", new Vector2(0, -110), new Vector2(220, 65));
+
+            // DeckViewerUI — 덱 카드 목록 팝업
+            var dvGo = Child(canvasGo.transform, "DeckViewer");
+            var dv   = dvGo.AddComponent<DeckViewerUI>();
+
+            var dvPanel   = Child(dvGo.transform, "Panel");
+            var dvPanelRt = (RectTransform)dvPanel.transform;
+            dvPanelRt.anchoredPosition = Vector2.zero;
+            dvPanelRt.sizeDelta        = new Vector2(960f, 540f);
+            dvPanel.AddComponent<Image>().color = new Color(0.04f, 0.07f, 0.14f, 0.97f);
+
+            var dvTitle = MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26);
+            dvTitle.color = new Color(0.55f, 0.88f, 1f);
+
+            var dvContent = MakeText(dvPanel.transform, "Content", "", new Vector2(-20f, -20f), 18);
+            dvContent.alignment = TextAnchor.UpperLeft;
+            ((RectTransform)dvContent.transform).sizeDelta = new Vector2(900f, 420f);
+            dvContent.horizontalOverflow = HorizontalWrapMode.Wrap;
+
+            var dvClose = MakeButton(dvPanel.transform, "CloseBtn", "닫기", new Vector2(420f, 220f), new Vector2(80f, 38f));
+            dvClose.onClick.AddListener(() => dv.Toggle());
+
+            dv.panel       = dvPanel;
+            dv.contentText = dvContent;
+            dv.Setup(deckCfg);
+
+            // "덱 보기" 버튼 — HUD 우상단
+            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(840f, 490f), new Vector2(110f, 36f));
+            deckBtn.onClick.AddListener(() => dv.Toggle());
 
             // ScreenFlash overlay — Canvas 마지막 자식으로 추가해야 최상위에 렌더링됨
             var flashGo  = Child(canvasGo.transform, "ScreenFlash");
