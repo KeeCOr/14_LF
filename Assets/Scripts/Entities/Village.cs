@@ -4,6 +4,7 @@ namespace SlotDefense
     public class Village : MonoBehaviour
     {
         [SerializeField] private bool isPlayerVillage;
+        public bool IsPlayerVillage => isPlayerVillage;
         [SerializeField] private float maxHp = 1000f;
         private float _currentHp;
         private HpBar _hpBar;

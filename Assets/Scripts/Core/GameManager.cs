@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System;
 using System.Collections;
+using UnityEngine;
 namespace SlotDefense
 {
     public class GameManager : MonoBehaviour
@@ -9,26 +7,26 @@ namespace SlotDefense
         [Header("Config")]
         public FixedDeckConfig deckConfig;
         public GlobalBuffConfig buffConfig;
-        [SerializeField] private float villageHp = 1000f;
+        [SerializeField] private float villageHp      = 1000f;
         [SerializeField] private float battleDuration = 180f;
 
         public bool isSurvivalMode;
         public bool IsSurvivalMode => isSurvivalMode;
 
-        public BattleManager Battle { get; private set; }
-        public SlotMachineSystem SlotMachine { get; private set; }
-        public HandSystem Hand { get; private set; }
-        public DeckSystem Deck { get; private set; }
+        public BattleManager          Battle          { get; private set; }
+        public SlotMachineSystem      SlotMachine     { get; private set; }
+        public HandSystem             Hand            { get; private set; }
+        public DeckSystem             Deck            { get; private set; }
+        public ElementalEnergySystem  ElementalEnergy { get; private set; }
+        public ReelSystem             Reels           { get; private set; }
 
         public static GameManager Instance { get; private set; }
 
-        private System.Random _rng;
-        private CardData[]  _pendingReels;
-        private SlotResult  _pendingSlotResult;
-        private CardData    _pendingCard;
-        private CardTier    _pendingTier;
-        private bool _hasPendingSpin;
-        private bool _battleActive;
+        private System.Random             _rng;
+        private ElementType[]             _pendingReels;
+        private (int fire, int iron, int life) _pendingEnergy;
+        private bool                      _hasPendingSpin;
+        private bool                      _battleActive;
 
         private void Awake()
         {
@@ -36,10 +34,13 @@ namespace SlotDefense
             Instance = this;
             _rng = new System.Random();
             if (isSurvivalMode) battleDuration = 99999f;
-            Battle = new BattleManager(villageHp, battleDuration);
-            SlotMachine = new SlotMachineSystem(chargeInterval: 2f, initialCharges: 3);
-            Hand = new HandSystem(4);
-            Deck = new DeckSystem(deckConfig.cards);
+            Battle          = new BattleManager(villageHp, battleDuration);
+            SlotMachine     = new SlotMachineSystem(chargeInterval: 2f, initialCharges: 3);
+            Hand            = new HandSystem(4);
+            Deck            = new DeckSystem(deckConfig.cards);
+            ElementalEnergy = new ElementalEnergySystem();
+            Reels           = new ReelSystem(_rng);
+            Reels.BuildPool(deckConfig.cards);
         }
 
         private void OnEnable()
@@ -59,6 +60,17 @@ namespace SlotDefense
             if (!_battleActive) return;
             Battle.Tick(Time.deltaTime);
             SlotMachine.Tick(Time.deltaTime);
+
+            // 손패가 비면 덱에서 다음 4장 자동 지급
+            if (Hand.IsEmpty)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    var card = Deck.DealNext();
+                    if (card != null) Hand.TryAdd(card);
+                }
+            }
+
             var result = Battle.GetResult();
             if (result != BattleResult.Ongoing)
             {
@@ -73,103 +85,40 @@ namespace SlotDefense
         {
             if (_hasPendingSpin) return false;
             if (!SlotMachine.TrySpin()) return false;
-            _pendingReels = Deck.DrawReels(_rng);
-            _pendingSlotResult = DeckSystem.EvaluateReels(_pendingReels, out var matchedCard);
-            if (_pendingSlotResult == SlotResult.AllDifferent)
-            {
-                var buffEffect = buffConfig.possibleBuffs[_rng.Next(buffConfig.possibleBuffs.Length)];
-                var buffCard = ScriptableObject.CreateInstance<CardData>();
-                buffCard.cardName      = string.IsNullOrEmpty(buffEffect.displayName) ? "전투 버프" : buffEffect.displayName;
-                buffCard.cardType      = CardType.Buff;
-                buffCard.buffEffect    = buffEffect;
-                _pendingCard = buffCard;
-                _pendingTier = CardTier.Normal;
-            }
-            else
-            {
-                if (_pendingSlotResult == SlotResult.Triple)
-                {
-                    var enhanced = ScriptableObject.CreateInstance<CardData>();
-                    enhanced.cardName      = $"[강화] {matchedCard.cardName}";
-                    enhanced.cardType      = matchedCard.cardType;
-                    enhanced.fireCost      = matchedCard.fireCost;
-                    enhanced.ironCost      = matchedCard.ironCost;
-                    enhanced.lifeCost      = matchedCard.lifeCost;
-                    enhanced.unitStats     = new UnitStats
-                    {
-                        hp          = matchedCard.unitStats.hp          * 1.5f,
-                        damage      = matchedCard.unitStats.damage      * 1.5f,
-                        moveSpeed   = matchedCard.unitStats.moveSpeed,
-                        attackRange = matchedCard.unitStats.attackRange,
-                        attackRate  = matchedCard.unitStats.attackRate,
-                        sightRange  = matchedCard.unitStats.sightRange,
-                        healAmount  = matchedCard.unitStats.healAmount  * 1.5f,
-                        canAttackAir = matchedCard.unitStats.canAttackAir,
-                        isFlying    = matchedCard.unitStats.isFlying
-                    };
-                    enhanced.skillEffect = new SkillEffect
-                    {
-                        type   = matchedCard.skillEffect.type,
-                        damage = matchedCard.skillEffect.damage * 1.5f,
-                        radius = matchedCard.skillEffect.radius * 1.3f
-                    };
-                    _pendingCard = enhanced;
-                    _pendingTier = CardTier.Enhanced;
-                }
-                else
-                {
-                    _pendingCard = matchedCard;
-                    _pendingTier = CardTier.Normal;
-                }
-            }
+            _pendingReels  = Reels.Spin();
+            _pendingEnergy = ReelSystem.CalcEnergy(_pendingReels);
             _hasPendingSpin = true;
             return true;
         }
 
-        public (CardData[] reels, SlotResult result) PeekSpin() =>
-            (_pendingReels, _pendingSlotResult);
+        public (ElementType[] reels, (int fire, int iron, int life) energy) PeekSpin() =>
+            (_pendingReels, _pendingEnergy);
 
         public void CommitSpin()
         {
             if (_pendingReels == null) return;
-            GameEvents.SpinCompleted(_pendingReels, _pendingSlotResult);
-            if (Hand.TryAdd(_pendingCard))
-                GameEvents.CardObtained(_pendingCard, _pendingTier);
-            _pendingReels = null;
+            ElementalEnergy.Add(_pendingEnergy.fire, _pendingEnergy.iron, _pendingEnergy.life);
+            _pendingReels   = null;
             _hasPendingSpin = false;
-        }
-
-        public void TrySpin()
-        {
-            if (!TryBeginSpin()) return;
-            CommitSpin();
         }
 
         public void UseSkill(SkillEffect effect, Vector3 worldPos)
         {
             float r = effect.radius;
-            switch (effect.type)
-            {
-                case SkillType.LightningArrow:
-                    foreach (var m in FindObjectsOfType<MonsterController>())
-                        if (!m.IsDead && Vector2.Distance(worldPos, m.transform.position) <= r)
-                            m.TakeDamage(effect.damage);
-                    break;
-                case SkillType.PortalBomb:
-                    var portal = FindObjectOfType<Portal>();
-                    if (portal != null && Vector2.Distance(worldPos, portal.transform.position) <= r)
-                        portal.TakeDamage(effect.damage);
-                    foreach (var m in FindObjectsOfType<MonsterController>())
-                        if (!m.IsDead && Vector2.Distance(worldPos, m.transform.position) <= r)
-                            m.TakeDamage(effect.damage);
-                    break;
-            }
+            foreach (var m in FindObjectsOfType<MonsterController>())
+                if (!m.IsDead && Vector2.Distance(worldPos, m.transform.position) <= r)
+                    m.TakeDamage(effect.damage);
+
+            // 적 기지에도 피해 적용
+            foreach (var v in FindObjectsOfType<Village>())
+                if (!v.IsPlayerVillage && Vector2.Distance(worldPos, v.transform.position) <= r)
+                    GameEvents.VillageDamaged(false, effect.damage);
         }
 
         private void HandleVillageDamaged(bool isPlayer, float amount)
         {
             if (isPlayer) Battle.DamagePlayerVillage(amount);
-            else Battle.DamageEnemyVillage(amount);
+            else          Battle.DamageEnemyVillage(amount);
         }
 
         private void HandleGlobalBuff(BuffEffect buff) => StartCoroutine(BuffCoroutine(buff));
