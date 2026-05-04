@@ -4,8 +4,9 @@ namespace SlotDefense
     public class DeckSystem
     {
         private readonly CardData[] _deck;
+        private int _dealIndex;
 
-        public DeckSystem(CardData[] deck) => _deck = deck;
+        public DeckSystem(CardData[] deck) { _deck = deck; _dealIndex = 0; }
 
         public CardData[] DrawReels(Random rng) => new[]
         {
@@ -13,6 +14,14 @@ namespace SlotDefense
             _deck[rng.Next(_deck.Length)],
             _deck[rng.Next(_deck.Length)]
         };
+
+        public CardData DealNext()
+        {
+            if (_deck.Length == 0) return null;
+            var card = _deck[_dealIndex % _deck.Length];
+            _dealIndex++;
+            return card;
+        }
 
         public static SlotResult EvaluateReels(CardData[] reels, out CardData matched)
         {

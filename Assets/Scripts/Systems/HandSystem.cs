@@ -35,5 +35,15 @@ namespace SlotDefense
 
         public CardData GetSlot(int index) => _slots[index];
         public bool IsFull => Array.TrueForAll(_slots, s => s != null);
+
+        public bool IsEmpty
+        {
+            get
+            {
+                for (int i = 0; i < _slots.Length; i++)
+                    if (_slots[i] != null) return false;
+                return true;
+            }
+        }
     }
 }

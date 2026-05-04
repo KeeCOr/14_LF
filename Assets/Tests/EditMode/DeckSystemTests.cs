@@ -63,4 +63,26 @@ public class DeckSystemTests
         Assert.AreEqual(3, reels.Length);
         foreach (var r in reels) Assert.Contains(r, deck);
     }
+
+    [Test]
+    public void DealNext_ReturnsCardsInOrder()
+    {
+        var c1 = ScriptableObject.CreateInstance<CardData>();
+        c1.cardName = "Card1";
+        var c2 = ScriptableObject.CreateInstance<CardData>();
+        c2.cardName = "Card2";
+        var deck = new DeckSystem(new[] { c1, c2 });
+        Assert.AreEqual(c1, deck.DealNext());
+        Assert.AreEqual(c2, deck.DealNext());
+    }
+
+    [Test]
+    public void DealNext_CyclesWhenExhausted()
+    {
+        var c1 = ScriptableObject.CreateInstance<CardData>();
+        c1.cardName = "Card1";
+        var deck = new DeckSystem(new[] { c1 });
+        deck.DealNext();
+        Assert.AreEqual(c1, deck.DealNext()); // cycles back to first
+    }
 }
