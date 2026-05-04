@@ -61,14 +61,12 @@ namespace SlotDefense
             Battle.Tick(Time.deltaTime);
             SlotMachine.Tick(Time.deltaTime);
 
-            // 손패가 비면 덱에서 다음 4장 자동 지급
-            if (Hand.IsEmpty)
+            // 빈 슬롯이 있으면 즉시 덱에서 보충
+            while (!Hand.IsFull)
             {
-                for (int i = 0; i < 4; i++)
-                {
-                    var card = Deck.DealNext();
-                    if (card != null) Hand.TryAdd(card);
-                }
+                var card = Deck.DealNext();
+                if (card == null) break;
+                Hand.TryAdd(card);
             }
 
             var result = Battle.GetResult();
