@@ -27,6 +27,7 @@ namespace SlotDefense
             targetVillage   = village;
             isInPlayerArena = playerArena;
             _currentHp      = cfg.hp;
+            isFlying        = cfg.isFlying;
             AllMonsters.Add(this);
 
             if (_hpBar == null)

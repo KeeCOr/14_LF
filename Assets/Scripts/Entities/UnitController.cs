@@ -209,6 +209,7 @@ namespace SlotDefense
             foreach (var m in FindObjectsOfType<MonsterController>())
             {
                 if (m.IsDead) continue;
+                if (m.isFlying && !_stats.canAttackAir) continue; // 공중 공격 불가 시 스킵
                 var dist = Vector2.Distance(transform.position, m.transform.position);
                 if (dist > sight) continue;
                 if (dist < nearest) { nearest = dist; _target = m; }
