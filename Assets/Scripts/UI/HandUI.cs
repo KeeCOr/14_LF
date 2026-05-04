@@ -64,7 +64,12 @@ namespace SlotDefense
                 }
                 else
                 {
-                    string costStr = $"[{card.ElementalCost.Total}에너지]";
+                    var ec = card.ElementalCost;
+                    var costParts = new System.Collections.Generic.List<string>();
+                    if (ec.fire > 0) costParts.Add($"🔥{ec.fire}");
+                    if (ec.iron > 0) costParts.Add($"⚔{ec.iron}");
+                    if (ec.life > 0) costParts.Add($"💚{ec.life}");
+                    string costStr = costParts.Count > 0 ? $"[{string.Join(" ", costParts)}]" : "[무료]";
                     cardNames[i].text = isSelected
                         ? $"{card.cardName} {costStr}\n> 배치 클릭"
                         : $"{card.cardName} {costStr}";

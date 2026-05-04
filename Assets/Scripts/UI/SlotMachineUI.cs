@@ -1,30 +1,21 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace SlotDefense
 {
     public class SlotMachineUI : MonoBehaviour
     {
-        public Image[] reelImages;
-        public Text[]  reelNames;
+        public Text[]  reelLabels;
         public Button  spinButton;
         public Text    resultText;
 
-        private static readonly string[] SpinPool = { "검사", "궁수", "기사", "마법사", "힐러", "번개화살", "포탈폭격" };
+        private static readonly string[] SpinPool = { "🔥", "⚔", "💚", "🔥", "⚔" };
         private static readonly Color    GoldColor  = new Color(1f, 0.85f, 0.1f);
         private static readonly Color    WhiteColor = Color.white;
-
         private bool _animating;
 
         private void Start() => spinButton.onClick.AddListener(OnSpinClicked);
-
-        private void OnEnable()  => GameEvents.OnGlobalBuffApplied += OnBuffApplied;
-        private void OnDisable()
-        {
-            GameEvents.OnGlobalBuffApplied -= OnBuffApplied;
-            CancelInvoke(nameof(ClearResult));
-        }
 
         private void Update()
         {
@@ -42,24 +33,31 @@ namespace SlotDefense
             StartCoroutine(SpinAnimation());
         }
 
+        private static string SymbolOf(ElementType t)
+        {
+            switch (t)
+            {
+                case ElementType.Fire: return "🔥화";
+                case ElementType.Iron: return "⚔철";
+                case ElementType.Life: return "💚생";
+                default:               return "?";
+            }
+        }
+
         private IEnumerator SpinAnimation()
         {
             _animating = true;
             spinButton.interactable = false;
 
-            var (reels, result) = GameManager.Instance.PeekSpin();
+            var (reels, energy) = GameManager.Instance.PeekSpin();
+            if (resultText != null) resultText.text = "";
 
-            resultText.text     = "";
-            resultText.color    = WhiteColor;
-            resultText.fontSize = 24;
+            for (int i = 0; i < reelLabels.Length; i++)
+                if (reelLabels[i] != null) reelLabels[i].text = "?";
 
-            for (int i = 0; i < reelNames.Length; i++)
-                if (reelNames[i] != null) reelNames[i].text = "?";
-
-            float[] stopAt   = { 0.8f, 1.3f, 1.8f };
-            bool[]  stopped  = { false, false, false };
-            float   elapsed  = 0f;
-            float   lastTick = 0f;
+            float[] stopAt  = { 0.8f, 1.3f, 1.8f };
+            bool[]  stopped = { false, false, false };
+            float elapsed = 0f, lastTick = 0f;
             const float TickInterval = 0.07f;
 
             while (!stopped[2])
@@ -74,13 +72,12 @@ namespace SlotDefense
                         if (elapsed >= stopAt[i])
                         {
                             stopped[i] = true;
-                            if (reelNames[i] != null)
-                                reelNames[i].text = reels[i]?.cardName ?? "?";
+                            if (reelLabels[i] != null) reelLabels[i].text = SymbolOf(reels[i]);
                         }
                         else
                         {
-                            if (reelNames[i] != null)
-                                reelNames[i].text = SpinPool[Random.Range(0, SpinPool.Length)];
+                            if (reelLabels[i] != null)
+                                reelLabels[i].text = SpinPool[Random.Range(0, SpinPool.Length)];
                         }
                     }
                 }
@@ -89,38 +86,33 @@ namespace SlotDefense
 
             GameManager.Instance.CommitSpin();
 
-            if (result == SlotResult.Triple)
-                ShowTriple();
-            else
-                ShowNormal(result);
+            var parts = new List<string>();
+            if (energy.fire > 0) parts.Add($"🔥x{energy.fire}");
+            if (energy.iron > 0) parts.Add($"⚔x{energy.iron}");
+            if (energy.life > 0) parts.Add($"💚x{energy.life}");
+            if (resultText != null)
+            {
+                resultText.text  = string.Join("  ", parts);
+                resultText.color = WhiteColor;
+                resultText.fontSize = 24;
+            }
+
+            bool isTriple = energy.fire >= 6 || energy.iron >= 6 || energy.life >= 6;
+            if (isTriple && resultText != null)
+            {
+                resultText.color    = GoldColor;
+                resultText.fontSize = 32;
+                ScreenFlash.Instance?.Play(new Color(1f, 0.8f, 0f), 0.55f, 0.1f, 0.45f);
+            }
 
             _animating = false;
-        }
-
-        private void ShowTriple()
-        {
-            resultText.text     = "★ TRIPLE! ★";
-            resultText.color    = GoldColor;
-            resultText.fontSize = 32;
-            ScreenFlash.Instance?.Play(new Color(1f, 0.8f, 0f), 0.55f, 0.1f, 0.45f);
             CancelInvoke(nameof(ClearResult));
-            Invoke(nameof(ClearResult), 3f);
+            Invoke(nameof(ClearResult), 2.5f);
         }
-
-        private void ShowNormal(SlotResult result)
-        {
-            resultText.text     = result == SlotResult.AllDifferent ? "버프 카드 획득!" : "카드 획득!";
-            resultText.color    = WhiteColor;
-            resultText.fontSize = 24;
-            CancelInvoke(nameof(ClearResult));
-            Invoke(nameof(ClearResult), 2f);
-        }
-
-        private void OnBuffApplied(BuffEffect _) =>
-            ScreenFlash.Instance?.Play(new Color(1f, 0.75f, 0f), 0.35f, 0.1f, 0.3f);
 
         private void ClearResult()
         {
+            if (resultText == null) return;
             resultText.text     = "";
             resultText.color    = WhiteColor;
             resultText.fontSize = 24;
