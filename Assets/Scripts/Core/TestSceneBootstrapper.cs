@@ -22,6 +22,10 @@ namespace SlotDefense
 
         private MonsterConfig    _monsterCfg;
         private MonsterConfig    _eliteCfg;
+        private MonsterConfig    _goblinCfg;
+        private MonsterConfig    _trollCfg;
+        private MonsterConfig    _batCfg;
+        private MonsterConfig    _dragonCfg;
         private FixedDeckConfig  _deckCfg;
         private GlobalBuffConfig _buffCfg;
         private BackgroundConfig _bgCfg;
@@ -46,41 +50,67 @@ namespace SlotDefense
                 { m.hp = 150f; m.damage = 20f; m.moveSpeed = 1.8f; m.xpReward = 150f;
                   m.prefab = elitePrefabOverride; });
 
+            _goblinCfg = Inst<MonsterConfig>(m =>
+                { m.hp = 20f; m.damage = 4f; m.moveSpeed = 2.5f; m.xpReward = 20f; m.prefab = monsterPrefabOverride; });
+            _trollCfg  = Inst<MonsterConfig>(m =>
+                { m.hp = 200f; m.damage = 15f; m.moveSpeed = 0.8f; m.xpReward = 120f; m.prefab = monsterPrefabOverride; });
+            _batCfg    = Inst<MonsterConfig>(m =>
+                { m.hp = 15f; m.damage = 5f; m.moveSpeed = 3f; m.xpReward = 30f; m.isFlying = true; });
+            _dragonCfg = Inst<MonsterConfig>(m =>
+                { m.hp = 400f; m.damage = 40f; m.moveSpeed = 1.5f; m.xpReward = 300f; m.isFlying = true; });
+
             _deckCfg = Inst<FixedDeckConfig>(d =>
             {
-                var swordsman = MakeCard("검사",     hp: 80,  dmg: 15, speed: 2f,   range: 1.5f, rate: 1f,   sight: 5f);
-                var archer    = MakeCard("궁수",     hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f,   sight: 8f);
-                var knight    = MakeCard("기사",     hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
-                var mage      = MakeCard("마법사",   hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
-                var healer    = MakeCard("힐러",     hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
-                // 행운술사: 비전투 유닛. 0.5/초로 행운 생성 (기본 충전 2초/개보다 2배 빠름)
-                var luckGen   = MakeCard("행운술사", hp: 60,  dmg: 0,  speed: 0.8f, range: 0f,   rate: 0f,   sight: 0f, luckPerSec: 0.5f);
-                var lightning = MakeSkillCard("번개 화살", SkillType.LightningArrow, damage: 80f,  radius: 2.0f);
-                var portal    = MakeSkillCard("포탈 폭격", SkillType.PortalBomb,     damage: 120f, radius: 3.0f);
-                // 8종: 검사×3, 궁수×3, 기사×2, 마법사×2, 힐러×2, 행운술사×2, 번개화살×2, 포탈폭격×2 = 18장
-                d.cards = new CardData[18];
-                for (int i = 0; i < 3; i++)   d.cards[i]  = swordsman;
-                for (int i = 3; i < 6; i++)   d.cards[i]  = archer;
-                d.cards[6]  = knight;
-                d.cards[7]  = knight;
-                d.cards[8]  = mage;
-                d.cards[9]  = mage;
-                d.cards[10] = healer;
-                d.cards[11] = healer;
-                d.cards[12] = luckGen;
-                d.cards[13] = luckGen;
-                d.cards[14] = lightning;
-                d.cards[15] = lightning;
-                d.cards[16] = portal;
-                d.cards[17] = portal;
+                // 유닛 10종
+                var swordsman   = MakeCard("검사",     hp:80,  dmg:15, speed:2f,   range:1.5f, rate:1f,   sight:5f,  iron:1);
+                var archer      = MakeCard("궁수",     hp:50,  dmg:10, speed:1.5f, range:5f,   rate:2f,   sight:8f,  canAttackAir:true, fire:1, iron:1);
+                var knight      = MakeCard("기사",     hp:120, dmg:20, speed:1.2f, range:1f,   rate:0.8f, sight:4f,  iron:2);
+                var mage        = MakeCard("마법사",   hp:40,  dmg:28, speed:1.8f, range:4.5f, rate:0.6f, sight:8f,  canAttackAir:true, fire:2);
+                var healer      = MakeCard("힐러",     hp:70,  dmg:0,  speed:1.6f, range:2f,   rate:0.8f, sight:6f,  heal:8f, life:2);
+                var luckGen     = MakeCard("행운술사", hp:60,  dmg:0,  speed:0.8f, range:0f,   rate:0f,   sight:0f,  luckPerSec:0.5f, iron:1, life:1);
+                var paladin     = MakeCard("팔라딘",   hp:200, dmg:18, speed:0.9f, range:1.2f, rate:0.7f, sight:4f,  iron:2, life:2);
+                var pyromancer  = MakeCard("화염술사", hp:40,  dmg:35, speed:1.7f, range:4f,   rate:0.5f, sight:8f,  canAttackAir:true, fire:3);
+                var crusader    = MakeCard("성기사",   hp:100, dmg:15, speed:1.4f, range:1.5f, rate:1f,   sight:5f,  heal:3f, fire:1, iron:2, life:1);
+                var stormArcher = MakeCard("폭풍궁수", hp:60,  dmg:12, speed:1.6f, range:6f,   rate:2.5f, sight:10f, canAttackAir:true, fire:2, iron:2);
+
+                // 마법 2종
+                var lightning   = MakeSkillCard("번개화살", SkillType.LightningArrow, damage:80f,  radius:2.0f, fire:2);
+                var portalBomb  = MakeSkillCard("포탈폭격", SkillType.PortalBomb,     damage:120f, radius:3.0f, fire:2, iron:1);
+
+                // 건물 — 전투
+                var fireTower   = MakeBuildingCard("화염탑", new BuildingData
+                    { buildingType = BuildingType.BattleTower, attackDamage = 20f, attackRate = 1f, attackRange = 5f, canAttackAir = true }, fire:2);
+                var sniperTower = MakeBuildingCard("저격탑", new BuildingData
+                    { buildingType = BuildingType.BattleTower, attackDamage = 50f, attackRate = 0.4f, attackRange = 8f, canAttackAir = true }, fire:1, iron:1);
+
+                // 건물 — 에너지 생산
+                var furnace     = MakeBuildingCard("화염로",   new BuildingData
+                    { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Fire, energyPerSecond = 1f }, fire:1);
+                var forge       = MakeBuildingCard("제철소",   new BuildingData
+                    { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Iron, energyPerSecond = 1f }, iron:1);
+                var lifespring  = MakeBuildingCard("생명의샘", new BuildingData
+                    { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Life, energyPerSecond = 1f }, life:1);
+
+                // 건물 — 유닛 생산
+                var barracks    = MakeBuildingCard("병영", new BuildingData
+                    { buildingType = BuildingType.ProductionUnit, unitToSpawn = swordsman, spawnInterval = 10f }, iron:2);
+                var magicCircle = MakeBuildingCard("마법진", new BuildingData
+                    { buildingType = BuildingType.ProductionUnit, unitToSpawn = mage, spawnInterval = 15f }, fire:2, life:1);
+
+                // 기본 덱 8장
+                d.cards = new CardData[]
+                {
+                    swordsman, archer, knight, mage,
+                    healer, lightning, portalBomb, fireTower
+                };
 
                 // Inspector 필드 우선, 없으면 Resources/Prefabs/Units/{카드명}.prefab 자동 로드
-                TrySetUnitPrefab(swordsman, swordsmanPrefab);
-                TrySetUnitPrefab(archer,    archerPrefab);
-                TrySetUnitPrefab(knight,    knightPrefab);
-                TrySetUnitPrefab(mage,      magePrefab);
-                TrySetUnitPrefab(healer,    healerPrefab);
-                TrySetUnitPrefab(luckGen,   luckGenPrefab);
+                TrySetUnitPrefab(swordsman,   swordsmanPrefab);
+                TrySetUnitPrefab(archer,      archerPrefab);
+                TrySetUnitPrefab(knight,      knightPrefab);
+                TrySetUnitPrefab(mage,        magePrefab);
+                TrySetUnitPrefab(healer,      healerPrefab);
+                TrySetUnitPrefab(luckGen,     luckGenPrefab);
             });
 
             _buffCfg = Inst<GlobalBuffConfig>(b =>
@@ -303,8 +333,7 @@ namespace SlotDefense
                 MakeText(reelBox.transform, "Label", reelLabels[i], new Vector2(0, 18), 14).color = new Color(0.6f, 0.7f, 1f);
                 reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -8), 22);
             }
-            slotUI.reelImages = new Image[0];
-            slotUI.reelNames  = reelNameTexts;
+            slotUI.reelLabels = reelNameTexts;
 
             slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -355), 24);
             slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN (행운 1 소모)", new Vector2(0, -400), new Vector2(260, 58));
@@ -432,6 +461,20 @@ namespace SlotDefense
             flashImg.color         = new Color(1f, 1f, 1f, 0f);
             flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
+
+            // --- EnergyHUD ---
+            var energyGo  = Child(canvasGo.transform, "EnergyHUD");
+            var energyHud = energyGo.AddComponent<EnergyHUD>();
+            var energyRt  = (RectTransform)energyGo.transform;
+            energyRt.anchorMin          = new Vector2(0.5f, 1f);
+            energyRt.anchorMax          = new Vector2(0.5f, 1f);
+            energyRt.pivot              = new Vector2(0.5f, 1f);
+            energyRt.anchoredPosition   = new Vector2(0f, -10f);
+            energyRt.sizeDelta          = new Vector2(300f, 40f);
+
+            energyHud.fireText = MakeLabel(energyGo.transform, "FireText",  new Vector2(-90f, 0f));
+            energyHud.ironText = MakeLabel(energyGo.transform, "IronText",  new Vector2(  0f, 0f));
+            energyHud.lifeText = MakeLabel(energyGo.transform, "LifeText",  new Vector2( 90f, 0f));
         }
 
         // ============================================================
@@ -443,12 +486,29 @@ namespace SlotDefense
             var obj = ScriptableObject.CreateInstance<T>(); init(obj); return obj;
         }
 
-        static CardData MakeSkillCard(string name, SkillType type, float damage, float radius)
+        static CardData MakeSkillCard(string name, SkillType type, float damage, float radius,
+            int fire = 0, int iron = 0, int life = 0)
         {
             var card = ScriptableObject.CreateInstance<CardData>();
             card.cardName    = name;
             card.cardType    = CardType.Skill;
+            card.fireCost    = fire;
+            card.ironCost    = iron;
+            card.lifeCost    = life;
             card.skillEffect = new SkillEffect { type = type, damage = damage, radius = radius };
+            return card;
+        }
+
+        static CardData MakeBuildingCard(string name, BuildingData bdata,
+            int fire = 0, int iron = 0, int life = 0)
+        {
+            var card = ScriptableObject.CreateInstance<CardData>();
+            card.cardName     = name;
+            card.cardType     = CardType.Building;
+            card.fireCost     = fire;
+            card.ironCost     = iron;
+            card.lifeCost     = life;
+            card.buildingData = bdata;
             return card;
         }
 
@@ -459,12 +519,26 @@ namespace SlotDefense
             if (loaded != null) card.unitPrefab = loaded;
         }
 
-        static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f, float heal = 0f, float luckPerSec = 0f)
+        static CardData MakeCard(string name,
+            float hp, float dmg, float speed, float range, float rate,
+            float sight = 5f, float heal = 0f, float luckPerSec = 0f,
+            bool canAttackAir = false, bool isFlying = false,
+            int fire = 0, int iron = 0, int life = 0)
         {
             var card = ScriptableObject.CreateInstance<CardData>();
             card.cardName  = name;
             card.cardType  = CardType.Unit;
-            card.unitStats = new UnitStats { hp = hp, damage = dmg, moveSpeed = speed, attackRange = range, attackRate = rate, sightRange = sight, healAmount = heal, luckGenRate = luckPerSec };
+            card.fireCost  = fire;
+            card.ironCost  = iron;
+            card.lifeCost  = life;
+            card.unitStats = new UnitStats
+            {
+                hp = hp, damage = dmg, moveSpeed = speed,
+                attackRange = range, attackRate = rate,
+                sightRange = sight, healAmount = heal,
+                luckGenRate = luckPerSec,
+                canAttackAir = canAttackAir, isFlying = isFlying
+            };
             return card;
         }
 
@@ -560,6 +634,20 @@ namespace SlotDefense
             t.color = new Color(0.75f, 0.85f, 1f);
             ((RectTransform)t.transform).sizeDelta = new Vector2(800, 36);
             return t;
+        }
+
+        static Text MakeLabel(Transform parent, string name, Vector2 offset)
+        {
+            var go   = Child(parent, name);
+            var rect = (RectTransform)go.transform;
+            rect.anchoredPosition = offset;
+            rect.sizeDelta        = new Vector2(90f, 30f);
+            var txt  = go.AddComponent<Text>();
+            txt.font      = SharedFont();
+            txt.fontSize  = 18;
+            txt.color     = Color.white;
+            txt.alignment = TextAnchor.MiddleCenter;
+            return txt;
         }
 
         static Slider MakeSlider(Transform parent, string name, Vector2 pos, Color fillColor)
