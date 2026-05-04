@@ -60,6 +60,18 @@ namespace SlotDefense
                         var b = card.buffEffect;
                         sb.AppendLine($"[버프]  {card.cardName} ×{count}    공격×{b.attackMultiplier}  속도×{b.speedMultiplier}  {b.duration}초");
                         break;
+                    case CardType.Building:
+                        var bd = card.buildingData;
+                        if (bd != null)
+                        {
+                            string bdesc = bd.buildingType == BuildingType.BattleTower
+                                ? $"피해:{bd.attackDamage}  공속:{bd.attackRate}"
+                                : bd.buildingType == BuildingType.ProductionEnergy
+                                    ? $"생산:{bd.energyType} {bd.energyPerSecond}/초"
+                                    : $"소환:{bd.unitToSpawn?.cardName ?? "?"} {bd.spawnInterval}초";
+                            sb.AppendLine($"[건물]  {card.cardName} ×{count}    {bdesc}  비용:{card.ElementalCost.Total}에너지");
+                        }
+                        break;
                 }
             }
             contentText.text = sb.ToString();

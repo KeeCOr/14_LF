@@ -641,12 +641,13 @@ namespace SlotDefense
             var go   = Child(parent, name);
             var rect = (RectTransform)go.transform;
             rect.anchoredPosition = offset;
-            rect.sizeDelta        = new Vector2(90f, 30f);
+            rect.sizeDelta        = new Vector2(120f, 30f);
             var txt  = go.AddComponent<Text>();
-            txt.font      = SharedFont();
-            txt.fontSize  = 18;
-            txt.color     = Color.white;
-            txt.alignment = TextAnchor.MiddleCenter;
+            txt.font             = SharedFont();
+            txt.fontSize         = 18;
+            txt.color            = Color.white;
+            txt.alignment        = TextAnchor.MiddleCenter;
+            txt.horizontalOverflow = HorizontalWrapMode.Overflow;
             return txt;
         }
 
