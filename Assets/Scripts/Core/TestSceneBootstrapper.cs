@@ -405,7 +405,9 @@ namespace SlotDefense
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                handUI.cardNames[i] = MakeText(cardGo.transform, "Name", "---", new Vector2(20, 0), 20);
+                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(20, 0), 20);
+                nameText.richText = true;
+                handUI.cardNames[i] = nameText;
             }
 
             // ResultUI
@@ -462,23 +464,23 @@ namespace SlotDefense
             flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
 
-            // --- EnergyHUD — 화면 좌하단 패널 ---
+            // --- EnergyHUD — 화면 좌하단 패널 (속성별 색상 행) ---
             var energyGo  = Child(canvasGo.transform, "EnergyHUD");
             var energyRt  = (RectTransform)energyGo.transform;
             energyRt.anchorMin        = new Vector2(0f, 0f);
             energyRt.anchorMax        = new Vector2(0f, 0f);
             energyRt.pivot            = new Vector2(0f, 0f);
-            energyRt.anchoredPosition = new Vector2(16f, 120f);
-            energyRt.sizeDelta        = new Vector2(160f, 90f);
+            energyRt.anchoredPosition = new Vector2(12f, 100f);
+            energyRt.sizeDelta        = new Vector2(140f, 105f);
 
             var energyBg = energyGo.AddComponent<Image>();
-            energyBg.color        = new Color(0.05f, 0.08f, 0.18f, 0.88f);
+            energyBg.color        = new Color(0.04f, 0.06f, 0.15f, 0.92f);
             energyBg.raycastTarget = false;
 
             var energyHud = energyGo.AddComponent<EnergyHUD>();
-            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(80f, 64f));
-            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(80f, 36f));
-            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(80f,  8f));
+            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(70f, 78f),  new Color(1f,  0.45f, 0.1f));
+            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(70f, 46f),  new Color(0.6f, 0.8f, 1f));
+            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(70f, 14f),  new Color(0.2f, 1f,  0.45f));
         }
 
         // ============================================================
@@ -640,7 +642,7 @@ namespace SlotDefense
             return t;
         }
 
-        static Text MakeEnergyLabel(Transform parent, string name, Vector2 offset)
+        static Text MakeEnergyLabel(Transform parent, string name, Vector2 offset, Color color = default)
         {
             var go   = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -649,13 +651,14 @@ namespace SlotDefense
             rect.anchorMax        = new Vector2(0f, 0f);
             rect.pivot            = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = offset;
-            rect.sizeDelta        = new Vector2(150f, 28f);
+            rect.sizeDelta        = new Vector2(130f, 30f);
             var txt  = go.AddComponent<Text>();
-            txt.font             = SharedFont();
-            txt.fontSize         = 24;
-            txt.color            = Color.white;
-            txt.alignment        = TextAnchor.MiddleCenter;
+            txt.font               = SharedFont();
+            txt.fontSize           = 26;
+            txt.color              = color == default ? Color.white : color;
+            txt.alignment          = TextAnchor.MiddleCenter;
             txt.horizontalOverflow = HorizontalWrapMode.Overflow;
+            txt.richText           = true;
             return txt;
         }
 
