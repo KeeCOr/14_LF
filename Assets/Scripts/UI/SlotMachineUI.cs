@@ -14,23 +14,43 @@ namespace SlotDefense
         private static readonly Color    GoldColor  = new Color(1f, 0.85f, 0.1f);
         private static readonly Color    WhiteColor = Color.white;
         private bool _animating;
+        private int  _stopCount; // 플레이어가 멈춘 릴 수 (0~3)
 
-        private void Start() => spinButton.onClick.AddListener(OnSpinClicked);
+        private static readonly string[] StopLabels = { "▌ 릴 1 정지", "▌ 릴 2 정지", "▌ 릴 3 정지" };
+
+        private void Start() => spinButton.onClick.AddListener(OnButtonClicked);
 
         private void Update()
         {
             if (GameManager.Instance == null) return;
             int charges = GameManager.Instance.SlotMachine.SpinCharges;
-            spinButton.interactable = charges > 0 && !_animating;
             var label = spinButton.GetComponentInChildren<Text>();
-            if (label != null) label.text = $"행운 소모 (x{charges})";
+            if (!_animating)
+            {
+                spinButton.interactable = charges > 0;
+                if (label != null) label.text = $"SPIN  (행운 x{charges})";
+            }
+            else
+            {
+                spinButton.interactable = _stopCount < 3;
+                if (label != null)
+                    label.text = _stopCount < 3 ? StopLabels[_stopCount] : "...";
+            }
         }
 
-        private void OnSpinClicked()
+        private void OnButtonClicked()
         {
-            if (GameManager.Instance == null || _animating) return;
-            if (!GameManager.Instance.TryBeginSpin()) return;
-            StartCoroutine(SpinAnimation());
+            if (!_animating)
+            {
+                if (GameManager.Instance == null) return;
+                if (!GameManager.Instance.TryBeginSpin()) return;
+                _stopCount = 0;
+                StartCoroutine(SpinAnimation());
+            }
+            else if (_stopCount < 3)
+            {
+                _stopCount++;
+            }
         }
 
         private static string SymbolOf(ElementType t)
@@ -47,7 +67,6 @@ namespace SlotDefense
         private IEnumerator SpinAnimation()
         {
             _animating = true;
-            spinButton.interactable = false;
 
             var (reels, energy) = GameManager.Instance.PeekSpin();
             if (resultText != null) resultText.text = "";
@@ -55,30 +74,33 @@ namespace SlotDefense
             for (int i = 0; i < reelLabels.Length; i++)
                 if (reelLabels[i] != null) reelLabels[i].text = "?";
 
-            float[] stopAt  = { 0.8f, 1.3f, 1.8f };
-            bool[]  stopped = { false, false, false };
-            float elapsed = 0f, lastTick = 0f;
+            // 버튼을 3번 눌러 릴을 하나씩 수동으로 정지
+            bool[] stopped = { false, false, false };
+            float lastTick = 0f;
             const float TickInterval = 0.07f;
+            float elapsed = 0f;
 
             while (!stopped[2])
             {
                 elapsed += Time.deltaTime;
+
+                // _stopCount가 증가할 때마다 해당 릴 고정
+                for (int i = 0; i < 3; i++)
+                {
+                    if (!stopped[i] && _stopCount > i)
+                    {
+                        stopped[i] = true;
+                        if (reelLabels[i] != null) reelLabels[i].text = SymbolOf(reels[i]);
+                    }
+                }
+
                 if (elapsed - lastTick >= TickInterval)
                 {
                     lastTick = elapsed;
                     for (int i = 0; i < 3; i++)
                     {
-                        if (stopped[i]) continue;
-                        if (elapsed >= stopAt[i])
-                        {
-                            stopped[i] = true;
-                            if (reelLabels[i] != null) reelLabels[i].text = SymbolOf(reels[i]);
-                        }
-                        else
-                        {
-                            if (reelLabels[i] != null)
-                                reelLabels[i].text = SpinPool[Random.Range(0, SpinPool.Length)];
-                        }
+                        if (!stopped[i] && reelLabels[i] != null)
+                            reelLabels[i].text = SpinPool[Random.Range(0, SpinPool.Length)];
                     }
                 }
                 yield return null;

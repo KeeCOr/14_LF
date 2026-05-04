@@ -462,19 +462,23 @@ namespace SlotDefense
             flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
 
-            // --- EnergyHUD ---
+            // --- EnergyHUD — 화면 좌하단 패널 ---
             var energyGo  = Child(canvasGo.transform, "EnergyHUD");
-            var energyHud = energyGo.AddComponent<EnergyHUD>();
             var energyRt  = (RectTransform)energyGo.transform;
-            energyRt.anchorMin          = new Vector2(0.5f, 1f);
-            energyRt.anchorMax          = new Vector2(0.5f, 1f);
-            energyRt.pivot              = new Vector2(0.5f, 1f);
-            energyRt.anchoredPosition   = new Vector2(0f, -10f);
-            energyRt.sizeDelta          = new Vector2(300f, 40f);
+            energyRt.anchorMin        = new Vector2(0f, 0f);
+            energyRt.anchorMax        = new Vector2(0f, 0f);
+            energyRt.pivot            = new Vector2(0f, 0f);
+            energyRt.anchoredPosition = new Vector2(16f, 120f);
+            energyRt.sizeDelta        = new Vector2(160f, 90f);
 
-            energyHud.fireText = MakeLabel(energyGo.transform, "FireText",  new Vector2(-90f, 0f));
-            energyHud.ironText = MakeLabel(energyGo.transform, "IronText",  new Vector2(  0f, 0f));
-            energyHud.lifeText = MakeLabel(energyGo.transform, "LifeText",  new Vector2( 90f, 0f));
+            var energyBg = energyGo.AddComponent<Image>();
+            energyBg.color        = new Color(0.05f, 0.08f, 0.18f, 0.88f);
+            energyBg.raycastTarget = false;
+
+            var energyHud = energyGo.AddComponent<EnergyHUD>();
+            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(80f, 64f));
+            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(80f, 36f));
+            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(80f,  8f));
         }
 
         // ============================================================
@@ -634,6 +638,25 @@ namespace SlotDefense
             t.color = new Color(0.75f, 0.85f, 1f);
             ((RectTransform)t.transform).sizeDelta = new Vector2(800, 36);
             return t;
+        }
+
+        static Text MakeEnergyLabel(Transform parent, string name, Vector2 offset)
+        {
+            var go   = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            var rect = go.AddComponent<RectTransform>();
+            rect.anchorMin        = new Vector2(0f, 0f);
+            rect.anchorMax        = new Vector2(0f, 0f);
+            rect.pivot            = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = offset;
+            rect.sizeDelta        = new Vector2(150f, 28f);
+            var txt  = go.AddComponent<Text>();
+            txt.font             = SharedFont();
+            txt.fontSize         = 24;
+            txt.color            = Color.white;
+            txt.alignment        = TextAnchor.MiddleCenter;
+            txt.horizontalOverflow = HorizontalWrapMode.Overflow;
+            return txt;
         }
 
         static Text MakeLabel(Transform parent, string name, Vector2 offset)

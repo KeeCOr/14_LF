@@ -17,6 +17,7 @@ namespace SlotDefense
         private const float AttackRange = 0.5f;
         private HpBar _hpBar;
         private Rigidbody2D _rb;
+        private UnitController _unitTarget;
 
         public bool IsDead => _currentHp <= 0f;
         public MonsterConfig Config => config;
@@ -51,21 +52,58 @@ namespace SlotDefense
             if (IsDead || targetVillage == null) return;
             _attackCooldown -= Time.deltaTime;
 
-            var sep  = CalcSeparation();
-            var dist = Vector2.Distance(transform.position, targetVillage.transform.position);
-            if (dist > AttackRange)
+            // 현재 타겟이 죽었으면 해제 → 가장 가까운 유닛 재탐색
+            if (_unitTarget == null) AcquireUnitTarget();
+
+            var sep = CalcSeparation();
+
+            if (_unitTarget != null)
             {
-                var dir = ((Vector2)targetVillage.transform.position - (Vector2)transform.position).normalized;
-                _rb.velocity = dir * config.moveSpeed + sep;
+                var dist = Vector2.Distance(transform.position, _unitTarget.transform.position);
+                if (dist > AttackRange)
+                {
+                    var dir = ((Vector2)_unitTarget.transform.position - (Vector2)transform.position).normalized;
+                    _rb.velocity = dir * config.moveSpeed + sep;
+                }
+                else
+                {
+                    _rb.velocity = sep;
+                    if (_attackCooldown <= 0f)
+                    {
+                        _attackCooldown = AttackInterval;
+                        _unitTarget.TakeDamage(config.damage);
+                    }
+                }
             }
             else
             {
-                _rb.velocity = sep;
-                if (_attackCooldown <= 0f)
+                var dist = Vector2.Distance(transform.position, targetVillage.transform.position);
+                if (dist > AttackRange)
                 {
-                    _attackCooldown = AttackInterval;
-                    targetVillage.TakeDamage(config.damage);
+                    var dir = ((Vector2)targetVillage.transform.position - (Vector2)transform.position).normalized;
+                    _rb.velocity = dir * config.moveSpeed + sep;
                 }
+                else
+                {
+                    _rb.velocity = sep;
+                    if (_attackCooldown <= 0f)
+                    {
+                        _attackCooldown = AttackInterval;
+                        targetVillage.TakeDamage(config.damage);
+                    }
+                }
+            }
+        }
+
+        // 가장 가까운 플레이어 유닛을 찾아 타겟으로 설정 (타겟이 있으면 유지)
+        private void AcquireUnitTarget()
+        {
+            float nearest = float.MaxValue;
+            foreach (var u in UnitController.ActivePlayerUnits)
+            {
+                if (u == null) continue;
+                float d = Vector2.Distance(transform.position, u.transform.position);
+                if (d < nearest) { nearest = d; _unitTarget = u; }
             }
         }
 
