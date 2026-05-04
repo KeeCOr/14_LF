@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using SlotDefense;
-using System;
 using UnityEngine;
 
 public class ReelSystemTests
@@ -16,7 +15,7 @@ public class ReelSystemTests
     public void BuildPool_ReflectsDeckCosts()
     {
         var deck = new[] { MakeCard(2, 0, 0), MakeCard(0, 1, 0) };
-        var sys = new ReelSystem(new Random(0));
+        var sys = new ReelSystem(new System.Random(0));
         sys.BuildPool(deck);
         Assert.AreEqual(3, sys.PoolSize); // Fire x2 + Iron x1
     }
@@ -24,7 +23,7 @@ public class ReelSystemTests
     [Test]
     public void BuildPool_EmptyDeck_FallsBackToOneEach()
     {
-        var sys = new ReelSystem(new Random(0));
+        var sys = new ReelSystem(new System.Random(0));
         sys.BuildPool(new CardData[0]);
         Assert.AreEqual(3, sys.PoolSize); // fallback: 1 of each
     }
