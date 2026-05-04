@@ -141,6 +141,7 @@ namespace SlotDefense
                 _selectedSkillSlot = -1;
                 if (card != null && card.cardType == CardType.Skill)
                 {
+                    if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost)) return;
                     GameManager.Instance.Hand.Use(slot);
                     GameManager.Instance.UseSkill(card.skillEffect, worldPos);
                     ScreenFlash.Instance?.Play(new Color(0.5f, 0.2f, 1f), 0.3f, 0.08f, 0.25f);
@@ -157,7 +158,7 @@ namespace SlotDefense
                 return;
             }
 
-            if (!GameManager.Instance.SlotMachine.TryConsume(unitCard.ElementalCost.Total))
+            if (!GameManager.Instance.ElementalEnergy.TryConsume(unitCard.ElementalCost))
             {
                 _selectedHandSlot = -1;
                 return;

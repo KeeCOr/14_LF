@@ -62,7 +62,7 @@ namespace SlotDefense
             world.z = 0f;
             if (world.x > -0.5f) return;
 
-            if (!GameManager.Instance.SlotMachine.TryConsume(card.ElementalCost.Total)) return;
+            if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost)) return;
             GameManager.Instance.Hand.Use(slotIndex);
             world.x = Mathf.Min(world.x, -0.5f);
             var prefab = card.unitPrefab != null ? card.unitPrefab : arenaSystem.unitPrefab;
