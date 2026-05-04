@@ -25,8 +25,13 @@ namespace SlotDefense
         private System.Random             _rng;
         private ElementType[]             _pendingReels;
         private (int fire, int iron, int life) _pendingEnergy;
-        private bool                      _hasPendingSpin;
+        private int                       _stoppedCount;
         private bool                      _battleActive;
+
+        public ElementType[] PendingReels  => _pendingReels;
+        public int  StoppedReelCount       => _stoppedCount;
+        public bool AllReelsStopped        => _stoppedCount >= 3;
+        public (int fire, int iron, int life) PendingEnergy => _pendingEnergy;
 
         private void Awake()
         {
@@ -77,27 +82,37 @@ namespace SlotDefense
             }
         }
 
-        public void StartBattle() => _battleActive = true;
-
-        public bool TryBeginSpin()
+        public void StartBattle()
         {
-            if (_hasPendingSpin) return false;
-            if (!SlotMachine.TrySpin()) return false;
-            _pendingReels  = Reels.Spin();
-            _pendingEnergy = ReelSystem.CalcEnergy(_pendingReels);
-            _hasPendingSpin = true;
-            return true;
+            _battleActive = true;
+            BeginNewSpin();
         }
 
-        public (ElementType[] reels, (int fire, int iron, int life) energy) PeekSpin() =>
-            (_pendingReels, _pendingEnergy);
+        // 새 스핀 시작 — 무료. 항상 자동으로 호출됨.
+        public void BeginNewSpin()
+        {
+            _pendingReels  = Reels.Spin();
+            _stoppedCount  = 0;
+            _pendingEnergy = (0, 0, 0);
+        }
+
+        // 릴 하나 정지 — 행운 1 소모. 성공 시 해당 속성 반환, 실패 시 null.
+        public ElementType? TryStopReel()
+        {
+            if (_pendingReels == null || _stoppedCount >= 3) return null;
+            if (!SlotMachine.TrySpin()) return null;
+            var sym = _pendingReels[_stoppedCount];
+            _stoppedCount++;
+            if (_stoppedCount == 3)
+                _pendingEnergy = ReelSystem.CalcEnergy(_pendingReels);
+            return sym;
+        }
 
         public void CommitSpin()
         {
-            if (_pendingReels == null) return;
+            if (!AllReelsStopped) return;
             ElementalEnergy.Add(_pendingEnergy.fire, _pendingEnergy.iron, _pendingEnergy.life);
-            _pendingReels   = null;
-            _hasPendingSpin = false;
+            BeginNewSpin(); // 즉시 다음 스핀 준비
         }
 
         public void UseSkill(SkillEffect effect, Vector3 worldPos)
