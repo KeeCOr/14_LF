@@ -152,7 +152,7 @@ namespace SlotDefense
             if (_selectedHandSlot < 0) return;
 
             var unitCard = GameManager.Instance.Hand.GetSlot(_selectedHandSlot);
-            if (unitCard == null || unitCard.cardType != CardType.Unit)
+            if (unitCard == null || (unitCard.cardType != CardType.Unit && unitCard.cardType != CardType.Building))
             {
                 _selectedHandSlot = -1;
                 return;
@@ -168,10 +168,29 @@ namespace SlotDefense
             _selectedHandSlot = -1;
 
             worldPos.x = Mathf.Min(worldPos.x, -0.5f);
-            var prefab = unitCard.unitPrefab != null ? unitCard.unitPrefab : unitPrefab;
-            var go = Instantiate(prefab, worldPos, Quaternion.identity);
-            go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal);
-            go.SetActive(true);
+
+            if (unitCard.cardType == CardType.Building && unitCard.buildingData != null)
+            {
+                var bgo = new GameObject(unitCard.cardName);
+                bgo.transform.position = worldPos;
+                var sr = bgo.AddComponent<SpriteRenderer>();
+                sr.sprite       = unitCard.icon;
+                sr.sortingOrder = 1;
+
+                BuildingController bc;
+                if (unitCard.buildingData.buildingType == BuildingType.BattleTower)
+                    bc = bgo.AddComponent<BattleBuilding>();
+                else
+                    bc = bgo.AddComponent<ProductionBuilding>();
+                bc.Init(unitCard.buildingData);
+            }
+            else
+            {
+                var prefab = unitCard.unitPrefab != null ? unitCard.unitPrefab : unitPrefab;
+                var go = Instantiate(prefab, worldPos, Quaternion.identity);
+                go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal);
+                go.SetActive(true);
+            }
         }
     }
 }

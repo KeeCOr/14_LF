@@ -9,6 +9,7 @@ namespace SlotDefense
         [HideInInspector] public MonsterConfig config;
         [HideInInspector] public bool isInPlayerArena;
         [HideInInspector] public Village targetVillage;
+        public bool isFlying;
 
         private float _currentHp;
         private float _attackCooldown;
