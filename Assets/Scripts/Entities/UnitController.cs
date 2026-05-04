@@ -76,6 +76,9 @@ namespace SlotDefense
                 }
             }
 
+            // 비전투 유닛 (attackRate=0) — 전투 루프 전체 스킵
+            if (_stats.attackRate <= 0f && _stats.healAmount <= 0f) return;
+
             if (_stats.healAmount > 0f)
             {
                 var healTarget = AcquireHealTarget();
@@ -206,9 +209,9 @@ namespace SlotDefense
             _target = null;
             float nearest = float.MaxValue;
             float sight = _stats.sightRange > 0f ? _stats.sightRange : 999f;
-            foreach (var m in FindObjectsOfType<MonsterController>())
+            foreach (var m in MonsterController.AllMonsters)
             {
-                if (m.IsDead) continue;
+                if (m == null || m.IsDead) continue;
                 if (m.isFlying && !_stats.canAttackAir) continue; // 공중 공격 불가 시 스킵
                 var dist = Vector2.Distance(transform.position, m.transform.position);
                 if (dist > sight) continue;
