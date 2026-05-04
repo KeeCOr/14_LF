@@ -24,7 +24,10 @@ namespace SlotDefense
         public GameObject unitPrefab;
         public Portal portal;
 
-        public int CurrentStage { get; private set; } = 1;
+        public bool survivalMode;
+
+        public int CurrentStage  { get; private set; } = 1;
+        public int SurvivalWave  { get; private set; } = 0;
 
         private int _selectedHandSlot = -1;
         private int _selectedSkillSlot = -1;
@@ -33,7 +36,7 @@ namespace SlotDefense
 
         private void Start()
         {
-            StartCoroutine(WaveLoop());
+            StartCoroutine(survivalMode ? SurvivalWaveLoop() : WaveLoop());
             if (GameManager.Instance != null)
                 GameManager.Instance.StartBattle();
         }
@@ -73,10 +76,41 @@ namespace SlotDefense
         public void SpawnMonsterInArena(bool isPlayerArena, MonsterConfig overrideConfig = null, Vector3? atPosition = null)
         {
             var cfg      = overrideConfig ?? monsterConfig;
-            var spawnPos = atPosition ?? (isPlayerArena ? playerSpawnPoint.position : enemySpawnPoint.position);
+            var basePos  = atPosition ?? (isPlayerArena ? playerSpawnPoint.position : enemySpawnPoint.position);
+            // 같은 위치에 스폰되면 분리력이 작동 안 하므로 작은 랜덤 오프셋 추가
+            var spawnPos = atPosition.HasValue ? basePos
+                : basePos + new Vector3(Random.Range(-0.4f, 0.4f), Random.Range(-0.3f, 0.3f), 0);
             var village  = isPlayerArena ? playerVillage : enemyVillage;
-            var go = Instantiate(monsterPrefab, spawnPos, Quaternion.identity);
+            var prefab   = cfg.prefab != null ? cfg.prefab : monsterPrefab;
+            var go = Instantiate(prefab, spawnPos, Quaternion.identity);
             go.GetComponent<MonsterController>().Init(cfg, village, isPlayerArena);
+            go.SetActive(true);
+        }
+
+        private IEnumerator SurvivalWaveLoop()
+        {
+            yield return new WaitForSeconds(3f);
+            while (true)
+            {
+                SurvivalWave++;
+                int count       = Mathf.Min(1 + (SurvivalWave - 1) / 3, 5);
+                float eliteProb = Mathf.Min((SurvivalWave - 1) * 0.07f, 0.6f);
+                for (int i = 0; i < count; i++)
+                {
+                    bool isElite = eliteMonsterConfig != null && UnityEngine.Random.value < eliteProb;
+                    SpawnSurvivalMonster(isElite ? eliteMonsterConfig : monsterConfig);
+                    if (i < count - 1) yield return new WaitForSeconds(0.6f);
+                }
+                yield return new WaitForSeconds(Mathf.Max(2f, 6f - SurvivalWave * 0.18f));
+            }
+        }
+
+        private void SpawnSurvivalMonster(MonsterConfig cfg)
+        {
+            var pos    = enemySpawnPoint != null ? enemySpawnPoint.position : new Vector3(5f, 0, 0);
+            var prefab = cfg.prefab != null ? cfg.prefab : monsterPrefab;
+            var go     = Instantiate(prefab, pos, Quaternion.identity);
+            go.GetComponent<MonsterController>().Init(cfg, playerVillage, playerArena: true);
             go.SetActive(true);
         }
 
@@ -123,7 +157,7 @@ namespace SlotDefense
                 return;
             }
 
-            if (!GameManager.Instance.SlotMachine.TryConsume(unitCard.placementCost))
+            if (!GameManager.Instance.SlotMachine.TryConsume(unitCard.ElementalCost.Total))
             {
                 _selectedHandSlot = -1;
                 return;
@@ -133,7 +167,8 @@ namespace SlotDefense
             _selectedHandSlot = -1;
 
             worldPos.x = Mathf.Min(worldPos.x, -0.5f);
-            var go = Instantiate(unitPrefab, worldPos, Quaternion.identity);
+            var prefab = unitCard.unitPrefab != null ? unitCard.unitPrefab : unitPrefab;
+            var go = Instantiate(prefab, worldPos, Quaternion.identity);
             go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal);
             go.SetActive(true);
         }

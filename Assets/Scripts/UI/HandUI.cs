@@ -64,7 +64,7 @@ namespace SlotDefense
                 }
                 else
                 {
-                    string costStr = $"[{card.placementCost}스핀]";
+                    string costStr = $"[{card.ElementalCost.Total}에너지]";
                     cardNames[i].text = isSelected
                         ? $"{card.cardName} {costStr}\n> 배치 클릭"
                         : $"{card.cardName} {costStr}";
@@ -79,7 +79,7 @@ namespace SlotDefense
             {
                 int sel = arenaSystem != null ? arenaSystem.SelectedSlot : -1;
                 bool unitPending = sel >= 0 && GameManager.Instance?.Hand.GetSlot(sel)?.cardType == CardType.Unit;
-                float a = unitPending ? 0.22f : 0.05f;
+                float a = unitPending ? 0.35f : 0.10f;
                 deployZoneOverlay.color = new Color(0.3f, 0.75f, 1f, a);
             }
         }

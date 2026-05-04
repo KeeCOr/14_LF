@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace SlotDefense
 {
     public class SlotMachineSystem
@@ -39,6 +40,11 @@ namespace SlotDefense
             if (_spinCharges < charges) return false;
             _spinCharges -= charges;
             return true;
+        }
+
+        public void AddCharge(int amount)
+        {
+            _spinCharges = Mathf.Min(_spinCharges + amount, MaxCharges);
         }
     }
 }

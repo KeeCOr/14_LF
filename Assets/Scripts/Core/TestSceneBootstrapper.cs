@@ -8,52 +8,82 @@ namespace SlotDefense
     [DefaultExecutionOrder(-100)]
     public class TestSceneBootstrapper : MonoBehaviour
     {
+        [Header("유닛 프리팹 (비워두면 Resources 자동 로드)")]
+        public GameObject swordsmanPrefab;
+        public GameObject archerPrefab;
+        public GameObject knightPrefab;
+        public GameObject magePrefab;
+        public GameObject healerPrefab;
+        public GameObject luckGenPrefab;
+
+        [Header("몬스터 프리팹 (비워두면 기본 박스 사용)")]
+        public GameObject monsterPrefabOverride;
+        public GameObject elitePrefabOverride;
+
+        private MonsterConfig    _monsterCfg;
+        private MonsterConfig    _eliteCfg;
+        private FixedDeckConfig  _deckCfg;
+        private GlobalBuffConfig _buffCfg;
+        private BackgroundConfig _bgCfg;
+        private GameObject       _startMenuGo;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Install()
         {
             if (FindObjectOfType<GameManager>() != null) return;
+            if (FindObjectOfType<TestSceneBootstrapper>() != null) return;
             new GameObject("[TestBootstrap]").AddComponent<TestSceneBootstrapper>();
         }
 
         private void Awake()
         {
             // --- ScriptableObjects ---
-            var monsterCfg = Inst<MonsterConfig>(m =>
-                { m.hp = 40f; m.damage = 6f; m.moveSpeed = 1.3f; m.xpReward = 50f; });
+            _monsterCfg = Inst<MonsterConfig>(m =>
+                { m.hp = 40f; m.damage = 6f; m.moveSpeed = 1.3f; m.xpReward = 50f;
+                  m.prefab = monsterPrefabOverride; });
 
-            var eliteCfg = Inst<MonsterConfig>(m =>
-                { m.hp = 150f; m.damage = 20f; m.moveSpeed = 1.8f; m.xpReward = 150f; });
+            _eliteCfg = Inst<MonsterConfig>(m =>
+                { m.hp = 150f; m.damage = 20f; m.moveSpeed = 1.8f; m.xpReward = 150f;
+                  m.prefab = elitePrefabOverride; });
 
-            // 카드 타입당 인스턴스 하나를 공유해야 EvaluateReels 참조 비교(==)가 동작함
-            var deckCfg = Inst<FixedDeckConfig>(d =>
+            _deckCfg = Inst<FixedDeckConfig>(d =>
             {
-                var swordsman = MakeCard("검사",   hp: 80,  dmg: 15, speed: 2f,   range: 1.5f, rate: 1f,   sight: 5f);
-                var archer    = MakeCard("궁수",   hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f,   sight: 8f);
-                var knight    = MakeCard("기사",   hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
-                var mage      = MakeCard("마법사", hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
-                var healer    = MakeCard("힐러",   hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
+                var swordsman = MakeCard("검사",     hp: 80,  dmg: 15, speed: 2f,   range: 1.5f, rate: 1f,   sight: 5f);
+                var archer    = MakeCard("궁수",     hp: 50,  dmg: 10, speed: 1.5f, range: 5f,   rate: 2f,   sight: 8f);
+                var knight    = MakeCard("기사",     hp: 120, dmg: 20, speed: 1.2f, range: 1f,   rate: 0.8f, sight: 4f);
+                var mage      = MakeCard("마법사",   hp: 40,  dmg: 28, speed: 1.8f, range: 4.5f, rate: 0.6f, sight: 8f);
+                var healer    = MakeCard("힐러",     hp: 70,  dmg: 0,  speed: 1.6f, range: 2f,   rate: 0.8f, sight: 6f, heal: 8f);
+                // 행운술사: 비전투 유닛. 0.5/초로 행운 생성 (기본 충전 2초/개보다 2배 빠름)
+                var luckGen   = MakeCard("행운술사", hp: 60,  dmg: 0,  speed: 0.8f, range: 0f,   rate: 0f,   sight: 0f, luckPerSec: 0.5f);
                 var lightning = MakeSkillCard("번개 화살", SkillType.LightningArrow, damage: 80f,  radius: 2.0f);
                 var portal    = MakeSkillCard("포탈 폭격", SkillType.PortalBomb,     damage: 120f, radius: 3.0f);
-                swordsman.placementCost = 1;
-                archer.placementCost    = 1;
-                knight.placementCost    = 2;
-                mage.placementCost      = 2;
-                healer.placementCost    = 2;
-                // 7종: 검사×3, 궁수×3, 기사×3, 마법사×3, 힐러×2, 번개화살×2, 포탈폭격×2 = 18장
+                // 8종: 검사×3, 궁수×3, 기사×2, 마법사×2, 힐러×2, 행운술사×2, 번개화살×2, 포탈폭격×2 = 18장
                 d.cards = new CardData[18];
                 for (int i = 0; i < 3; i++)   d.cards[i]  = swordsman;
                 for (int i = 3; i < 6; i++)   d.cards[i]  = archer;
-                for (int i = 6; i < 9; i++)   d.cards[i]  = knight;
-                for (int i = 9; i < 12; i++)  d.cards[i]  = mage;
-                d.cards[12] = healer;
-                d.cards[13] = healer;
+                d.cards[6]  = knight;
+                d.cards[7]  = knight;
+                d.cards[8]  = mage;
+                d.cards[9]  = mage;
+                d.cards[10] = healer;
+                d.cards[11] = healer;
+                d.cards[12] = luckGen;
+                d.cards[13] = luckGen;
                 d.cards[14] = lightning;
                 d.cards[15] = lightning;
                 d.cards[16] = portal;
                 d.cards[17] = portal;
+
+                // Inspector 필드 우선, 없으면 Resources/Prefabs/Units/{카드명}.prefab 자동 로드
+                TrySetUnitPrefab(swordsman, swordsmanPrefab);
+                TrySetUnitPrefab(archer,    archerPrefab);
+                TrySetUnitPrefab(knight,    knightPrefab);
+                TrySetUnitPrefab(mage,      magePrefab);
+                TrySetUnitPrefab(healer,    healerPrefab);
+                TrySetUnitPrefab(luckGen,   luckGenPrefab);
             });
 
-            var buffCfg = Inst<GlobalBuffConfig>(b =>
+            _buffCfg = Inst<GlobalBuffConfig>(b =>
                 b.possibleBuffs = new BuffEffect[]
                 {
                     new BuffEffect { displayName = "공격 버프", attackMultiplier = 2.0f, speedMultiplier = 1.0f, duration = 8f  },
@@ -61,18 +91,25 @@ namespace SlotDefense
                     new BuffEffect { displayName = "균형 버프", attackMultiplier = 1.5f, speedMultiplier = 1.2f, duration = 10f }
                 });
 
+            // --- BackgroundConfig (Resources/BackgroundConfig.asset) ---
+            _bgCfg = Resources.Load<BackgroundConfig>("BackgroundConfig");
+
             // --- Camera ---
+            Camera cam;
             if (Camera.main == null)
             {
                 var camGo = new GameObject("Main Camera");
                 camGo.tag = "MainCamera";
-                var cam = camGo.AddComponent<Camera>();
-                cam.orthographic = true;
-                cam.orthographicSize = 7f;
-                cam.clearFlags = CameraClearFlags.SolidColor;
-                cam.backgroundColor = new Color(0.48f, 0.72f, 0.88f);
-                cam.transform.position = new Vector3(0, 0, -10);
+                cam = camGo.AddComponent<Camera>();
             }
+            else
+            {
+                cam = Camera.main;
+            }
+            cam.orthographic     = true;
+            cam.orthographicSize = _bgCfg != null ? _bgCfg.orthographicSize : 5f;
+            cam.clearFlags       = CameraClearFlags.SolidColor;
+            cam.transform.position = new Vector3(0, _bgCfg != null ? _bgCfg.cameraY : -0.5f, -10);
 
             // --- EventSystem ---
             if (FindObjectOfType<EventSystem>() == null)
@@ -82,23 +119,80 @@ namespace SlotDefense
                 esGo.AddComponent<StandaloneInputModule>();
             }
 
+            BuildStartMenu();
+        }
+
+        // ============================================================
+        //  Start Menu
+        // ============================================================
+
+        private void BuildStartMenu()
+        {
+            _startMenuGo = new GameObject("StartMenuCanvas");
+            var canvas   = _startMenuGo.AddComponent<Canvas>();
+            canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 10;
+            var scaler = _startMenuGo.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode         = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            _startMenuGo.AddComponent<GraphicRaycaster>();
+
+            var bgGo = Child(_startMenuGo.transform, "BG");
+            StretchFull((RectTransform)bgGo.transform);
+            bgGo.AddComponent<Image>().color = new Color(0.07f, 0.09f, 0.18f, 1f);
+
+            var titleTxt = MakeText(_startMenuGo.transform, "Title", "슬롯 디펜스", new Vector2(0, 180f), 64);
+            titleTxt.color = new Color(1f, 0.9f, 0.3f);
+
+            var subTxt = MakeText(_startMenuGo.transform, "Sub", "게임 모드를 선택하세요", new Vector2(0, 90f), 28);
+            subTxt.color = new Color(0.7f, 0.78f, 1f);
+
+            var battleBtn = MakeButton(_startMenuGo.transform, "BattleBtn",
+                "⚔  전투 모드\n상대 기지를 먼저 파괴하세요",
+                new Vector2(0, -20f), new Vector2(380f, 80f));
+            battleBtn.onClick.AddListener(() => Launch(GameMode.Battle));
+
+            var survBtn = MakeButton(_startMenuGo.transform, "SurvBtn",
+                "🌊  생존 모드\n웨이브를 최대한 버티세요",
+                new Vector2(0, -130f), new Vector2(380f, 80f));
+            survBtn.onClick.AddListener(() => Launch(GameMode.Survival));
+            if (survBtn.targetGraphic is Image si) si.color = new Color(0.5f, 0.25f, 0.05f);
+        }
+
+        // ============================================================
+        //  Game Launch
+        // ============================================================
+
+        private void Launch(GameMode mode)
+        {
+            if (_startMenuGo != null) { Destroy(_startMenuGo); _startMenuGo = null; }
+            bool isSurvival = mode == GameMode.Survival;
+
+            // --- 모드별 배경 적용 ---
+            if (Camera.main != null && _bgCfg != null)
+                Camera.main.backgroundColor = isSurvival ? _bgCfg.survivalSkyColor : _bgCfg.battleSkyColor;
+            else if (Camera.main != null)
+                Camera.main.backgroundColor = isSurvival ? new Color(0.10f, 0.08f, 0.18f) : new Color(0.48f, 0.72f, 0.88f);
+
             // --- Arenas ---
             var pVillage = MakeVillage("PlayerVillage", new Vector3(-7.5f, 0, 0), true);
-            var eVillage = MakeVillage("EnemyVillage",  new Vector3( 7.5f, 0, 0), false);
+            var eVillage = isSurvival ? null : MakeVillage("EnemyVillage", new Vector3(7.5f, 0, 0), false);
             var pSpawn   = Spawn("PlayerSpawn", new Vector3(-2.5f, 0, 0));
-            var eSpawn   = Spawn("EnemySpawn",  new Vector3( 2.5f, 0, 0));
+            var eSpawn   = Spawn("EnemySpawn",  isSurvival ? new Vector3(5.5f, 0, 0) : new Vector3(2.5f, 0, 0));
 
-            // --- 포탈 (x=0 중앙) ---
-            var portalGo = new GameObject("Portal");
-            portalGo.transform.position = Vector3.zero;
-            var portalSr = portalGo.AddComponent<SpriteRenderer>();
-            portalSr.sprite = MakeSprite(new Color(0.7f, 0.2f, 1f), 0.9f, 2f);
-            portalSr.sortingOrder = 1;
-            var portalComp = portalGo.AddComponent<Portal>();
-            portalComp.eliteConfig = eliteCfg;
+            // --- Portal ---
+            Portal portalComp = null;
+            {
+                var portalGo = new GameObject("Portal");
+                portalGo.transform.position = isSurvival ? new Vector3(7.5f, 0, 0) : Vector3.zero;
+                var portalSr = portalGo.AddComponent<SpriteRenderer>();
+                portalSr.sprite = MakeSprite(new Color(0.7f, 0.2f, 1f), 0.9f, 2f);
+                portalSr.sortingOrder = 1;
+                portalComp = portalGo.AddComponent<Portal>();
+                portalComp.eliteConfig = _eliteCfg;
+            }
 
             // 비활성화를 AddComponent 전에 해야 Awake()가 실행되지 않음.
-            // (Awake에서 HpBar를 생성하면 config=null인 템플릿에 붙어 NullRef 발생)
             var mTemplate = MakeTemplate("MonsterTemplate", Color.red,  new Vector3(-999, -999, 0));
             mTemplate.SetActive(false);
             mTemplate.AddComponent<MonsterController>();
@@ -111,130 +205,55 @@ namespace SlotDefense
             var gmGo = new GameObject("GameManager");
             gmGo.SetActive(false);
             var gm = gmGo.AddComponent<GameManager>();
-            gm.deckConfig = deckCfg;
-            gm.buffConfig = buffCfg;
+            gm.deckConfig     = _deckCfg;
+            gm.buffConfig     = _buffCfg;
+            gm.isSurvivalMode = isSurvival;
             gmGo.SetActive(true);
 
             // 시작 카드 1장 랜덤 지급
-            var startRng = new System.Random();
-            GameManager.Instance.Hand.TryAdd(deckCfg.cards[startRng.Next(deckCfg.cards.Length)]);
+            var rng = new System.Random();
+            GameManager.Instance.Hand.TryAdd(_deckCfg.cards[rng.Next(_deckCfg.cards.Length)]);
 
             // --- ArenaSystem ---
             var arenaGo = new GameObject("ArenaSystem");
             var arena   = arenaGo.AddComponent<ArenaSystem>();
-            arena.playerSpawnPoint = pSpawn;
-            arena.enemySpawnPoint  = eSpawn;
-            arena.playerVillage    = pVillage;
-            arena.enemyVillage     = eVillage;
-            arena.monsterPrefab    = mTemplate;
-            arena.monsterConfig    = monsterCfg;
-            arena.unitPrefab       = uTemplate;
-            arena.portal           = portalComp;
-            arena.eliteMonsterConfig = eliteCfg;
-            portalComp.arenaSystem = arena; // 포탈 ↔ 아레나 연결
+            arena.playerSpawnPoint   = pSpawn;
+            arena.enemySpawnPoint    = eSpawn;
+            arena.playerVillage      = pVillage;
+            arena.enemyVillage       = eVillage;
+            arena.monsterPrefab      = mTemplate;
+            arena.monsterConfig      = _monsterCfg;
+            arena.unitPrefab         = uTemplate;
+            arena.portal             = portalComp;
+            arena.eliteMonsterConfig = _eliteCfg;
+            arena.survivalMode       = isSurvival;
+            if (portalComp != null) portalComp.arenaSystem = arena;
 
-            // --- TransferSystem ---
-            var tsGo = new GameObject("TransferSystem");
-            var ts   = tsGo.AddComponent<TransferSystem>();
-            ts.arenaSystem = arena;
-            ts.portal      = portalComp;
+            // --- TransferSystem (battle only) ---
+            if (!isSurvival)
+            {
+                var tsGo = new GameObject("TransferSystem");
+                var ts   = tsGo.AddComponent<TransferSystem>();
+                ts.arenaSystem = arena;
+                ts.portal      = portalComp;
+            }
 
-            // --- AIOpponent ---
-            var aiGo = new GameObject("AIOpponent");
-            aiGo.SetActive(false);
-            var ai = aiGo.AddComponent<AIOpponent>();
-            ai.deckConfig  = deckCfg;
-            ai.buffConfig  = buffCfg;
-            ai.arenaSystem = arena;
-            ai.portal      = portalComp;
-            ai.unitPrefab  = uTemplate;
-            aiGo.SetActive(true);
-
-            // --- Decoration ---
-            BuildDecoration();
+            // --- AIOpponent (battle only) ---
+            if (!isSurvival)
+            {
+                var aiGo = new GameObject("AIOpponent");
+                aiGo.SetActive(false);
+                var ai = aiGo.AddComponent<AIOpponent>();
+                ai.deckConfig  = _deckCfg;
+                ai.buffConfig  = _buffCfg;
+                ai.arenaSystem = arena;
+                ai.portal      = portalComp;
+                ai.unitPrefab  = uTemplate;
+                aiGo.SetActive(true);
+            }
 
             // --- UI ---
             BuildUI(arena);
-        }
-
-        // ============================================================
-        //  Scene Decoration (SimpleNaturePack)
-        // ============================================================
-
-        static void BuildDecoration()
-        {
-            var rng = new System.Random(42);
-
-            // 그라운드 타일 — 전장 바닥 (y=-2, z=5, 뒤쪽 레이어)
-            string[] groundNames = { "Ground_01", "Ground_02", "Ground_03" };
-            for (int i = -3; i <= 3; i++)
-            {
-                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{groundNames[Mathf.Abs(i) % 3]}");
-                if (p == null) continue;
-                var g = Instantiate(p);
-                g.transform.position   = new Vector3(i * 5.5f, -2.8f, 5f);
-                g.transform.localScale = new Vector3(3.5f, 2f, 2f);
-            }
-
-            // 배경 나무 — 위쪽 (y=2~4, z=2.5~4)
-            string[] treeNames = { "Tree_01", "Tree_02", "Tree_03", "Tree_04", "Tree_05" };
-            float[] treeXs = { -11f, -8.5f, -6f, -3.5f, -1f, 1f, 3.5f, 6f, 8.5f, 11f };
-            foreach (var x in treeXs)
-            {
-                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{treeNames[rng.Next(treeNames.Length)]}");
-                if (p == null) continue;
-                var t = Instantiate(p);
-                float y     = 1.8f + (float)(rng.NextDouble() * 1.5f);
-                float z     = 2.5f + (float)(rng.NextDouble() * 1.5f);
-                float scale = 1.5f + (float)(rng.NextDouble() * 1.2f);
-                t.transform.position   = new Vector3(x, y, z);
-                t.transform.localScale = Vector3.one * scale;
-            }
-
-            // 바위 — 전장 바닥 (y≈-1.8, z≈1)
-            string[] rockNames = { "Rock_01", "Rock_02", "Rock_03", "Rock_04", "Rock_05" };
-            float[,] rockData = {
-                { -9.5f, -1.9f, 1.0f, 0.55f },
-                { -5.5f, -1.8f, 0.9f, 0.40f },
-                { -0.5f, -1.9f, 0.8f, 0.65f },
-                {  2.0f, -1.8f, 0.9f, 0.50f },
-                {  6.0f, -1.9f, 1.0f, 0.45f },
-                {  9.5f, -1.8f, 0.8f, 0.70f },
-            };
-            for (int i = 0; i < rockData.GetLength(0); i++)
-            {
-                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{rockNames[rng.Next(rockNames.Length)]}");
-                if (p == null) continue;
-                var r = Instantiate(p);
-                r.transform.position   = new Vector3(rockData[i, 0], rockData[i, 1], rockData[i, 2]);
-                r.transform.localScale = Vector3.one * rockData[i, 3];
-            }
-
-            // 덤불 — 전장 앞 (y≈-1.7, z≈1.2)
-            string[] bushNames = { "Bush_01", "Bush_02", "Bush_03" };
-            float[] bushXs = { -10f, -7f, -4f, -1.5f, 1.5f, 4.5f, 7.5f, 10.5f };
-            foreach (var x in bushXs)
-            {
-                var p = Resources.Load<GameObject>($"SimpleNaturePack/Prefabs/{bushNames[rng.Next(3)]}");
-                if (p == null) continue;
-                var b = Instantiate(p);
-                float z     = 1.0f + (float)(rng.NextDouble() * 0.5f);
-                float scale = 0.55f + (float)(rng.NextDouble() * 0.35f);
-                b.transform.position   = new Vector3(x, -1.7f, z);
-                b.transform.localScale = Vector3.one * scale;
-            }
-
-            // 그루터기 — 전투 분위기 장식
-            var stump = Resources.Load<GameObject>("SimpleNaturePack/Prefabs/Stump_01");
-            if (stump != null)
-            {
-                foreach (var x in new[] { -7f, -3f, 4f, 8f })
-                {
-                    var s = Instantiate(stump);
-                    s.transform.position   = new Vector3(x, -1.85f, 1.4f);
-                    s.transform.localScale = Vector3.one * 0.45f;
-                }
-            }
         }
 
         // ============================================================
@@ -267,7 +286,7 @@ namespace SlotDefense
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");
             var slotUI = slotGo.AddComponent<SlotMachineUI>();
 
-            LabelText(slotGo.transform, "SlotDesc", "몬스터 처치 -> XP 충전 -> SPIN -> 카드 획득", new Vector2(0, -255));
+            LabelText(slotGo.transform, "SlotDesc", "행운 소모 → SPIN → 카드 획득  (2초마다 행운 +1)", new Vector2(0, -255));
 
             // 3개 릴 박스
             var reelNameTexts = new Text[3];
@@ -288,18 +307,18 @@ namespace SlotDefense
             slotUI.reelNames  = reelNameTexts;
 
             slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -355), 24);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN", new Vector2(0, -400), new Vector2(210, 58));
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN (행운 1 소모)", new Vector2(0, -400), new Vector2(260, 58));
 
-            // 배치 가능 구역 오버레이 (캔버스 맨 앞에 추가해야 게임 콘텐츠 위에 표시되지 않도록 뒤에서 렌더링)
+            // 배치 가능 구역 오버레이
             var zoneGo  = Child(canvasGo.transform, "DeployZone");
             var zoneRt  = (RectTransform)zoneGo.transform;
             zoneRt.anchorMin  = Vector2.zero;
             zoneRt.anchorMax  = new Vector2(0.48f, 1f);
             zoneRt.sizeDelta  = Vector2.zero;
             var zoneImg = zoneGo.AddComponent<Image>();
-            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0.05f);
+            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0.10f);
             zoneImg.raycastTarget = false;
-            zoneGo.transform.SetSiblingIndex(0); // 맨 뒤에서 렌더링
+            zoneGo.transform.SetSiblingIndex(0);
 
             // 구역 경계선 (오른쪽 끝 세로선)
             var borderGo = Child(zoneGo.transform, "Border");
@@ -307,13 +326,18 @@ namespace SlotDefense
             borderRt.anchorMin = new Vector2(1f, 0f);
             borderRt.anchorMax = new Vector2(1f, 1f);
             borderRt.pivot     = new Vector2(1f, 0.5f);
-            borderRt.sizeDelta = new Vector2(3f, 0f);
+            borderRt.sizeDelta = new Vector2(5f, 0f);
             var borderImg = borderGo.AddComponent<Image>();
-            borderImg.color = new Color(0.3f, 0.75f, 1f, 0.25f);
+            borderImg.color = new Color(0.3f, 0.85f, 1f, 0.65f);
             borderImg.raycastTarget = false;
 
-            var zoneLbl = MakeText(zoneGo.transform, "ZoneLabel", "배치 구역", new Vector2(0, 0), 18);
-            zoneLbl.color = new Color(0.4f, 0.8f, 1f, 0.25f);
+            // 구역 상단 라벨
+            var zoneLbl = MakeText(zoneGo.transform, "ZoneLabel", "▼ 배치 구역 ▼", new Vector2(0, 40), 22);
+            zoneLbl.color = new Color(0.4f, 0.9f, 1f, 0.75f);
+
+            // 구역 하단 설명
+            var zoneDesc = MakeText(zoneGo.transform, "ZoneDesc", "카드 드래그하여 유닛 배치", new Vector2(0, -20), 16);
+            zoneDesc.color = new Color(0.6f, 0.9f, 1f, 0.55f);
 
             // HandUI
             var handGo = Child(canvasGo.transform, "HandUI");
@@ -341,7 +365,7 @@ namespace SlotDefense
                 handUI.cardButtons[i] = btn;
 
                 var drag = cardGo.AddComponent<CardDragHandler>();
-                drag.slotIndex  = i;
+                drag.slotIndex   = i;
                 drag.arenaSystem = arena;
                 drag.font        = SharedFont();
 
@@ -392,13 +416,13 @@ namespace SlotDefense
 
             dv.panel       = dvPanel;
             dv.contentText = dvContent;
-            dv.Setup(deckCfg);
+            dv.Setup(GameManager.Instance.deckConfig);
 
             // "덱 보기" 버튼 — HUD 우상단
             var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(840f, 490f), new Vector2(110f, 36f));
             deckBtn.onClick.AddListener(() => dv.Toggle());
 
-            // ScreenFlash overlay — Canvas 마지막 자식으로 추가해야 최상위에 렌더링됨
+            // ScreenFlash overlay
             var flashGo  = Child(canvasGo.transform, "ScreenFlash");
             var flashRt  = (RectTransform)flashGo.transform;
             flashRt.anchorMin = Vector2.zero;
@@ -425,16 +449,22 @@ namespace SlotDefense
             card.cardName    = name;
             card.cardType    = CardType.Skill;
             card.skillEffect = new SkillEffect { type = type, damage = damage, radius = radius };
-            card.placementCost = 0;
             return card;
         }
 
-        static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f, float heal = 0f)
+        void TrySetUnitPrefab(CardData card, GameObject overridePrefab)
+        {
+            if (overridePrefab != null) { card.unitPrefab = overridePrefab; return; }
+            var loaded = Resources.Load<GameObject>($"Prefabs/Units/{card.cardName}");
+            if (loaded != null) card.unitPrefab = loaded;
+        }
+
+        static CardData MakeCard(string name, float hp, float dmg, float speed, float range, float rate, float sight = 5f, float heal = 0f, float luckPerSec = 0f)
         {
             var card = ScriptableObject.CreateInstance<CardData>();
             card.cardName  = name;
             card.cardType  = CardType.Unit;
-            card.unitStats = new UnitStats { hp = hp, damage = dmg, moveSpeed = speed, attackRange = range, attackRate = rate, sightRange = sight, healAmount = heal };
+            card.unitStats = new UnitStats { hp = hp, damage = dmg, moveSpeed = speed, attackRange = range, attackRate = rate, sightRange = sight, healAmount = heal, luckGenRate = luckPerSec };
             return card;
         }
 

@@ -35,10 +35,12 @@ namespace SlotDefense
             _currentHp = Mathf.Max(0f, _currentHp - amount);
             _hpBar?.SetRatio(HpRatio);
 
-            arenaSystem?.SpawnMonsterInArena(isPlayerArena: true);
+            // 포탈 오른쪽에서 출현 (스프라이트에 가려지지 않도록)
+            var spawnPos = transform.position + new Vector3(1.0f, 0, 0);
+            arenaSystem?.SpawnMonsterInArena(isPlayerArena: true, atPosition: spawnPos);
 
             if (HpRatio < eliteThreshold && eliteConfig != null)
-                arenaSystem?.SpawnMonsterInArena(isPlayerArena: true, overrideConfig: eliteConfig);
+                arenaSystem?.SpawnMonsterInArena(isPlayerArena: true, overrideConfig: eliteConfig, atPosition: spawnPos);
         }
     }
 }

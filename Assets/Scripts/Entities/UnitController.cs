@@ -8,11 +8,13 @@ namespace SlotDefense
         public static float GlobalSpeedMultiplier  = 1f;
 
         public static readonly List<UnitController> ActivePlayerUnits = new List<UnitController>();
+        public static readonly List<UnitController> AllUnits          = new List<UnitController>();
 
         private UnitStats _stats;
         private float _currentHp;
         private float _attackCooldown;
         private MonsterController _target;
+        private UnitController _unitTarget;  // 적 유닛 타겟
         private float _maxX = float.MaxValue;
         private float _minX = float.MinValue;
         private Vector2 _forwardDir;
@@ -20,6 +22,7 @@ namespace SlotDefense
         private HpBar _hpBar;
         private Rigidbody2D _rb;
         private bool _isPlayerUnit;
+        private float _luckTimer;
 
         public void Init(UnitStats stats, bool isPlayerUnit = false, Portal portal = null)
         {
@@ -47,17 +50,31 @@ namespace SlotDefense
             }
 
             if (isPlayerUnit) ActivePlayerUnits.Add(this);
+            AllUnits.Add(this);
         }
 
         private void OnDestroy()
         {
             ActivePlayerUnits.Remove(this);
+            AllUnits.Remove(this);
+            _currentHp = 0f; // 다른 유닛의 _unitTarget 갱신 트리거용
         }
 
         private void Update()
         {
             if (_hpBar == null || _currentHp <= 0f) return;
             _attackCooldown -= Time.deltaTime;
+
+            // 행운 생성 (비전투 유닛)
+            if (_stats.luckGenRate > 0f && _isPlayerUnit && GameManager.Instance != null)
+            {
+                _luckTimer += Time.deltaTime;
+                if (_luckTimer >= 1f / _stats.luckGenRate)
+                {
+                    _luckTimer = 0f;
+                    GameManager.Instance.SlotMachine.AddCharge(1);
+                }
+            }
 
             if (_stats.healAmount > 0f)
             {
@@ -79,14 +96,46 @@ namespace SlotDefense
             }
 
             AcquireTarget();
+            AcquireUnitTarget();
 
-            if (_target != null)
+            // 몬스터 타겟과 적 유닛 타겟 중 더 가까운 쪽 우선
+            bool hasMonster = _target != null;
+            bool hasUnit    = _unitTarget != null;
+
+            if (hasMonster || hasUnit)
             {
-                SetVelocityToward(_target.transform.position);
-                if (InRange(_target.transform.position) && _attackCooldown <= 0f)
+                Vector3 attackPos;
+                bool    attackUnit = false;
+                if (hasMonster && hasUnit)
                 {
-                    _attackCooldown = 1f / _stats.attackRate;
-                    _target.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                    float dm = Vector2.Distance(transform.position, _target.transform.position);
+                    float du = Vector2.Distance(transform.position, _unitTarget.transform.position);
+                    attackUnit = du < dm;
+                }
+                else
+                {
+                    attackUnit = hasUnit;
+                }
+
+                if (attackUnit)
+                {
+                    attackPos = _unitTarget.transform.position;
+                    SetVelocityToward(attackPos);
+                    if (InRange(attackPos) && _attackCooldown <= 0f)
+                    {
+                        _attackCooldown = 1f / _stats.attackRate;
+                        _unitTarget.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                    }
+                }
+                else
+                {
+                    attackPos = _target.transform.position;
+                    SetVelocityToward(attackPos);
+                    if (InRange(attackPos) && _attackCooldown <= 0f)
+                    {
+                        _attackCooldown = 1f / _stats.attackRate;
+                        _target.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                    }
                 }
             }
             else if (_portal != null && InRange(_portal.transform.position))
@@ -100,25 +149,46 @@ namespace SlotDefense
             }
             else
             {
-                AdvanceForward();
+                if (_isPlayerUnit)
+                    _rb.velocity = CalcSeparation(); // 시야 내 적 없음 → 아군 영역 대기
+                else
+                    AdvanceForward();
             }
         }
 
         private void AdvanceForward()
         {
-            var vel = _forwardDir * _stats.moveSpeed * GlobalSpeedMultiplier;
+            var vel = _forwardDir * _stats.moveSpeed * GlobalSpeedMultiplier + CalcSeparation();
             EnforceBoundary(ref vel);
             _rb.velocity = vel;
         }
 
         private void SetVelocityToward(Vector3 target)
         {
-            if (InRange(target)) { _rb.velocity = Vector2.zero; return; }
+            var sep = CalcSeparation();
+            if (InRange(target)) { _rb.velocity = sep; return; }
 
             var dir = ((Vector2)target - (Vector2)transform.position).normalized;
-            var vel = dir * _stats.moveSpeed * GlobalSpeedMultiplier;
+            var vel = dir * _stats.moveSpeed * GlobalSpeedMultiplier + sep;
             EnforceBoundary(ref vel);
             _rb.velocity = vel;
+        }
+
+        // 주변 유닛들로부터 밀어내는 분리 벡터
+        private Vector2 CalcSeparation()
+        {
+            const float sepRadius = 0.65f;
+            const float sepForce  = 2.0f;
+            var sep = Vector2.zero;
+            foreach (var u in AllUnits)
+            {
+                if (u == this || u._currentHp <= 0f) continue;
+                var diff = (Vector2)(transform.position - u.transform.position);
+                float dist = diff.magnitude;
+                if (dist < sepRadius && dist > 0.01f)
+                    sep += diff.normalized * ((sepRadius - dist) / sepRadius) * sepForce;
+            }
+            return sep;
         }
 
         private void EnforceBoundary(ref Vector2 vel)
@@ -142,6 +212,23 @@ namespace SlotDefense
                 var dist = Vector2.Distance(transform.position, m.transform.position);
                 if (dist > sight) continue;
                 if (dist < nearest) { nearest = dist; _target = m; }
+            }
+        }
+
+        // 적 유닛(UnitController) 타겟 탐색 — 플레이어↔AI 양방향
+        private void AcquireUnitTarget()
+        {
+            if (_unitTarget != null && _unitTarget._currentHp > 0f) return;
+            _unitTarget = null;
+            float nearest = float.MaxValue;
+            float sight   = _stats.sightRange > 0f ? _stats.sightRange : 999f;
+            foreach (var u in AllUnits)
+            {
+                if (u == this || u._currentHp <= 0f) continue;
+                if (u._isPlayerUnit == _isPlayerUnit) continue; // 같은 편 제외
+                var dist = Vector2.Distance(transform.position, u.transform.position);
+                if (dist > sight) continue;
+                if (dist < nearest) { nearest = dist; _unitTarget = u; }
             }
         }
 

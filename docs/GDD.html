@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LotteryFantasy — 게임 기획서</title>
+<style>
+  :root {
+    --bg:       #0b0d1a;
+    --surface:  #131728;
+    --surface2: #1a2040;
+    --border:   #2a3560;
+    --accent:   #4da8ff;
+    --accent2:  #a855f7;
+    --gold:     #f5c842;
+    --green:    #34d399;
+    --red:      #f87171;
+    --text:     #d1d9f0;
+    --muted:    #6b7db3;
+    --radius:   8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Malgun Gothic', 'NanumGothic', 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* Layout */
+  .layout { display: flex; min-height: 100vh; }
+
+  nav {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  nav .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  nav .logo h1 { font-size: 16px; color: var(--gold); font-weight: 700; }
+  nav .logo p  { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  nav a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  nav a:hover { color: var(--accent); border-left-color: var(--accent); background: rgba(77,168,255,0.06); }
+  nav .nav-section { padding: 14px 20px 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); opacity: 0.6; }
+
+  main {
+    flex: 1;
+    max-width: 900px;
+    padding: 48px 40px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .page-header {
+    background: linear-gradient(135deg, var(--surface2), #1e1040);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
+  }
+  .page-header h1 { font-size: 28px; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
+  .page-header .subtitle { color: var(--gold); font-size: 14px; margin-top: 6px; }
+  .page-header .meta { margin-top: 16px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(77,168,255,0.12);
+    border: 1px solid rgba(77,168,255,0.3);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge.purple { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3); color: var(--accent2); }
+  .badge.gold   { background: rgba(245,200,66,0.12); border-color: rgba(245,200,66,0.3); color: var(--gold); }
+  .badge.green  { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--green); }
+
+  /* Sections */
+  section { margin-bottom: 48px; }
+
+  h2 {
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .sec-num {
+    background: var(--accent);
+    color: #000;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  h2 .sec-num.purple { background: var(--accent2); }
+  h2 .sec-num.gold   { background: var(--gold); }
+
+  h3 {
+    font-size: 15px;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 24px 0 12px;
+  }
+
+  p { margin-bottom: 12px; color: var(--text); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: var(--surface2); }
+  thead th {
+    text-align: left;
+    padding: 10px 14px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody td { padding: 9px 14px; }
+  tbody td:first-child { color: #fff; font-weight: 600; }
+
+  /* Info Boxes */
+  .info-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .info-box.warn   { border-left-color: var(--gold); }
+  .info-box.tip    { border-left-color: var(--green); }
+  .info-box.purple { border-left-color: var(--accent2); }
+  .info-box strong { color: var(--text); }
+
+  /* Code */
+  pre {
+    background: #060810;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-family: 'Consolas', 'D2Coding', monospace;
+    font-size: 13px;
+    color: #7dd3fc;
+    overflow-x: auto;
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+  code {
+    background: rgba(77,168,255,0.1);
+    border: 1px solid rgba(77,168,255,0.2);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  /* Loop diagram */
+  .loop-diagram { display: flex; align-items: center; flex-wrap: wrap; margin: 16px 0; gap: 0; }
+  .loop-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .loop-arrow { color: var(--muted); font-size: 18px; padding: 0 6px; flex-shrink: 0; }
+  .loop-node.highlight { border-color: var(--accent); color: var(--accent); background: rgba(77,168,255,0.08); }
+  .loop-node.skill     { border-color: var(--accent2); color: var(--accent2); background: rgba(168,85,247,0.08); }
+  .loop-node.gold      { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.08); }
+  .loop-results { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+  /* Checklist */
+  .checklist { list-style: none; margin-bottom: 8px; }
+  .checklist li {
+    padding: 7px 0 7px 26px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(42,53,96,0.5);
+  }
+  .checklist li::before { content: '\25CB'; position: absolute; left: 0; color: var(--muted); }
+  .checklist li.done::before { content: '\25CF'; color: var(--green); }
+  .checklist li strong { color: var(--accent); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <h1>LotteryFantasy</h1>
+    <p>게임 기획서 v2.0 &mdash; 2026-04-29</p>
+  </div>
+  <div class="nav-section">개요</div>
+  <a href="#overview">1. 게임 개요</a>
+  <a href="#modes">2. 게임 모드</a>
+  <a href="#layout">3. 씬 레이아웃</a>
+  <div class="nav-section">핵심 시스템</div>
+  <a href="#slot">4. 슬롯머신 시스템</a>
+  <a href="#cards">5. 카드 &amp; 손패</a>
+  <a href="#skills">6. 스킬 카드</a>
+  <a href="#unit-ai">7. 유닛 AI</a>
+  <a href="#buff">8. 버프 시스템</a>
+  <div class="nav-section">전장</div>
+  <a href="#portal">9. 포탈 시스템</a>
+  <a href="#transfer">10. 증원 시스템</a>
+  <a href="#stage">11. 스테이지 시스템</a>
+  <a href="#survival">12. 생존 웨이브</a>
+  <a href="#monsters">13. 몬스터</a>
+  <a href="#ai">14. AI 상대방</a>
+  <div class="nav-section">UI / 기록</div>
+  <a href="#hpbar">15. HP 바</a>
+  <a href="#record">16. 전적 시스템</a>
+  <a href="#deckviewer">17. 덱 뷰어</a>
+  <a href="#winlose">18. 승패 조건</a>
+  <div class="nav-section">수치 / BM</div>
+  <a href="#balance">19. 밸런스 수치</a>
+  <a href="#potential">20. 성공 가능성</a>
+  <a href="#bm">21. 비즈니스 모델</a>
+  <a href="#todo">22. 향후 과제</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<div class="page-header">
+  <h1>LotteryFantasy</h1>
+  <div class="subtitle">Game Design Document (게임 기획서)</div>
+  <div class="meta">
+    <span class="badge">슬롯머신 &times; 타워디펜스 &times; 카드게임</span>
+    <span class="badge purple">Unity 2022 URP 2D</span>
+    <span class="badge gold">2026-04-29</span>
+    <span class="badge green">v2.0</span>
+  </div>
+</div>
+
+<!-- §1 -->
+<section id="overview">
+  <h2><span class="sec-num">1</span> 게임 개요</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>장르</td><td>슬롯머신 &times; 타워 디펜스 &times; 카드 게임</td></tr>
+      <tr><td>플랫폼</td><td>PC / 모바일 (Unity 2022 URP 2D)</td></tr>
+      <tr><td>인원</td><td>1인 vs AI / 생존 모드 (싱글)</td></tr>
+      <tr><td>한 판 시간</td><td>전투: 3분 / 생존: 무제한</td></tr>
+      <tr><td>수익화</td><td>F2P + IAP (캐릭터 획득·성장 중심)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>핵심 루프</h3>
+  <div class="loop-diagram">
+    <div class="loop-node">몬스터 처치</div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-node">XP 획득</div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-node">스핀 충전</div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-node highlight">SPIN</div>
+    <div class="loop-arrow">&rarr;</div>
+    <div class="loop-node">카드 획득</div>
+  </div>
+  <div class="loop-results">
+    <div class="loop-node" style="font-size:12px;">유닛카드 &rarr; 스핀 소모 &rarr; 배치 &rarr; 방어</div>
+    <div class="loop-node skill" style="font-size:12px;">스킬카드 &rarr; 지점 선택 &rarr; 즉발 피해</div>
+    <div class="loop-node gold" style="font-size:12px;">버프카드 &rarr; 클릭 즉시 &rarr; 아군 강화</div>
+  </div>
+</section>
+
+<!-- §2 -->
+<section id="modes">
+  <h2><span class="sec-num">2</span> 게임 모드 선택</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>모드</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>전투 모드</td><td>3분 제한 시간 내 AI 기지 파괴. STAGE 1&rarr;2&rarr;3으로 난이도 상승</td></tr>
+      <tr><td>생존 모드</td><td>무한 웨이브를 최대한 버팀. 웨이브마다 몬스터 수&middot;엘리트 비율 증가</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box tip"><strong>시작 혜택:</strong> 게임 시작 시 덱에서 랜덤 카드 1장을 손패에 즉시 지급</div>
+</section>
+
+<!-- §3 -->
+<section id="layout">
+  <h2><span class="sec-num">3</span> 씬 레이아웃</h2>
+  <pre>x=-7.5        x=-2.5      x=0        x=+2.5       x=+7.5
+[플레이어기지]  [적웨이브출구]  [포탈]  [AI웨이브출구]  [AI기지]
+  (시안)                  (보라/빨강)                (오렌지)</pre>
+  <div class="table-wrap"><table>
+    <thead><tr><th>영역</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>좌측 (x &lt; 0)</td><td>플레이어 진영. 몬스터가 x=&minus;2.5에서 출현해 기지(&minus;7.5)로 이동</td></tr>
+      <tr><td>우측 (x &gt; 0)</td><td>AI 진영. 동일 구조</td></tr>
+      <tr><td>중앙 (x = 0)</td><td>포탈. 플레이어 유닛의 공격 목표이자 적 증원의 출구</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §4 -->
+<section id="slot">
+  <h2><span class="sec-num">4</span> 슬롯머신 시스템</h2>
+
+  <h3>4.1 XP &amp; 스핀 충전</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>수치</th></tr></thead>
+    <tbody>
+      <tr><td>처치 XP &mdash; 일반 몬스터</td><td>50</td></tr>
+      <tr><td>처치 XP &mdash; 엘리트 몬스터</td><td>150</td></tr>
+      <tr><td>스핀 1회 충전 필요 XP</td><td>100</td></tr>
+      <tr><td>게임 시작 지급</td><td>스핀 3회 (XP 300) + 랜덤 카드 1장</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box warn">스핀 충전량은 유닛 배치 비용으로도 소모됨. 충전량이 부족하면 스핀도 배치도 불가.</div>
+
+  <h3>4.2 덱 구성 (18장 / 7종)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>카드</th><th>종류</th><th>HP</th><th>피해</th><th>이동</th><th>사거리</th><th>공격속도</th><th>시야</th><th>비용</th><th>장수</th></tr></thead>
+    <tbody>
+      <tr><td>검사</td><td>유닛</td><td>80</td><td>15</td><td>2.0</td><td>1.5</td><td>1.0/s</td><td>5</td><td>1스핀</td><td>3</td></tr>
+      <tr><td>궁수</td><td>유닛</td><td>50</td><td>10</td><td>1.5</td><td>5.0</td><td>2.0/s</td><td>8</td><td>1스핀</td><td>3</td></tr>
+      <tr><td>기사</td><td>유닛</td><td>120</td><td>20</td><td>1.2</td><td>1.0</td><td>0.8/s</td><td>4</td><td>2스핀</td><td>3</td></tr>
+      <tr><td>마법사</td><td>유닛</td><td>40</td><td>28</td><td>1.8</td><td>4.5</td><td>0.6/s</td><td>8</td><td>2스핀</td><td>3</td></tr>
+      <tr><td>힐러</td><td>유닛</td><td>70</td><td>0 (치유 8)</td><td>1.6</td><td>2.0</td><td>0.8/s</td><td>6</td><td>2스핀</td><td>2</td></tr>
+      <tr><td>번개화살</td><td>스킬</td><td>&mdash;</td><td>80 (범위)</td><td>&mdash;</td><td>반경 2.0</td><td>즉발</td><td>&mdash;</td><td>무료</td><td>2</td></tr>
+      <tr><td>포탈폭격</td><td>스킬</td><td>&mdash;</td><td>120 (범위)</td><td>&mdash;</td><td>반경 3.0</td><td>즉발</td><td>&mdash;</td><td>무료</td><td>2</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box">
+    <strong>시야(sightRange):</strong> 이 거리 이내에 몬스터가 있을 때만 추격. 없으면 전방 전진.<br>
+    <strong>힐러:</strong> 피해 대신 주변 아군에게 heal=8 회복 적용.
+  </div>
+
+  <h3>4.3 릴 판정</h3>
+  <p>릴 3개를 덱에서 <strong>복원 추출</strong>. 카드 인스턴스 동일성으로 판정.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>결과</th><th>조건</th><th>확률</th><th>보상</th></tr></thead>
+    <tbody>
+      <tr><td>Triple</td><td>3릴 모두 동일 카드</td><td>약 6%</td><td>해당 카드 손패 추가 (향후: 스탯 강화)</td></tr>
+      <tr><td>Double</td><td>2릴 동일 카드</td><td>약 56%</td><td>해당 카드 손패 추가</td></tr>
+      <tr><td>AllDifferent</td><td>3릴 전부 다름</td><td>약 37%</td><td>버프카드 손패 추가</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box warn">
+    <strong>Triple 현황:</strong> 현재 구현에서 Triple은 스탯 강화 없이 동일 카드를 손패에 추가함.
+    <code>CardTier.Enhanced</code> 구조는 준비되어 있으나 실제 강화 효과는 미구현.
+  </div>
+</section>
+
+<!-- §5 -->
+<section id="cards">
+  <h2><span class="sec-num">5</span> 카드 &amp; 손패</h2>
+  <p>손패 슬롯 4개. 가득 찬 경우 새 카드 획득 불가.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>카드 종류</th><th>버튼 색상</th><th>사용 방법</th></tr></thead>
+    <tbody>
+      <tr><td>유닛카드 (미선택)</td><td>어두운 파랑</td><td>클릭 선택 &rarr; 배치 구역 클릭 또는 드래그 &rarr; 배치</td></tr>
+      <tr><td>유닛카드 (선택됨)</td><td>초록</td><td>&mdash;</td></tr>
+      <tr><td>스킬카드 (미선택)</td><td>어두운 보라</td><td>클릭 선택 &rarr; 원하는 지점 클릭 &rarr; 즉시 발동</td></tr>
+      <tr><td>스킬카드 (선택됨)</td><td>밝은 보라</td><td>&mdash;</td></tr>
+      <tr><td>버프카드</td><td>금색</td><td>클릭 즉시 발동</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>유닛 배치 규칙</h3>
+  <ul style="padding-left:20px; font-size:14px; line-height:2.2;">
+    <li>배치 위치: 플레이어 진영 <strong>(x &le; &minus;0.5)</strong> 에서만 가능</li>
+    <li>배치 방법: <strong>카드 클릭 선택 후 배치 구역 클릭</strong> 또는 <strong>카드를 배치 구역으로 드래그</strong></li>
+    <li>배치 비용: 검사/궁수 1스핀, 기사/마법사/힐러 2스핀</li>
+    <li>충전량 부족 시 배치 취소</li>
+    <li>배치 구역 오버레이: 유닛카드 선택 시 파란색으로 강조 표시</li>
+  </ul>
+</section>
+
+<!-- §6 -->
+<section id="skills">
+  <h2><span class="sec-num purple">6</span> 스킬 카드 시스템</h2>
+  <p>스킬카드는 선택 후 화면 지점을 클릭하면 해당 위치 반경 내 모든 적에게 즉시 피해.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스킬</th><th>피해</th><th>범위 반경</th><th>비용</th><th>발동 이펙트</th></tr></thead>
+    <tbody>
+      <tr><td>번개화살</td><td>80</td><td>2.0</td><td>무료</td><td>보라색 화면 플래시</td></tr>
+      <tr><td>포탈폭격</td><td>120</td><td>3.0</td><td>무료</td><td>보라색 화면 플래시</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box purple">스킬카드는 스핀 비용 없이 사용 가능. 발동 시 <code>ScreenFlash</code> 보라색 이펙트 재생.</div>
+</section>
+
+<!-- §7 -->
+<section id="unit-ai">
+  <h2><span class="sec-num">7</span> 유닛 AI</h2>
+  <pre>매 프레임:
+  1. 시야(sightRange) 이내에서 가장 가까운 몬스터 탐색
+  2. 몬스터 발견  → 추격 + 사정거리(attackRange) 내 공격
+  3. 몬스터 없음 + 포탈 사정거리 내 → 포탈 공격 (플레이어 유닛만)
+  4. 위 모두 해당 없음 → 전방 전진</pre>
+  <div class="table-wrap"><table>
+    <thead><tr><th>유닛 종류</th><th>전진 방향</th><th>경계선</th></tr></thead>
+    <tbody>
+      <tr><td>플레이어 유닛</td><td>오른쪽 (+x)</td><td>x = 0 (넘지 않음)</td></tr>
+      <tr><td>AI 유닛</td><td>왼쪽 (&minus;x)</td><td>x = 0 (넘지 않음)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box">물리 기반 이동: <strong>Rigidbody2D + CircleCollider2D</strong> &rarr; 자연스러운 군집, 겹침 방지</div>
+</section>
+
+<!-- §8 -->
+<section id="buff">
+  <h2><span class="sec-num gold">8</span> 버프 시스템</h2>
+  <div class="info-box tip">AllDifferent 스핀 결과 시 버프카드가 손패에 추가됨. <strong>카드 형태로 보관</strong> &rarr; 원하는 타이밍에 사용.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>버프 종류</th><th>공격 배율</th><th>이동속도 배율</th><th>지속 시간</th></tr></thead>
+    <tbody>
+      <tr><td>공격 버프</td><td>&times;2.0</td><td>&times;1.0</td><td>8초</td></tr>
+      <tr><td>속도 버프</td><td>&times;1.0</td><td>&times;1.8</td><td>12초</td></tr>
+      <tr><td>균형 버프</td><td>&times;1.5</td><td>&times;1.2</td><td>10초</td></tr>
+    </tbody>
+  </table></div>
+  <p>버프는 <strong>모든 플레이어 유닛</strong>에 전역 배율로 적용. 지속 시간 후 자동 해제, 중첩 적용 가능.</p>
+</section>
+
+<!-- §9 -->
+<section id="portal">
+  <h2><span class="sec-num purple">9</span> 포탈 시스템</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>속성</th><th>수치</th></tr></thead>
+    <tbody>
+      <tr><td>HP</td><td>500</td></tr>
+      <tr><td>엘리트 소환 임계값</td><td>HP 40% 미만</td></tr>
+      <tr><td>색상</td><td>HP 100% = 보라 &rarr; HP 0% = 빨강 (Lerp 그라디언트)</td></tr>
+    </tbody>
+  </table></div>
+  <h3>피격 반응</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>조건</th><th>효과</th></tr></thead>
+    <tbody>
+      <tr><td>피격마다</td><td>포탈 우측(x=+1)에서 일반 몬스터 즉시 소환</td></tr>
+      <tr><td>HP &lt; 40% + 피격</td><td>포탈 우측에서 엘리트 몬스터 추가 소환</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box warn">포탈을 빠르게 공략할수록 더 강한 적이 몰려오는 <strong>고위험-고보상</strong> 구조</div>
+</section>
+
+<!-- §10 -->
+<section id="transfer">
+  <h2><span class="sec-num">10</span> 증원 시스템 (TransferSystem)</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>트리거</td><td>몬스터 처치</td></tr>
+      <tr><td>지연</td><td>1.5초</td></tr>
+      <tr><td>결과</td><td>처치 진영 포탈 우측(x=+1)에서 동일 등급 몬스터 재소환</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box warn">더 많이 처치할수록 포탈에서 적이 계속 나온다 &mdash; <strong>방어 효율 vs 압박 증가</strong>의 딜레마</div>
+</section>
+
+<!-- §11 -->
+<section id="stage">
+  <h2><span class="sec-num">11</span> 스테이지 시스템 (전투 모드)</h2>
+  <p>경과 시간에 따라 STAGE가 상승하며 웨이브 난이도가 증가한다.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>스테이지</th><th>경과 시간</th><th>웨이브 간격</th><th>엘리트 출현</th></tr></thead>
+    <tbody>
+      <tr><td>STAGE 1</td><td>0 ~ 60초</td><td>5초</td><td>없음</td></tr>
+      <tr><td>STAGE 2</td><td>60 ~ 120초</td><td>4.5초</td><td>1/3 확률 포함</td></tr>
+      <tr><td>STAGE 3</td><td>120초 ~</td><td>4초</td><td>1/2 확률 포함</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box">HUD 상단에 현재 스테이지 표시: <strong>STAGE 1 / STAGE 2 / STAGE 3</strong></div>
+</section>
+
+<!-- §12 -->
+<section id="survival">
+  <h2><span class="sec-num">12</span> 생존 모드 웨이브 시스템</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>공식</th></tr></thead>
+    <tbody>
+      <tr><td>웨이브당 몬스터 수</td><td>min(1 + (웨이브&minus;1)/3, 5마리)</td></tr>
+      <tr><td>엘리트 출현 확률</td><td>min((웨이브&minus;1) &times; 7%, 60%)</td></tr>
+      <tr><td>웨이브 간격</td><td>max(2초, 6초 &minus; 웨이브 &times; 0.18초)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box">HUD 상단에 현재 웨이브 표시: <strong>WAVE N</strong>. 웨이브 시작 전 3초 준비 시간.</div>
+</section>
+
+<!-- §13 -->
+<section id="monsters">
+  <h2><span class="sec-num">13</span> 몬스터</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>구분</th><th>HP</th><th>피해</th><th>이동속도</th><th>XP 보상</th></tr></thead>
+    <tbody>
+      <tr><td>일반 몬스터</td><td>40</td><td>6</td><td>1.3</td><td>50</td></tr>
+      <tr><td>엘리트 몬스터</td><td>150</td><td>20</td><td>1.8</td><td>150</td></tr>
+    </tbody>
+  </table></div>
+  <ul style="padding-left:20px; font-size:14px; line-height:2.2;">
+    <li>스폰 위치에서 목표 기지까지 직선 이동</li>
+    <li>기지 도달 시 1초 간격으로 반복 공격</li>
+    <li>물리 기반 충돌로 무리 형성</li>
+  </ul>
+</section>
+
+<!-- §14 -->
+<section id="ai">
+  <h2><span class="sec-num">14</span> AI 상대방</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>값</th></tr></thead>
+    <tbody>
+      <tr><td>스핀 간격</td><td>4초</td></tr>
+      <tr><td>유닛 배치 간격</td><td>6초</td></tr>
+      <tr><td>시작 XP 선충전</td><td>240 XP (스핀 2회분 + &alpha;)</td></tr>
+      <tr><td>배치 전략</td><td>손패에서 첫 유닛카드를 랜덤 위치에 배치</td></tr>
+      <tr><td>AllDifferent 처리</td><td>무시 (버프 사용 안 함)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §15 -->
+<section id="hpbar">
+  <h2><span class="sec-num">15</span> HP 바</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>오브젝트</th><th>표시 조건</th></tr></thead>
+    <tbody>
+      <tr><td>유닛 / 몬스터</td><td>최대 HP 미만일 때만 표시</td></tr>
+      <tr><td>포탈 / 기지</td><td>최대 HP 미만일 때만 표시</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box">색상: HP 비율에 따라 <span style="color:var(--green);font-weight:700">초록</span> &rarr; <span style="color:var(--red);font-weight:700">빨강</span> 그라디언트</div>
+</section>
+
+<!-- §16 -->
+<section id="record">
+  <h2><span class="sec-num gold">16</span> 전적 시스템</h2>
+  <ul style="padding-left:20px; font-size:14px; line-height:2.2;">
+    <li>승/패/연승 기록을 <strong>PlayerPrefs</strong>에 영속 저장</li>
+    <li>HUD에 실시간 표시: <code>N승 N패  연승 N</code></li>
+    <li><strong>승리(Win)</strong>: 적 기지 파괴 시 기록</li>
+    <li><strong>패배(Loss)</strong>: 내 기지 파괴 시 기록, 연승 초기화</li>
+    <li><strong>무승부(Draw)</strong>: 타임오버 동률 시 기록</li>
+  </ul>
+</section>
+
+<!-- §17 -->
+<section id="deckviewer">
+  <h2><span class="sec-num">17</span> 덱 뷰어</h2>
+  <ul style="padding-left:20px; font-size:14px; line-height:2.2;">
+    <li>HUD 우상단 <strong>"덱 보기"</strong> 버튼으로 팝업 토글</li>
+    <li>현재 덱에 포함된 모든 카드 종류·장수·스탯 확인 가능</li>
+    <li>게임 중 언제든 확인 가능 (일시정지 없음)</li>
+  </ul>
+</section>
+
+<!-- §18 -->
+<section id="winlose">
+  <h2><span class="sec-num">18</span> 승패 조건</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>조건</th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><td>내 기지 HP = 0</td><td><span style="color:var(--red);font-weight:700">패배</span></td></tr>
+      <tr><td>적 기지 HP = 0</td><td><span style="color:var(--green);font-weight:700">승리</span></td></tr>
+      <tr><td>3분 타임오버</td><td>기지 HP 높은 쪽 승리</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §19 -->
+<section id="balance">
+  <h2><span class="sec-num">19</span> 밸런스 수치 (확정)</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>값</th></tr></thead>
+    <tbody>
+      <tr><td>기지 최대 HP</td><td>1000</td></tr>
+      <tr><td>전투 제한 시간</td><td>180초</td></tr>
+      <tr><td>XP per 스핀</td><td>100</td></tr>
+      <tr><td>시작 지급</td><td>스핀 3회 + 랜덤 카드 1장</td></tr>
+      <tr><td>웨이브 간격 STAGE 1/2/3</td><td>5초 / 4.5초 / 4초</td></tr>
+      <tr><td>일반 몬스터 HP/피해/이동</td><td>40 / 6 / 1.3</td></tr>
+      <tr><td>엘리트 몬스터 HP/피해/이동</td><td>150 / 20 / 1.8</td></tr>
+      <tr><td>포탈 HP</td><td>500</td></tr>
+      <tr><td>엘리트 소환 임계값</td><td>포탈 HP 40% 미만</td></tr>
+      <tr><td>AI 스핀 주기</td><td>4초</td></tr>
+      <tr><td>AI 배치 주기</td><td>6초</td></tr>
+      <tr><td>AI 시작 XP</td><td>240</td></tr>
+      <tr><td>증원 딜레이</td><td>1.5초</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §20 -->
+<section id="potential">
+  <h2><span class="sec-num gold">20</span> 성공 가능성 포인트</h2>
+
+  <h3>20.1 핵심 차별화 &mdash; 3중 장르 퓨전</h3>
+  <ul style="padding-left:20px; font-size:14px; line-height:2.2;">
+    <li>슬롯머신의 불확실성 &rarr; 카드 구성의 변동성 &rarr; 상황 대응 전략</li>
+    <li>타워디펜스의 배치 판단 &rarr; 포탈 공략 딜레마 &rarr; 자원(스핀) 관리</li>
+    <li>카드게임의 손패 관리 &rarr; 타이밍 플레이 &rarr; 심리전</li>
+  </ul>
+
+  <h3>20.2 구조적 딜레마 3가지</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>딜레마</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>포탈 공략 딜레마</td><td>빠르게 공략하면 엘리트 몬스터 폭증. 천천히 하면 적 기지를 못 뚫음</td></tr>
+      <tr><td>증원 딜레마</td><td>몬스터를 많이 처치할수록 증원 스폰 증가. 방어 효율과 압박 증가 상충</td></tr>
+      <tr><td>스핀 자원 딜레마</td><td>스핀을 카드 뽑기에 쓸지, 강한 유닛 배치에 쓸지 매번 선택</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>20.3 시장 접근성</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr><td>진입 장벽</td><td>낮음. 규칙이 직관적이며 첫 판부터 플레이 가능</td></tr>
+      <tr><td>모바일 이식 잠재력</td><td>높음. 탭/드래그 기반 조작, 짧은 세션</td></tr>
+      <tr><td>F2P 수익화 적합도</td><td>높음. 캐릭터 수집·성장 BM, 코스메틱, 시즌 패스</td></tr>
+      <tr><td>스트리머 친화도</td><td>높음. 슬롯 Triple, 역전 버프 등 클립성 순간 자연 발생</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §21 -->
+<section id="bm">
+  <h2><span class="sec-num gold">21</span> 비즈니스 모델 (BM)</h2>
+
+  <h3>21.1 재화 시스템</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>재화</th><th>획득 방법</th><th>용도</th></tr></thead>
+    <tbody>
+      <tr><td>골드</td><td>전투 보상, 무료 일일 지급</td><td>유닛 강화 재료, 덱 슬롯 해금</td></tr>
+      <tr><td>크리스탈 (프리미엄)</td><td>IAP, 업적 보상 (소량)</td><td>프리미엄 스핀, 캐릭터 즉시 해금</td></tr>
+      <tr><td>스핀 티켓</td><td>무료 플레이, 일일 퀘스트</td><td>전투 중 추가 스핀</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>21.2 프리미엄 풀 확률</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>등급</th><th>확률</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td>일반 (&#9733;&#9733;)</td><td>60%</td><td>기본 풀 유닛</td></tr>
+      <tr><td>희귀 (&#9733;&#9733;&#9733;)</td><td>30%</td><td>강화 스탯 + 패시브 1개</td></tr>
+      <tr><td>영웅 (&#9733;&#9733;&#9733;&#9733;)</td><td>9%</td><td>고유 스킬 + 강화 스탯</td></tr>
+      <tr><td>전설 (&#9733;&#9733;&#9733;&#9733;&#9733;)</td><td>1%</td><td>전용 스킨 + 최상위 스탯</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box warn"><strong>천장 시스템:</strong> 90회 이내 전설 미획득 시 다음 1회에서 전설 확정</div>
+
+  <h3>21.3 캐릭터 성장 (레벨업)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>레벨</th><th>HP 배율</th><th>피해 배율</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>&times;1.0</td><td>&times;1.0</td></tr>
+      <tr><td>10</td><td>&times;1.3</td><td>&times;1.3</td></tr>
+      <tr><td>20</td><td>&times;1.7</td><td>&times;1.7</td></tr>
+      <tr><td>30</td><td>&times;2.2</td><td>&times;2.2</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>21.4 상품 구성</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>상품명</th><th>가격</th><th>구성</th></tr></thead>
+    <tbody>
+      <tr><td>데일리 패스</td><td>&#8361;1,900/월</td><td>매일 크리스탈 50개 (30일 합계 1,500개)</td></tr>
+      <tr><td>시즌 패스</td><td>&#8361;5,900/시즌</td><td>시즌 미션 보상 2배 + 전용 스킨 1종</td></tr>
+      <tr><td>스타터 팩</td><td>&#8361;1,100</td><td>크리스탈 300 + 골드 5,000 + 희귀 유닛 1종</td></tr>
+      <tr><td>성장 팩</td><td>&#8361;5,500</td><td>크리스탈 1,000 + 유닛 조각 랜덤 30개</td></tr>
+      <tr><td>영웅 팩</td><td>&#8361;16,500</td><td>크리스탈 3,500 + 영웅 등급 유닛 확정 1종</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>21.5 수익화 지표 목표 (소프트 런칭 3개월)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>지표</th><th>목표값</th></tr></thead>
+    <tbody>
+      <tr><td>DAU 대비 결제 전환율</td><td>3~5%</td></tr>
+      <tr><td>ARPU (일평균 유저당 매출)</td><td>&#8361;150~300</td></tr>
+      <tr><td>ARPPU (결제 유저당 매출)</td><td>&#8361;5,000~10,000</td></tr>
+      <tr><td>D30 리텐션</td><td>20% 이상</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- §22 -->
+<section id="todo">
+  <h2><span class="sec-num">22</span> 향후 개선 과제</h2>
+
+  <h3>UI / 연출</h3>
+  <ul class="checklist">
+    <li><strong>슬롯 릴 스핀 애니메이션</strong></li>
+    <li><strong>카드 획득 파티클 효과</strong></li>
+    <li><strong>버프 발동 시 화면 이펙트 고도화</strong></li>
+    <li><strong>유닛 타입별 스프라이트 적용</strong></li>
+    <li><strong>Triple 결과 강조 연출</strong> (현재 일반 카드와 구별 없음)</li>
+    <li><strong>배치 구역 에셋 장식</strong> (바닥 표시, 깃발 등)</li>
+  </ul>
+
+  <h3>게임플레이</h3>
+  <ul class="checklist">
+    <li><strong>Triple 강화 효과 구현</strong>: <code>CardTier.Enhanced</code> 활용 &rarr; 스탯 강화 또는 추가 효과</li>
+    <li><strong>AI 전략 고도화</strong>: 포탈 공략 판단, 버프 활용, 스킬 카드 사용</li>
+    <li><strong>힐러 회복 메커닉 완성</strong>: 아군 HP 회복 대상 선정 로직</li>
+    <li><strong>다중 버프 종류 추가</strong>: 방어형 등</li>
+    <li><strong>덱 편집</strong>: 게임 전 카드 구성 선택</li>
+  </ul>
+
+  <h3>BM 구현</h3>
+  <ul class="checklist">
+    <li><strong>재화 시스템</strong> (골드&middot;크리스탈) 구현</li>
+    <li><strong>유닛 레벨업 시스템</strong></li>
+    <li><strong>별 등급 돌파 시스템</strong> (<code>CardTier.Enhanced</code> 연동)</li>
+    <li><strong>프리미엄 스핀 배너 UI</strong> (확률 표시, 천장 카운터)</li>
+    <li><strong>시즌 패스 UI 및 미션 시스템</strong></li>
+    <li><strong>인앱 결제 연동</strong> (IAP)</li>
+  </ul>
+
+  <h3>기술</h3>
+  <ul class="checklist">
+    <li><strong>사운드 효과 및 BGM</strong></li>
+    <li><strong>스프라이트 / 애니메이션 에셋 적용</strong></li>
+    <li><strong>저장/불러오기</strong>: 유닛 레벨&middot;별 등급 영속화 필수</li>
+    <li><strong>네트워크 대전 (PvP)</strong>: 대칭 씬 구조로 설계 적합성 높음</li>
+  </ul>
+</section>
+
+</main>
+</div>
+</body>
+</html>

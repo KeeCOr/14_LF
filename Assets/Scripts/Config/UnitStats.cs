@@ -11,5 +11,8 @@ namespace SlotDefense
         public float attackRate;
         public float sightRange;
         public float healAmount;
+        public float luckGenRate;  // 행운/초 (0이면 비활성)
+        public bool canAttackAir;
+        public bool isFlying;
     }
 }

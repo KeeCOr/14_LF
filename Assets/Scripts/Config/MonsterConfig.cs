@@ -8,5 +8,8 @@ namespace SlotDefense
         public float damage;
         public float moveSpeed;
         public float xpReward;
+
+        [Tooltip("소환에 사용할 프리팹. 비워두면 기본 템플릿 사용.")]
+        public GameObject prefab;
     }
 }

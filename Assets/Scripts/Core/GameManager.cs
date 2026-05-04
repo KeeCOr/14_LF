@@ -12,6 +12,9 @@ namespace SlotDefense
         [SerializeField] private float villageHp = 1000f;
         [SerializeField] private float battleDuration = 180f;
 
+        public bool isSurvivalMode;
+        public bool IsSurvivalMode => isSurvivalMode;
+
         public BattleManager Battle { get; private set; }
         public SlotMachineSystem SlotMachine { get; private set; }
         public HandSystem Hand { get; private set; }
@@ -32,8 +35,9 @@ namespace SlotDefense
             if (Instance != null) { Destroy(gameObject); return; }
             Instance = this;
             _rng = new System.Random();
+            if (isSurvivalMode) battleDuration = 99999f;
             Battle = new BattleManager(villageHp, battleDuration);
-            SlotMachine = new SlotMachineSystem(chargeInterval: 12f, initialCharges: 3);
+            SlotMachine = new SlotMachineSystem(chargeInterval: 2f, initialCharges: 3);
             Hand = new HandSystem(4);
             Deck = new DeckSystem(deckConfig.cards);
         }
@@ -78,7 +82,6 @@ namespace SlotDefense
                 buffCard.cardName      = string.IsNullOrEmpty(buffEffect.displayName) ? "전투 버프" : buffEffect.displayName;
                 buffCard.cardType      = CardType.Buff;
                 buffCard.buffEffect    = buffEffect;
-                buffCard.placementCost = 0;
                 _pendingCard = buffCard;
                 _pendingTier = CardTier.Normal;
             }
@@ -89,7 +92,9 @@ namespace SlotDefense
                     var enhanced = ScriptableObject.CreateInstance<CardData>();
                     enhanced.cardName      = $"[강화] {matchedCard.cardName}";
                     enhanced.cardType      = matchedCard.cardType;
-                    enhanced.placementCost = matchedCard.placementCost;
+                    enhanced.fireCost      = matchedCard.fireCost;
+                    enhanced.ironCost      = matchedCard.ironCost;
+                    enhanced.lifeCost      = matchedCard.lifeCost;
                     enhanced.unitStats     = new UnitStats
                     {
                         hp          = matchedCard.unitStats.hp          * 1.5f,
@@ -98,7 +103,9 @@ namespace SlotDefense
                         attackRange = matchedCard.unitStats.attackRange,
                         attackRate  = matchedCard.unitStats.attackRate,
                         sightRange  = matchedCard.unitStats.sightRange,
-                        healAmount  = matchedCard.unitStats.healAmount  * 1.5f
+                        healAmount  = matchedCard.unitStats.healAmount  * 1.5f,
+                        canAttackAir = matchedCard.unitStats.canAttackAir,
+                        isFlying    = matchedCard.unitStats.isFlying
                     };
                     enhanced.skillEffect = new SkillEffect
                     {

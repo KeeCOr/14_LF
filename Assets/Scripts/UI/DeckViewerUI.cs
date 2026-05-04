@@ -50,7 +50,7 @@ namespace SlotDefense
                         string action = u.healAmount > 0
                             ? $"회복:{u.healAmount}/공격"
                             : $"피해:{u.damage}";
-                        sb.AppendLine($"[유닛]  {card.cardName} ×{count}    HP:{u.hp}  {action}  사거리:{u.attackRange}  비용:{card.placementCost}스핀");
+                        sb.AppendLine($"[유닛]  {card.cardName} ×{count}    HP:{u.hp}  {action}  사거리:{u.attackRange}  비용:{card.ElementalCost.Total}에너지");
                         break;
                     case CardType.Skill:
                         var sk = card.skillEffect;

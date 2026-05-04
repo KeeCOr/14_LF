@@ -1,4 +1,4 @@
 namespace SlotDefense
 {
-    public enum CardType { Unit, Skill }
+    public enum CardType { Unit, Skill, Buff, Building }
 }

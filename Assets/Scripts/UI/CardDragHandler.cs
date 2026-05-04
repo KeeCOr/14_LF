@@ -13,10 +13,12 @@ namespace SlotDefense
         private GameObject _ghost;
         private Canvas     _canvas;
 
-        private void Start() => _canvas = GetComponentInParent<Canvas>();
+        private void Awake()  => _canvas = GetComponentInParent<Canvas>();
+        private void Start()  { if (_canvas == null) _canvas = FindObjectOfType<Canvas>(); }
 
         public void OnBeginDrag(PointerEventData e)
         {
+            if (_canvas == null) return;
             var card = GameManager.Instance?.Hand.GetSlot(slotIndex);
             if (card == null || card.cardType != CardType.Unit) return;
 
@@ -34,7 +36,7 @@ namespace SlotDefense
             ((RectTransform)labelGo.transform).sizeDelta = new Vector2(210f, 85f);
             var txt = labelGo.AddComponent<Text>();
             txt.font      = font != null ? font : Resources.GetBuiltinResource<Font>("Arial.ttf");
-            txt.text      = $"{card.cardName}\n[{card.placementCost}스핀]";
+            txt.text      = $"{card.cardName}\n[{card.ElementalCost.Total}에너지]";
             txt.fontSize  = 20;
             txt.alignment = TextAnchor.MiddleCenter;
             txt.color     = Color.white;
@@ -60,10 +62,11 @@ namespace SlotDefense
             world.z = 0f;
             if (world.x > -0.5f) return;
 
-            if (!GameManager.Instance.SlotMachine.TryConsume(card.placementCost)) return;
+            if (!GameManager.Instance.SlotMachine.TryConsume(card.ElementalCost.Total)) return;
             GameManager.Instance.Hand.Use(slotIndex);
             world.x = Mathf.Min(world.x, -0.5f);
-            var go = Instantiate(arenaSystem.unitPrefab, world, Quaternion.identity);
+            var prefab = card.unitPrefab != null ? card.unitPrefab : arenaSystem.unitPrefab;
+            var go = Instantiate(prefab, world, Quaternion.identity);
             go.GetComponent<UnitController>().Init(card.unitStats, isPlayerUnit: true, portal: arenaSystem.portal);
             go.SetActive(true);
         }

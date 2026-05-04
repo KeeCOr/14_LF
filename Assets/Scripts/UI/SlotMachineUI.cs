@@ -32,7 +32,7 @@ namespace SlotDefense
             int charges = GameManager.Instance.SlotMachine.SpinCharges;
             spinButton.interactable = charges > 0 && !_animating;
             var label = spinButton.GetComponentInChildren<Text>();
-            if (label != null) label.text = $"SPIN (x{charges})";
+            if (label != null) label.text = $"행운 소모 (x{charges})";
         }
 
         private void OnSpinClicked()

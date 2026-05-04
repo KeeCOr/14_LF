@@ -83,7 +83,8 @@ namespace SlotDefense
                 _hand.Use(i);
                 var spawnPos = arenaSystem.enemySpawnPoint.position
                     + new Vector3(_rng.Next(-3, 3), _rng.Next(-2, 2), 0);
-                var go = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
+                var prefab = card.unitPrefab != null ? card.unitPrefab : unitPrefab;
+                var go = Instantiate(prefab, spawnPos, Quaternion.identity);
                 go.GetComponent<UnitController>().Init(card.unitStats);
                 go.SetActive(true);
                 break;

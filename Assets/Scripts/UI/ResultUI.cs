@@ -21,13 +21,23 @@ namespace SlotDefense
 
         private void ShowResult(BattleResult result)
         {
+            panel.SetActive(true);
+
+            if (GameManager.Instance?.IsSurvivalMode == true)
+            {
+                RecordSystem.RecordLoss();
+                var arena = FindObjectOfType<ArenaSystem>();
+                int wave  = arena != null ? arena.SurvivalWave : 0;
+                resultText.text = $"WAVE {wave} 생존!\n{RecordSystem.Summary()}";
+                return;
+            }
+
             switch (result)
             {
                 case BattleResult.PlayerWin:  RecordSystem.RecordWin();  break;
                 case BattleResult.PlayerLose: RecordSystem.RecordLoss(); break;
                 case BattleResult.Draw:       RecordSystem.RecordDraw(); break;
             }
-            panel.SetActive(true);
             string outcome = result switch
             {
                 BattleResult.PlayerWin  => "VICTORY!",
