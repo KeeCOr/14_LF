@@ -8,6 +8,7 @@ namespace SlotDefense
         private void Update()
         {
             if (_data == null) return;
+            if (_data.attackRate <= 0f) return;
             _attackCooldown -= Time.deltaTime;
             if (_attackCooldown > 0f) return;
 
@@ -15,6 +16,7 @@ namespace SlotDefense
             MonsterController target = null;
             foreach (var m in MonsterController.AllMonsters)
             {
+                if (m == null) continue;
                 if (m.IsDead) continue;
                 if (m.isFlying && !_data.canAttackAir) continue;
                 float d = Vector2.Distance(transform.position, m.transform.position);
