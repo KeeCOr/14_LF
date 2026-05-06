@@ -71,22 +71,21 @@ namespace SlotDefense
                     if (ec.fire > 0)
                     {
                         string col = energy.Fire < ec.fire ? "#FF4444" : "#FF8833";
-                        costParts.Add($"<color={col}>🔥{ec.fire}</color>");
+                        costParts.Add($"<color={col}><b>🔥{ec.fire}</b></color>");
                     }
                     if (ec.iron > 0)
                     {
                         string col = energy.Iron < ec.iron ? "#FF4444" : "#99CCFF";
-                        costParts.Add($"<color={col}>⚔{ec.iron}</color>");
+                        costParts.Add($"<color={col}><b>⚔{ec.iron}</b></color>");
                     }
                     if (ec.life > 0)
                     {
                         string col = energy.Life < ec.life ? "#FF4444" : "#33FF77";
-                        costParts.Add($"<color={col}>💚{ec.life}</color>");
+                        costParts.Add($"<color={col}><b>💚{ec.life}</b></color>");
                     }
-                    string costStr = costParts.Count > 0 ? $"[{string.Join(" ", costParts)}]" : "[무료]";
-                    cardNames[i].text = isSelected
-                        ? $"{card.cardName} {costStr}\n> 배치 클릭"
-                        : $"{card.cardName} {costStr}";
+                    string costStr = costParts.Count > 0 ? string.Join("  ", costParts) : "<color=#AAAAAA>무료</color>";
+                    string action  = isSelected ? "\n<color=#88FFCC>> 배치 클릭</color>" : "";
+                    cardNames[i].text = $"<b>{card.cardName}</b>\n{costStr}{action}";
                     bgColor = isSelected ? ColorSelected : canAfford ? ColorNormal : new Color(0.12f, 0.08f, 0.20f, 0.88f);
                 }
 

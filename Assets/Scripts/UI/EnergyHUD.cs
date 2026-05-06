@@ -32,13 +32,8 @@ namespace SlotDefense
         private static void SetLabel(Text t, string icon, int amount, Color col)
         {
             if (t == null) return;
-            // 0이면 어둡게, 있으면 원래 색
             t.color = amount > 0 ? col : DimColor;
-            // 블록 문자로 간단한 시각적 게이지 (최대 10)
-            int filled = Mathf.Clamp(amount, 0, 10);
-            string bars = "<color=#FFFFFF>" + new string('■', filled) + "</color>"
-                        + "<color=#333344>" + new string('■', 10 - filled) + "</color>";
-            t.text = $"{icon}  <b>{amount}</b>  {bars}";
+            t.text = $"<size=38>{icon}</size> <b>{amount}</b>";
         }
 
         // 부족한 속성 라벨을 빨간색으로 3회 점멸

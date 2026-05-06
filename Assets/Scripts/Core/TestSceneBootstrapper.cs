@@ -316,7 +316,7 @@ namespace SlotDefense
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");
             var slotUI = slotGo.AddComponent<SlotMachineUI>();
 
-            LabelText(slotGo.transform, "SlotDesc", "행운 소모 → SPIN → 카드 획득  (2초마다 행운 +1)", new Vector2(0, -255));
+            LabelText(slotGo.transform, "SlotDesc", "행운 소모 → SPIN → 카드 획득  (2초마다 행운 +1)", new Vector2(0, -400));
 
             // 3개 릴 박스
             var reelNameTexts = new Text[3];
@@ -326,17 +326,17 @@ namespace SlotDefense
             {
                 var reelBox = Child(slotGo.transform, $"Reel{i}");
                 var reelRt  = (RectTransform)reelBox.transform;
-                reelRt.anchoredPosition = new Vector2(reelX[i], -305f);
+                reelRt.anchoredPosition = new Vector2(reelX[i], -445f);
                 reelRt.sizeDelta        = new Vector2(170f, 60f);
                 var reelBg = reelBox.AddComponent<Image>();
                 reelBg.color = new Color(0.1f, 0.15f, 0.3f, 0.95f);
-                MakeText(reelBox.transform, "Label", reelLabels[i], new Vector2(0, 18), 14).color = new Color(0.6f, 0.7f, 1f);
-                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -8), 22);
+                MakeText(reelBox.transform, "Label", reelLabels[i], new Vector2(0, 20), 16).color = new Color(0.6f, 0.7f, 1f);
+                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -10), 28);
             }
             slotUI.reelLabels = reelNameTexts;
 
-            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -355), 24);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN (행운 1 소모)", new Vector2(0, -400), new Vector2(260, 58));
+            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -490), 24);
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN (행운 1 소모)", new Vector2(0, -530), new Vector2(260, 58));
 
             // 배치 가능 구역 오버레이
             var zoneGo  = Child(canvasGo.transform, "DeployZone");
@@ -377,15 +377,15 @@ namespace SlotDefense
             handUI.cardIcons   = new Image[4];
             handUI.cardNames   = new Text[4];
 
-            LabelText(handGo.transform, "HandDesc", "카드 클릭 선택 → 배치 구역 클릭으로 유닛 배치", new Vector2(0, -415));
+            LabelText(handGo.transform, "HandDesc", "카드 클릭 선택 → 배치 구역 클릭으로 유닛 배치", new Vector2(0, -255));
 
             for (int i = 0; i < 4; i++)
             {
                 float xPos = -345f + i * 230f;
                 var cardGo = Child(handGo.transform, $"CardSlot{i}");
                 var rt     = (RectTransform)cardGo.transform;
-                rt.anchoredPosition = new Vector2(xPos, -480f);
-                rt.sizeDelta        = new Vector2(220f, 95f);
+                rt.anchoredPosition = new Vector2(xPos, -320f);
+                rt.sizeDelta        = new Vector2(220f, 130f);
 
                 var bg  = cardGo.AddComponent<Image>();
                 bg.color = new Color(0.2f, 0.25f, 0.45f, 0.9f);
@@ -405,8 +405,9 @@ namespace SlotDefense
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(20, 0), 20);
-                nameText.richText = true;
+                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, 0), 26);
+                nameText.supportRichText = true;
+                nameText.lineSpacing     = 1.2f;
                 handUI.cardNames[i] = nameText;
             }
 
@@ -464,23 +465,23 @@ namespace SlotDefense
             flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
 
-            // --- EnergyHUD — 화면 좌하단 패널 (속성별 색상 행) ---
+            // --- EnergyHUD — 화면 우상단 패널 (속성별 색상 행) ---
             var energyGo  = Child(canvasGo.transform, "EnergyHUD");
             var energyRt  = (RectTransform)energyGo.transform;
-            energyRt.anchorMin        = new Vector2(0f, 0f);
-            energyRt.anchorMax        = new Vector2(0f, 0f);
-            energyRt.pivot            = new Vector2(0f, 0f);
-            energyRt.anchoredPosition = new Vector2(12f, 100f);
-            energyRt.sizeDelta        = new Vector2(140f, 105f);
+            energyRt.anchorMin        = new Vector2(1f, 1f);
+            energyRt.anchorMax        = new Vector2(1f, 1f);
+            energyRt.pivot            = new Vector2(1f, 1f);
+            energyRt.anchoredPosition = new Vector2(-12f, -12f);
+            energyRt.sizeDelta        = new Vector2(180f, 130f);
 
             var energyBg = energyGo.AddComponent<Image>();
             energyBg.color        = new Color(0.04f, 0.06f, 0.15f, 0.92f);
             energyBg.raycastTarget = false;
 
             var energyHud = energyGo.AddComponent<EnergyHUD>();
-            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(70f, 78f),  new Color(1f,  0.45f, 0.1f));
-            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(70f, 46f),  new Color(0.6f, 0.8f, 1f));
-            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(70f, 14f),  new Color(0.2f, 1f,  0.45f));
+            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(90f, 96f),  new Color(1f,  0.45f, 0.1f));
+            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(90f, 60f),  new Color(0.6f, 0.8f, 1f));
+            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(90f, 24f),  new Color(0.2f, 1f,  0.45f));
         }
 
         // ============================================================
@@ -651,14 +652,14 @@ namespace SlotDefense
             rect.anchorMax        = new Vector2(0f, 0f);
             rect.pivot            = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = offset;
-            rect.sizeDelta        = new Vector2(130f, 30f);
+            rect.sizeDelta        = new Vector2(170f, 36f);
             var txt  = go.AddComponent<Text>();
             txt.font               = SharedFont();
-            txt.fontSize           = 26;
+            txt.fontSize           = 34;
             txt.color              = color == default ? Color.white : color;
             txt.alignment          = TextAnchor.MiddleCenter;
             txt.horizontalOverflow = HorizontalWrapMode.Overflow;
-            txt.richText           = true;
+            txt.supportRichText    = true;
             return txt;
         }
 
