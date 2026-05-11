@@ -24,7 +24,26 @@ namespace SlotDefense
         private bool _isPlayerUnit;
         private float _luckTimer;
 
-        public void Init(UnitStats stats, bool isPlayerUnit = false, Portal portal = null)
+        // 속성 버프
+        private bool _hasElement;
+        private ElementType _element;
+        private int _elementBuffStacks;
+        private float _buffFlashTimer;
+        private Color _baseColor;
+
+        private float ElementBuffMultiplier => 1f + _elementBuffStacks * 0.15f;
+
+        public static void ApplyElementBuff(ElementType element, int stacks)
+        {
+            foreach (var u in ActivePlayerUnits)
+            {
+                if (!u._hasElement || u._element != element) continue;
+                u._elementBuffStacks += stacks;
+                u._buffFlashTimer = 0.4f;
+            }
+        }
+
+        public void Init(UnitStats stats, bool isPlayerUnit = false, Portal portal = null, ElementType? element = null)
         {
             _stats        = stats;
             _currentHp    = stats.hp;
@@ -49,6 +68,15 @@ namespace SlotDefense
                 _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
             }
 
+            _hasElement = element.HasValue;
+            if (element.HasValue) _element = element.Value;
+            _elementBuffStacks = 0;
+
+            // 아군/적군 색상 구분
+            var sr = GetComponent<SpriteRenderer>();
+            _baseColor = isPlayerUnit ? new Color(0.3f, 0.85f, 1f) : new Color(1f, 0.55f, 0.1f);
+            if (sr != null) sr.color = _baseColor;
+
             if (isPlayerUnit) ActivePlayerUnits.Add(this);
             AllUnits.Add(this);
         }
@@ -64,6 +92,27 @@ namespace SlotDefense
         {
             if (_hpBar == null || _currentHp <= 0f) return;
             _attackCooldown -= Time.deltaTime;
+
+            // 버프 플래시 & 지속 색상 표시
+            if (_hasElement && _elementBuffStacks > 0)
+            {
+                var sr = GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    if (_buffFlashTimer > 0f)
+                    {
+                        _buffFlashTimer -= Time.deltaTime;
+                        float t = _buffFlashTimer / 0.4f;
+                        sr.color = Color.Lerp(_baseColor, Color.white, t * 0.85f);
+                    }
+                    else
+                    {
+                        // 스택 수에 따라 살짝 밝게 유지
+                        float glow = Mathf.Min(_elementBuffStacks * 0.06f, 0.4f);
+                        sr.color = Color.Lerp(_baseColor, Color.white, glow);
+                    }
+                }
+            }
 
             // 행운 생성 (비전투 유닛)
             if (_stats.luckGenRate > 0f && _isPlayerUnit && GameManager.Instance != null)
@@ -127,7 +176,7 @@ namespace SlotDefense
                     if (InRange(attackPos) && _attackCooldown <= 0f)
                     {
                         _attackCooldown = 1f / _stats.attackRate;
-                        _unitTarget.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                        _unitTarget.TakeDamage(_stats.damage * GlobalDamageMultiplier * ElementBuffMultiplier);
                     }
                 }
                 else
@@ -137,7 +186,7 @@ namespace SlotDefense
                     if (InRange(attackPos) && _attackCooldown <= 0f)
                     {
                         _attackCooldown = 1f / _stats.attackRate;
-                        _target.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                        _target.TakeDamage(_stats.damage * GlobalDamageMultiplier * ElementBuffMultiplier);
                     }
                 }
             }
@@ -147,7 +196,7 @@ namespace SlotDefense
                 if (_attackCooldown <= 0f)
                 {
                     _attackCooldown = 1f / _stats.attackRate;
-                    _portal.TakeDamage(_stats.damage * GlobalDamageMultiplier);
+                    _portal.TakeDamage(_stats.damage * GlobalDamageMultiplier * ElementBuffMultiplier);
                 }
             }
             else
@@ -180,8 +229,8 @@ namespace SlotDefense
         // 주변 유닛들로부터 밀어내는 분리 벡터
         private Vector2 CalcSeparation()
         {
-            const float sepRadius = 0.65f;
-            const float sepForce  = 2.0f;
+            const float sepRadius = 0.85f;
+            const float sepForce  = 3.0f;
             var sep = Vector2.zero;
             foreach (var u in AllUnits)
             {

@@ -16,11 +16,15 @@ namespace SlotDefense
         {
             panel.SetActive(false);
             retryButton.onClick.AddListener(() =>
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name));
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            });
         }
 
         private void ShowResult(BattleResult result)
         {
+            Time.timeScale = 0f;
             panel.SetActive(true);
 
             if (GameManager.Instance?.IsSurvivalMode == true)

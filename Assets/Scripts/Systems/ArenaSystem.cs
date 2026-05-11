@@ -114,6 +114,14 @@ namespace SlotDefense
             go.SetActive(true);
         }
 
+        private static ElementType? DominantElement(CardData card)
+        {
+            if (card.fireCost == 0 && card.ironCost == 0 && card.lifeCost == 0) return null;
+            if (card.fireCost >= card.ironCost && card.fireCost >= card.lifeCost) return ElementType.Fire;
+            if (card.ironCost >= card.lifeCost) return ElementType.Iron;
+            return ElementType.Life;
+        }
+
         public void SelectHandSlot(int slotIndex)
         {
             _selectedHandSlot = slotIndex;
@@ -193,7 +201,7 @@ namespace SlotDefense
             {
                 var prefab = unitCard.unitPrefab != null ? unitCard.unitPrefab : unitPrefab;
                 var go = Instantiate(prefab, worldPos, Quaternion.identity);
-                go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal);
+                go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal, element: DominantElement(unitCard));
                 go.SetActive(true);
             }
         }

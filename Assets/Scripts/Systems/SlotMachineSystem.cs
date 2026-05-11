@@ -8,8 +8,10 @@ namespace SlotDefense
         private int _spinCharges;
         private const int MaxCharges = 10;
 
-        public int   SpinCharges   => _spinCharges;
-        public float SecondsToNext => _spinCharges >= MaxCharges ? 0f : _chargeInterval - _chargeTimer;
+        public int   SpinCharges    => _spinCharges;
+        public int   MaxSpinCharges => MaxCharges;
+        public float ChargeRatio    => (float)_spinCharges / MaxCharges;
+        public float SecondsToNext  => _spinCharges >= MaxCharges ? 0f : _chargeInterval - _chargeTimer;
 
         public SlotMachineSystem(float chargeInterval = 12f, int initialCharges = 0)
         {

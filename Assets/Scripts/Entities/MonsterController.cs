@@ -109,17 +109,30 @@ namespace SlotDefense
 
         private Vector2 CalcSeparation()
         {
-            const float sepRadius = 0.65f;
-            const float sepForce  = 2.0f;
+            const float monSepRadius  = 0.65f;
+            const float monSepForce   = 2.0f;
+            const float villSepRadius = 0.85f; // 마을 반폭(0.5) + 몬스터 반경(0.22) + 여유
+            const float villSepForce  = 4.0f;
             var sep = Vector2.zero;
+
             foreach (var m in AllMonsters)
             {
                 if (m == this || m.IsDead) continue;
                 var diff = (Vector2)(transform.position - m.transform.position);
                 float dist = diff.magnitude;
-                if (dist < sepRadius && dist > 0.01f)
-                    sep += diff.normalized * ((sepRadius - dist) / sepRadius) * sepForce;
+                if (dist < monSepRadius && dist > 0.01f)
+                    sep += diff.normalized * ((monSepRadius - dist) / monSepRadius) * monSepForce;
             }
+
+            foreach (var v in Village.AllVillages)
+            {
+                if (v == null) continue;
+                var diff = (Vector2)(transform.position - v.transform.position);
+                float dist = diff.magnitude;
+                if (dist < villSepRadius && dist > 0.01f)
+                    sep += diff.normalized * ((villSepRadius - dist) / villSepRadius) * villSepForce;
+            }
+
             return sep;
         }
 

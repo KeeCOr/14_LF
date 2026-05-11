@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(grep -r \"namespace SlotDefense\" Assets/Scripts/Config/*.cs)",
+      "Bash(xargs grep:*)",
+      "Bash(dotnet test:*)",
+      "Read(//c/Program Files/Unity/Hub/Editor/**)",
+      "Read(//c/Program Files/Unity/**)",
+      "Bash(\"C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Unity.exe\" -quit -batchmode -projectPath \"C:/Development/14_LT/LotteryFantasy\" -buildWindows64Player \"C:/Development/14_LT/LotteryFantasy/Build/Windows/LotteryFantasy.exe\" -logFile \"C:/Development/14_LT/LotteryFantasy/Build/build.log\")",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(tasklist)"
     ]
   }
 }

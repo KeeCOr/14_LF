@@ -11,11 +11,19 @@ namespace SlotDefense
         public ArenaSystem arenaSystem;
         public Image       deployZoneOverlay;
 
+        private Vector2[] _basePos;
+        private float[]   _liftY;
+
         private void OnEnable() => GameEvents.OnCardObtained += RefreshHand;
         private void OnDisable() => GameEvents.OnCardObtained -= RefreshHand;
 
         private void Start()
         {
+            _basePos = new Vector2[cardButtons.Length];
+            _liftY   = new float[cardButtons.Length];
+            for (int i = 0; i < cardButtons.Length; i++)
+                _basePos[i] = ((RectTransform)cardButtons[i].transform).anchoredPosition;
+
             for (int i = 0; i < cardButtons.Length; i++)
             {
                 int index = i;
@@ -34,6 +42,8 @@ namespace SlotDefense
         private void RefreshDisplay()
         {
             if (GameManager.Instance == null) return;
+            if (_basePos == null) return;
+
             int selected = arenaSystem != null ? arenaSystem.SelectedSlot : -1;
             for (int i = 0; i < cardButtons.Length; i++)
             {
@@ -43,6 +53,7 @@ namespace SlotDefense
                 cardIcons[i].sprite = card?.icon;
                 cardIcons[i].gameObject.SetActive(card != null);
 
+                bool canUse = false;
                 Color bgColor;
                 if (card == null)
                 {
@@ -53,20 +64,29 @@ namespace SlotDefense
                 {
                     cardNames[i].text = $"{card.cardName}\n[클릭 → 즉시 발동]";
                     bgColor = ColorBuff;
+                    canUse  = true;
                 }
                 else if (card.cardType == CardType.Skill)
                 {
+                    var ec         = card.ElementalCost;
+                    var energy     = GameManager.Instance.ElementalEnergy;
+                    bool canAfford = energy.CanAfford(ec);
+                    canUse = canAfford;
                     bool skillSelected = arenaSystem != null && arenaSystem.SelectedSkillSlot == i;
                     cardNames[i].text = skillSelected
                         ? $"{card.cardName}\n> 지점 클릭"
                         : $"{card.cardName}\n[클릭 → 지점 선택]";
-                    bgColor = skillSelected ? new Color(0.7f, 0.3f, 0.9f, 0.95f) : ColorSkill;
+                    bgColor = skillSelected ? new Color(0.7f, 0.3f, 0.9f, 0.95f)
+                            : canAfford     ? ColorSkill
+                            : new Color(0.15f, 0.04f, 0.22f, 0.88f);
                 }
                 else
                 {
                     var ec = card.ElementalCost;
                     var energy = GameManager.Instance.ElementalEnergy;
                     bool canAfford = energy.CanAfford(ec);
+                    canUse = canAfford;
+
                     var costParts = new System.Collections.Generic.List<string>();
                     if (ec.fire > 0)
                     {
@@ -91,13 +111,18 @@ namespace SlotDefense
 
                 if (cardButtons[i].targetGraphic is Image bg)
                     bg.color = bgColor;
+
+                // 카드가 있으면 항상 살짝 위로 (여유 있으면 더 높게)
+                float targetY = card == null || isSelected ? 0f : canUse ? 14f : 0f;
+                _liftY[i] = Mathf.Lerp(_liftY[i], targetY, Time.deltaTime * 9f);
+                ((RectTransform)cardButtons[i].transform).anchoredPosition = _basePos[i] + new Vector2(0f, _liftY[i]);
             }
 
             if (deployZoneOverlay != null)
             {
                 int sel = arenaSystem != null ? arenaSystem.SelectedSlot : -1;
                 bool unitPending = sel >= 0 && GameManager.Instance?.Hand.GetSlot(sel)?.cardType == CardType.Unit;
-                float a = unitPending ? 0.35f : 0.10f;
+                float a = unitPending ? 0.28f : 0f;
                 deployZoneOverlay.color = new Color(0.3f, 0.75f, 1f, a);
             }
         }

@@ -40,7 +40,7 @@ namespace SlotDefense
             _rng = new System.Random();
             if (isSurvivalMode) battleDuration = 99999f;
             Battle          = new BattleManager(villageHp, battleDuration);
-            SlotMachine     = new SlotMachineSystem(chargeInterval: 2f, initialCharges: 3);
+            SlotMachine     = new SlotMachineSystem(chargeInterval: 6f, initialCharges: 3);
             Hand            = new HandSystem(4);
             Deck            = new DeckSystem(deckConfig.cards);
             ElementalEnergy = new ElementalEnergySystem();
@@ -108,10 +108,26 @@ namespace SlotDefense
             return sym;
         }
 
+        // 릴 3개 한번에 정지 — 행운 1 소모.
+        public bool TryStopAllReels()
+        {
+            if (_pendingReels == null || _stoppedCount >= 3) return false;
+            if (!SlotMachine.TrySpin()) return false;
+            _stoppedCount  = 3;
+            _pendingEnergy = ReelSystem.CalcEnergy(_pendingReels);
+            return true;
+        }
+
         public void CommitSpin()
         {
             if (!AllReelsStopped) return;
             ElementalEnergy.Add(_pendingEnergy.fire, _pendingEnergy.iron, _pendingEnergy.life);
+
+            // 속성 유닛 버프: 릴에 나온 심볼 수만큼 스택 증가
+            if (_pendingEnergy.fire > 0) UnitController.ApplyElementBuff(ElementType.Fire, _pendingEnergy.fire);
+            if (_pendingEnergy.iron > 0) UnitController.ApplyElementBuff(ElementType.Iron, _pendingEnergy.iron);
+            if (_pendingEnergy.life > 0) UnitController.ApplyElementBuff(ElementType.Life, _pendingEnergy.life);
+
             BeginNewSpin(); // 즉시 다음 스핀 준비
         }
 

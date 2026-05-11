@@ -15,7 +15,7 @@ namespace SlotDefense
         private static readonly Color FireColor = new Color(1f,  0.45f, 0.1f);
         private static readonly Color IronColor = new Color(0.6f, 0.8f, 1f);
         private static readonly Color LifeColor = new Color(0.2f, 1f,  0.45f);
-        private static readonly Color DimColor  = new Color(0.45f, 0.45f, 0.45f);
+        private static readonly Color DimColor  = new Color(0.55f, 0.55f, 0.55f);
 
         private void Awake()   { Instance = this; }
         private void OnDestroy() { if (Instance == this) Instance = null; }
@@ -33,7 +33,7 @@ namespace SlotDefense
         {
             if (t == null) return;
             t.color = amount > 0 ? col : DimColor;
-            t.text = $"<size=38>{icon}</size> <b>{amount}</b>";
+            t.text = $"{icon} <b>{amount}</b>";
         }
 
         // 부족한 속성 라벨을 빨간색으로 3회 점멸

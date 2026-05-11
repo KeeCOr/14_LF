@@ -61,7 +61,7 @@ namespace SlotDefense
 
             _deckCfg = Inst<FixedDeckConfig>(d =>
             {
-                // 유닛 10종
+                // 유닛 14종
                 var swordsman   = MakeCard("검사",     hp:80,  dmg:15, speed:2f,   range:1.5f, rate:1f,   sight:5f,  iron:1);
                 var archer      = MakeCard("궁수",     hp:50,  dmg:10, speed:1.5f, range:5f,   rate:2f,   sight:8f,  canAttackAir:true, fire:1, iron:1);
                 var knight      = MakeCard("기사",     hp:120, dmg:20, speed:1.2f, range:1f,   rate:0.8f, sight:4f,  iron:2);
@@ -72,6 +72,11 @@ namespace SlotDefense
                 var pyromancer  = MakeCard("화염술사", hp:40,  dmg:35, speed:1.7f, range:4f,   rate:0.5f, sight:8f,  canAttackAir:true, fire:3);
                 var crusader    = MakeCard("성기사",   hp:100, dmg:15, speed:1.4f, range:1.5f, rate:1f,   sight:5f,  heal:3f, fire:1, iron:2, life:1);
                 var stormArcher = MakeCard("폭풍궁수", hp:60,  dmg:12, speed:1.6f, range:6f,   rate:2.5f, sight:10f, canAttackAir:true, fire:2, iron:2);
+                // 신규 4종
+                var giant      = MakeCard("거인",     hp:350, dmg:35, speed:0.7f, range:1.2f, rate:0.55f, sight:3f,  iron:3);
+                var dragon     = MakeCard("용",       hp:200, dmg:45, speed:2.2f, range:3.5f, rate:0.5f,  sight:9f,  canAttackAir:true, isFlying:true, fire:3, life:1);
+                var skeleton   = MakeCard("스켈레톤", hp:35,  dmg:12, speed:3.2f, range:1.0f, rate:1.8f,  sight:5f,  iron:1, life:1);
+                var dwarf      = MakeCard("드워프",   hp:110, dmg:25, speed:1.0f, range:1.0f, rate:1.1f,  sight:4f,  fire:1, iron:2);
 
                 // 마법 2종
                 var lightning   = MakeSkillCard("번개화살", SkillType.LightningArrow, damage:80f,  radius:2.0f, fire:2);
@@ -97,11 +102,12 @@ namespace SlotDefense
                 var magicCircle = MakeBuildingCard("마법진", new BuildingData
                     { buildingType = BuildingType.ProductionUnit, unitToSpawn = mage, spawnInterval = 15f }, fire:2, life:1);
 
-                // 기본 덱 8장
+                // 기본 덱 12장
                 d.cards = new CardData[]
                 {
                     swordsman, archer, knight, mage,
-                    healer, lightning, portalBomb, fireTower
+                    healer, lightning, portalBomb, fireTower,
+                    giant, dragon, skeleton, dwarf
                 };
 
                 // Inspector 필드 우선, 없으면 Resources/Prefabs/Units/{카드명}.prefab 자동 로드
@@ -300,75 +306,132 @@ namespace SlotDefense
             scaler.referenceResolution = new Vector2(1920, 1080);
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // ArenaHUD
+            // ── 상단 바 배경 (sibling 0, 가장 뒤에 렌더) ─────────────────
+            {
+                var go = Child(canvasGo.transform, "TopBar");
+                var rt = (RectTransform)go.transform;
+                rt.anchorMin = new Vector2(0f, 1f); rt.anchorMax = new Vector2(1f, 1f);
+                rt.pivot = new Vector2(0.5f, 1f);
+                rt.sizeDelta = new Vector2(0f, 170f); rt.anchoredPosition = Vector2.zero;
+                var img = go.AddComponent<Image>();
+                img.color = new Color(0.04f, 0.05f, 0.15f, 0.96f); img.raycastTarget = false;
+                go.transform.SetSiblingIndex(0);
+                var bgo = Child(go.transform, "Border");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 0f); brt.anchorMax = new Vector2(1f, 0f);
+                brt.pivot = new Vector2(0.5f, 0f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.55f, 1f, 0.55f); bi.raycastTarget = false;
+            }
+
+            // ── 하단 패널 배경 (sibling 1) ────────────────────────────────
+            {
+                var go = Child(canvasGo.transform, "BottomPanel");
+                var rt = (RectTransform)go.transform;
+                rt.anchorMin = new Vector2(0f, 0f); rt.anchorMax = new Vector2(1f, 0f);
+                rt.pivot = new Vector2(0.5f, 0f);
+                rt.sizeDelta = new Vector2(0f, 280f); rt.anchoredPosition = Vector2.zero;
+                var img = go.AddComponent<Image>();
+                img.color = new Color(0.04f, 0.05f, 0.15f, 0.96f); img.raycastTarget = false;
+                go.transform.SetSiblingIndex(1);
+                var bgo = Child(go.transform, "Border");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
+                brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.55f, 1f, 0.55f); bi.raycastTarget = false;
+            }
+
+            // ── ArenaHUD ──────────────────────────────────────────────────
             var hudGo = Child(canvasGo.transform, "ArenaHUD");
             var hud   = hudGo.AddComponent<ArenaHUD>();
-            LabelText(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-340, 523));
-            LabelText(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 340, 523));
-            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-340, 490), Color.green);
-            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 340, 490), Color.red);
-            hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 490), 36);
-            hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 450), 28);
-            hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 410), 20);
-            hud.stageText = MakeText(hudGo.transform, "Stage", "STAGE 1", new Vector2(0, 370), 22);
+            LabelText(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-640, 508));
+            LabelText(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 350, 508));
+            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-640, 484), Color.green);
+            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 350, 484), Color.red);
+            hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 504), 38);
+            hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 465), 24);
+            hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 442), 17);
+            hud.stageText  = MakeText(hudGo.transform, "Stage",  "STAGE 1",              new Vector2(0, 417), 19);
+            // 덱 보기 버튼 — EnergyHUD와 겹치지 않도록 왼쪽에 배치
+            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(610f, 484f), new Vector2(110f, 36f));
 
-            // SlotMachineUI
+            // ── 배치 구역 오버레이 (기본 투명 — HandUI가 카드 선택 시에만 표시) ──
+            var zoneGo = Child(canvasGo.transform, "DeployZone");
+            var zoneRt = (RectTransform)zoneGo.transform;
+            zoneRt.anchorMin = new Vector2(0f, 0f); zoneRt.anchorMax = new Vector2(0.48f, 1f);
+            zoneRt.offsetMin = new Vector2(0f, 280f); zoneRt.offsetMax = new Vector2(0f, -170f);
+            var zoneImg = zoneGo.AddComponent<Image>();
+            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0f); // 기본 완전 투명
+            zoneImg.raycastTarget = false;
+            {
+                var bgo = Child(zoneGo.transform, "Border");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(1f, 0f); brt.anchorMax = new Vector2(1f, 1f);
+                brt.pivot = new Vector2(1f, 0.5f); brt.sizeDelta = new Vector2(4f, 0f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.85f, 1f, 0f); bi.raycastTarget = false;
+            }
+
+            // ── SlotMachineUI (하단 오른쪽 절반) ─────────────────────────
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");
             var slotUI = slotGo.AddComponent<SlotMachineUI>();
 
-            LabelText(slotGo.transform, "SlotDesc", "행운 소모 → SPIN → 카드 획득  (2초마다 행운 +1)", new Vector2(0, -400));
+            // 슬롯 내부 패널 — 오른쪽 절반(x=0~960) 전체
+            {
+                var go = Child(slotGo.transform, "SlotPanel");
+                var rt = (RectTransform)go.transform;
+                rt.anchoredPosition = new Vector2(480f, -400f); rt.sizeDelta = new Vector2(918f, 258f);
+                var img = go.AddComponent<Image>();
+                img.color = new Color(0.05f, 0.07f, 0.18f, 0.97f); img.raycastTarget = false;
+                var bgo = Child(go.transform, "TopBorder");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
+                brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 2f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.4f, 0.6f, 1f, 0.6f); bi.raycastTarget = false;
+            }
 
-            // 3개 릴 박스
+            var slotHeader = MakeText(slotGo.transform, "SlotHeader", "[ SLOT MACHINE ]", new Vector2(480f, -274f), 14);
+            slotHeader.color = new Color(0.55f, 0.75f, 1f, 0.85f);
+
             var reelNameTexts = new Text[3];
-            float[] reelX = { -200f, 0f, 200f };
-            string[] reelLabels = { "릴 1", "릴 2", "릴 3" };
+            float[] reelX     = { 320f, 480f, 640f };
+            string[] reelLbls = { "릴 1", "릴 2", "릴 3" };
             for (int i = 0; i < 3; i++)
             {
                 var reelBox = Child(slotGo.transform, $"Reel{i}");
                 var reelRt  = (RectTransform)reelBox.transform;
-                reelRt.anchoredPosition = new Vector2(reelX[i], -445f);
-                reelRt.sizeDelta        = new Vector2(170f, 60f);
-                var reelBg = reelBox.AddComponent<Image>();
-                reelBg.color = new Color(0.1f, 0.15f, 0.3f, 0.95f);
-                MakeText(reelBox.transform, "Label", reelLabels[i], new Vector2(0, 20), 16).color = new Color(0.6f, 0.7f, 1f);
-                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -10), 28);
+                reelRt.anchoredPosition = new Vector2(reelX[i], -310f);
+                reelRt.sizeDelta        = new Vector2(140f, 56f);
+                reelBox.AddComponent<Image>().color = new Color(0.08f, 0.12f, 0.28f, 0.95f);
+                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 18), 12).color = new Color(0.55f, 0.65f, 1f);
+                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -7), 26);
             }
             slotUI.reelLabels = reelNameTexts;
 
-            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(0, -490), 24);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "SPIN (행운 1 소모)", new Vector2(0, -530), new Vector2(260, 58));
+            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -356f), 20);
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -400f), new Vector2(175f, 42f));
 
-            // 배치 가능 구역 오버레이
-            var zoneGo  = Child(canvasGo.transform, "DeployZone");
-            var zoneRt  = (RectTransform)zoneGo.transform;
-            zoneRt.anchorMin  = Vector2.zero;
-            zoneRt.anchorMax  = new Vector2(0.48f, 1f);
-            zoneRt.sizeDelta  = Vector2.zero;
-            var zoneImg = zoneGo.AddComponent<Image>();
-            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0.10f);
-            zoneImg.raycastTarget = false;
-            zoneGo.transform.SetSiblingIndex(0);
+            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -400f), new Vector2(70f, 42f));
+            autoBtn.GetComponentInChildren<Text>().fontSize = 13;
+            if (autoBtn.targetGraphic is Image autoBtnImg) autoBtnImg.color = new Color(0.22f, 0.22f, 0.35f);
+            slotUI.autoButton      = autoBtn;
+            slotUI.autoButtonLabel = autoBtn.GetComponentInChildren<Text>();
 
-            // 구역 경계선 (오른쪽 끝 세로선)
-            var borderGo = Child(zoneGo.transform, "Border");
-            var borderRt = (RectTransform)borderGo.transform;
-            borderRt.anchorMin = new Vector2(1f, 0f);
-            borderRt.anchorMax = new Vector2(1f, 1f);
-            borderRt.pivot     = new Vector2(1f, 0.5f);
-            borderRt.sizeDelta = new Vector2(5f, 0f);
-            var borderImg = borderGo.AddComponent<Image>();
-            borderImg.color = new Color(0.3f, 0.85f, 1f, 0.65f);
-            borderImg.raycastTarget = false;
+            // 행운 게이지
+            {
+                var ggo = Child(slotGo.transform, "LuckGauge");
+                var grt = (RectTransform)ggo.transform;
+                grt.anchoredPosition = new Vector2(480f, -440f); grt.sizeDelta = new Vector2(260f, 12f);
+                var bgImg = ggo.AddComponent<Image>(); bgImg.color = new Color(0.08f, 0.06f, 0.02f, 0.95f); bgImg.raycastTarget = false;
+                var fgo = Child(ggo.transform, "Fill");
+                var frt = (RectTransform)fgo.transform;
+                frt.anchorMin = Vector2.zero; frt.anchorMax = new Vector2(0f, 1f);
+                frt.pivot = new Vector2(0f, 0.5f); frt.sizeDelta = Vector2.zero; frt.anchoredPosition = Vector2.zero;
+                var fi = fgo.AddComponent<Image>(); fi.color = new Color(1f, 0.82f, 0.15f, 0.95f); fi.raycastTarget = false;
+                slotUI.luckGaugeFillRt = frt;
+            }
+            slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -460f), 14);
+            slotUI.luckChargeText.color = new Color(0.9f, 0.8f, 0.4f);
 
-            // 구역 상단 라벨
-            var zoneLbl = MakeText(zoneGo.transform, "ZoneLabel", "▼ 배치 구역 ▼", new Vector2(0, 40), 22);
-            zoneLbl.color = new Color(0.4f, 0.9f, 1f, 0.75f);
-
-            // 구역 하단 설명
-            var zoneDesc = MakeText(zoneGo.transform, "ZoneDesc", "카드 드래그하여 유닛 배치", new Vector2(0, -20), 16);
-            zoneDesc.color = new Color(0.6f, 0.9f, 1f, 0.55f);
-
-            // HandUI
+            // ── HandUI (하단 왼쪽 절반) ───────────────────────────────────
             var handGo = Child(canvasGo.transform, "HandUI");
             var handUI = handGo.AddComponent<HandUI>();
             handUI.arenaSystem       = arena;
@@ -377,18 +440,20 @@ namespace SlotDefense
             handUI.cardIcons   = new Image[4];
             handUI.cardNames   = new Text[4];
 
-            LabelText(handGo.transform, "HandDesc", "카드 클릭 선택 → 배치 구역 클릭으로 유닛 배치", new Vector2(0, -255));
+            MakeText(handGo.transform, "HandHeader", "[ HAND ]", new Vector2(-480f, -274f), 14)
+                .color = new Color(0.55f, 0.75f, 1f, 0.85f);
 
+            // 카드: 왼쪽 절반(-960~0)에 4장, 140px 간격
+            float[] cardXPos = { -675f, -535f, -395f, -255f };
             for (int i = 0; i < 4; i++)
             {
-                float xPos = -345f + i * 230f;
                 var cardGo = Child(handGo.transform, $"CardSlot{i}");
                 var rt     = (RectTransform)cardGo.transform;
-                rt.anchoredPosition = new Vector2(xPos, -320f);
-                rt.sizeDelta        = new Vector2(220f, 130f);
+                rt.anchoredPosition = new Vector2(cardXPos[i], -395f);
+                rt.sizeDelta        = new Vector2(122f, 200f);
 
                 var bg  = cardGo.AddComponent<Image>();
-                bg.color = new Color(0.2f, 0.25f, 0.45f, 0.9f);
+                bg.color = new Color(0.15f, 0.20f, 0.40f, 0.92f);
                 var btn = cardGo.AddComponent<Button>();
                 btn.targetGraphic = bg;
                 handUI.cardButtons[i] = btn;
@@ -400,88 +465,106 @@ namespace SlotDefense
 
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
-                iconRt.anchoredPosition = new Vector2(-70, 0);
-                iconRt.sizeDelta        = new Vector2(48, 48);
+                iconRt.anchoredPosition = new Vector2(0, 60);
+                iconRt.sizeDelta        = new Vector2(36, 36);
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, 0), 26);
+                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, -10), 15);
                 nameText.supportRichText = true;
                 nameText.lineSpacing     = 1.2f;
                 handUI.cardNames[i] = nameText;
             }
 
-            // ResultUI
+            // 좌우 구분선 (HAND | SLOT)
+            {
+                var go = Child(canvasGo.transform, "BtmDivider");
+                var rt = (RectTransform)go.transform;
+                rt.anchorMin = new Vector2(0.5f, 0f); rt.anchorMax = new Vector2(0.5f, 0f);
+                rt.pivot = new Vector2(0.5f, 0f); rt.sizeDelta = new Vector2(2f, 278f); rt.anchoredPosition = new Vector2(0f, 0f);
+                var img = go.AddComponent<Image>(); img.color = new Color(0.3f, 0.55f, 1f, 0.3f); img.raycastTarget = false;
+            }
+
+            // ── ResultUI ─────────────────────────────────────────────────
             var resultUIGo = Child(canvasGo.transform, "ResultUI");
             StretchFull((RectTransform)resultUIGo.transform);
             var resultUI = resultUIGo.AddComponent<ResultUI>();
-
             var panelGo = Child(resultUIGo.transform, "Panel");
             StretchFull((RectTransform)panelGo.transform);
-            var panelImg = panelGo.AddComponent<Image>();
-            panelImg.color = new Color(0f, 0f, 0f, 0.82f);
-
+            panelGo.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.82f);
             resultUI.panel       = panelGo;
             resultUI.resultText  = MakeText(panelGo.transform, "ResultText", "", Vector2.zero, 70);
             resultUI.retryButton = MakeButton(panelGo.transform, "RetryBtn", "RETRY", new Vector2(0, -110), new Vector2(220, 65));
 
-            // DeckViewerUI — 덱 카드 목록 팝업
+            // ── DeckViewer ────────────────────────────────────────────────
             var dvGo = Child(canvasGo.transform, "DeckViewer");
             var dv   = dvGo.AddComponent<DeckViewerUI>();
-
             var dvPanel   = Child(dvGo.transform, "Panel");
             var dvPanelRt = (RectTransform)dvPanel.transform;
-            dvPanelRt.anchoredPosition = Vector2.zero;
-            dvPanelRt.sizeDelta        = new Vector2(960f, 540f);
+            dvPanelRt.anchoredPosition = Vector2.zero; dvPanelRt.sizeDelta = new Vector2(960f, 540f);
             dvPanel.AddComponent<Image>().color = new Color(0.04f, 0.07f, 0.14f, 0.97f);
-
-            var dvTitle = MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26);
-            dvTitle.color = new Color(0.55f, 0.88f, 1f);
-
+            MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26).color = new Color(0.55f, 0.88f, 1f);
             var dvContent = MakeText(dvPanel.transform, "Content", "", new Vector2(-20f, -20f), 18);
             dvContent.alignment = TextAnchor.UpperLeft;
             ((RectTransform)dvContent.transform).sizeDelta = new Vector2(900f, 420f);
             dvContent.horizontalOverflow = HorizontalWrapMode.Wrap;
-
-            var dvClose = MakeButton(dvPanel.transform, "CloseBtn", "닫기", new Vector2(420f, 220f), new Vector2(80f, 38f));
-            dvClose.onClick.AddListener(() => dv.Toggle());
-
-            dv.panel       = dvPanel;
-            dv.contentText = dvContent;
+            MakeButton(dvPanel.transform, "CloseBtn", "닫기", new Vector2(420f, 220f), new Vector2(80f, 38f))
+                .onClick.AddListener(() => dv.Toggle());
+            dv.panel = dvPanel; dv.contentText = dvContent;
             dv.Setup(GameManager.Instance.deckConfig);
-
-            // "덱 보기" 버튼 — HUD 우상단
-            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(840f, 490f), new Vector2(110f, 36f));
             deckBtn.onClick.AddListener(() => dv.Toggle());
 
-            // ScreenFlash overlay
-            var flashGo  = Child(canvasGo.transform, "ScreenFlash");
-            var flashRt  = (RectTransform)flashGo.transform;
-            flashRt.anchorMin = Vector2.zero;
-            flashRt.anchorMax = Vector2.one;
-            flashRt.sizeDelta = Vector2.zero;
+            // ── ScreenFlash ───────────────────────────────────────────────
+            var flashGo = Child(canvasGo.transform, "ScreenFlash");
+            var flashRt = (RectTransform)flashGo.transform;
+            flashRt.anchorMin = Vector2.zero; flashRt.anchorMax = Vector2.one; flashRt.sizeDelta = Vector2.zero;
             var flashImg = flashGo.AddComponent<Image>();
-            flashImg.color         = new Color(1f, 1f, 1f, 0f);
-            flashImg.raycastTarget = false;
+            flashImg.color = new Color(1f, 1f, 1f, 0f); flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
 
-            // --- EnergyHUD — 화면 우상단 패널 (속성별 색상 행) ---
-            var energyGo  = Child(canvasGo.transform, "EnergyHUD");
-            var energyRt  = (RectTransform)energyGo.transform;
+            // ── EnergyHUD (우상단 독립 패널 — 상단 바 위에 렌더) ─────────
+            var energyGo = Child(canvasGo.transform, "EnergyHUD");
+            var energyRt = (RectTransform)energyGo.transform;
             energyRt.anchorMin        = new Vector2(1f, 1f);
             energyRt.anchorMax        = new Vector2(1f, 1f);
             energyRt.pivot            = new Vector2(1f, 1f);
-            energyRt.anchoredPosition = new Vector2(-12f, -12f);
-            energyRt.sizeDelta        = new Vector2(180f, 130f);
-
+            energyRt.anchoredPosition = new Vector2(-8f, -8f);
+            energyRt.sizeDelta        = new Vector2(220f, 140f);
             var energyBg = energyGo.AddComponent<Image>();
-            energyBg.color        = new Color(0.04f, 0.06f, 0.15f, 0.92f);
-            energyBg.raycastTarget = false;
+            energyBg.color = new Color(0.10f, 0.06f, 0.02f, 0.98f); energyBg.raycastTarget = false;
+            // 금색 테두리 (상단)
+            {
+                var bgo = Child(energyGo.transform, "TopBorder");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
+                brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 1f); bi.raycastTarget = false;
+            }
+            // 금색 테두리 (하단)
+            {
+                var bgo = Child(energyGo.transform, "BotBorder");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 0f); brt.anchorMax = new Vector2(1f, 0f);
+                brt.pivot = new Vector2(0.5f, 0f); brt.sizeDelta = new Vector2(0f, 2f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 0.7f); bi.raycastTarget = false;
+            }
+            // 금색 테두리 (좌측)
+            {
+                var bgo = Child(energyGo.transform, "LeftBorder");
+                var brt = (RectTransform)bgo.transform;
+                brt.anchorMin = new Vector2(0f, 0f); brt.anchorMax = new Vector2(0f, 1f);
+                brt.pivot = new Vector2(0f, 0.5f); brt.sizeDelta = new Vector2(2f, 0f); brt.anchoredPosition = Vector2.zero;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 0.7f); bi.raycastTarget = false;
+            }
+            // 에너지 헤더 라벨
+            var energyHeader = MakeEnergyLabel(energyGo.transform, "EnergyHeader", new Vector2(110f, 118f));
+            energyHeader.text = "속성 에너지"; energyHeader.fontSize = 15;
+            energyHeader.color = new Color(1f, 0.82f, 0.18f);
 
             var energyHud = energyGo.AddComponent<EnergyHUD>();
-            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(90f, 96f),  new Color(1f,  0.45f, 0.1f));
-            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(90f, 60f),  new Color(0.6f, 0.8f, 1f));
-            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(90f, 24f),  new Color(0.2f, 1f,  0.45f));
+            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(110f, 88f), new Color(1f,  0.45f, 0.1f));
+            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(110f, 55f), new Color(0.6f, 0.8f, 1f));
+            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(110f, 22f), new Color(0.2f, 1f,  0.45f));
         }
 
         // ============================================================
@@ -655,10 +738,11 @@ namespace SlotDefense
             rect.sizeDelta        = new Vector2(170f, 36f);
             var txt  = go.AddComponent<Text>();
             txt.font               = SharedFont();
-            txt.fontSize           = 34;
+            txt.fontSize           = 24;
             txt.color              = color == default ? Color.white : color;
             txt.alignment          = TextAnchor.MiddleCenter;
             txt.horizontalOverflow = HorizontalWrapMode.Overflow;
+            txt.verticalOverflow   = VerticalWrapMode.Overflow;
             txt.supportRichText    = true;
             return txt;
         }
