@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lottery Fantasy — 기획서</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
+    --accent: #f7c948; --accent2: #f77c48; --text: #e8eaf0;
+    --text-muted: #8b8fa8; --success: #4caf7d; --fire: #f77c48; --iron: #aab4c8; --life: #4caf7d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 860px; margin: 0 auto; }
+  header { background: linear-gradient(135deg, #1f1408 0%, #120f0a 100%); border: 1px solid var(--accent); border-radius: 12px; padding: 36px 40px; margin-bottom: 36px; position: relative; overflow: hidden; }
+  header::before { content: '🎰'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 70px; opacity: 0.15; }
+  header h1 { font-size: 2rem; color: #fff; margin-bottom: 8px; }
+  header .meta { color: var(--text-muted); font-size: 13px; display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; background: var(--accent); color: #111; margin-left: 8px; }
+  .badge.mode { background: #333; color: var(--text); }
+  h2 { font-size: 1.2rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 36px 0 16px; }
+  h3 { font-size: 1rem; color: #f7a848; margin: 20px 0 10px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
+  .card.highlight { border-color: var(--accent); }
+  .grid { display: grid; gap: 12px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  @media(max-width:600px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr 1fr; } }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th { background: #252420; color: var(--accent); padding: 10px 14px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(247,201,72,.04); }
+  ul { padding-left: 20px; }
+  ul li { margin-bottom: 6px; }
+  .reel { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 8px; font-size: 22px; font-weight: 900; border: 2px solid; margin: 4px; }
+  .reel.fire { background: rgba(247,124,72,.15); border-color: var(--fire); color: var(--fire); }
+  .reel.iron { background: rgba(170,180,200,.15); border-color: var(--iron); color: var(--iron); }
+  .reel.life { background: rgba(76,175,125,.15); border-color: var(--life); color: var(--life); }
+  .el-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .el-fire { background: rgba(247,124,72,.2); color: var(--fire); border: 1px solid var(--fire); }
+  .el-iron { background: rgba(170,180,200,.2); color: var(--iron); border: 1px solid var(--iron); }
+  .el-life { background: rgba(76,175,125,.2); color: var(--life); border: 1px solid var(--life); }
+  .card-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; margin: 2px; }
+  .ct-unit { background: rgba(247,124,72,.2); color: var(--fire); }
+  .ct-skill { background: rgba(124,106,247,.2); color: #a084f7; }
+  .ct-buff { background: rgba(247,201,72,.2); color: var(--accent); }
+  .ct-building { background: rgba(79,195,247,.2); color: #4fc3f7; }
+  blockquote { border-left: 3px solid var(--accent); padding: 10px 16px; background: #1e1c10; border-radius: 0 8px 8px 0; color: var(--text-muted); font-size: 14px; margin: 10px 0; }
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px 0; }
+  .flow-box { background: #252420; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 13px; text-align: center; min-width: 100px; }
+  .flow-arrow { color: var(--accent); font-size: 18px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Lottery Fantasy <span class="badge">MVP</span></h1>
+  <p style="color:var(--text-muted);margin-top:6px;">슬롯머신 × 타워 디펜스 — 릴을 돌려 카드를 뽑고 유닛을 배치하라</p>
+  <div class="meta">
+    <span>엔진: Unity</span>
+    <span>어셈블리: SlotDefense</span>
+    <span>장르: 전략 / 디펜스</span>
+  </div>
+</header>
+
+<h2>1. 게임 개요</h2>
+<div class="card highlight">
+  <p>3개 릴(릴당 원소 1개: 화·철·생명)을 돌려 슬롯 결과에 따라 카드를 드로우하고, 드로운 카드로 유닛·스킬·건물을 배치해 적의 공격으로부터 마을(HP 1000)을 지키는 전략 게임.</p>
+</div>
+
+<div class="grid grid-3">
+  <div class="card">
+    <p style="color:var(--text-muted);font-size:12px">마을 HP</p>
+    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">1000</p>
+  </div>
+  <div class="card">
+    <p style="color:var(--text-muted);font-size:12px">배틀 시간</p>
+    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">180초</p>
+    <p style="font-size:12px;color:var(--text-muted)">서바이벌: 무제한</p>
+  </div>
+  <div class="card">
+    <p style="color:var(--text-muted);font-size:12px">핸드 크기</p>
+    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">4장</p>
+  </div>
+</div>
+
+<h2>2. 게임 모드</h2>
+<div class="grid grid-2">
+  <div class="card">
+    <h3 style="margin-top:0">배틀 모드 (Battle)</h3>
+    <ul>
+      <li>제한 시간: 180초</li>
+      <li>시간 종료 시 HP 비교로 승패 결정</li>
+      <li>플레이어 HP 선점 시 승리</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">서바이벌 모드 (Survival)</h3>
+    <ul>
+      <li>제한 시간 없음 (99999초)</li>
+      <li>마을 HP 0 될 때까지 지속</li>
+      <li>최대한 오래 버티는 것이 목표</li>
+    </ul>
+  </div>
+</div>
+
+<h2>3. 슬롯머신 시스템</h2>
+
+<h3>릴 (Reel)</h3>
+<p>3개의 릴이 있으며 각 릴은 화/철/생명 원소 중 하나를 뽑는다.</p>
+<div style="display:flex;gap:8px;padding:12px 0;flex-wrap:wrap;">
+  <div class="reel fire">火</div>
+  <div class="reel iron">鐵</div>
+  <div class="reel life">生</div>
+</div>
+<div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">
+  <span class="el-tag el-fire">화 (Fire)</span>
+  <span class="el-tag el-iron">철 (Iron)</span>
+  <span class="el-tag el-life">생명 (Life)</span>
+</div>
+
+<h3>슬롯 결과</h3>
+<table>
+  <tr><th>결과</th><th>조건</th><th>효과</th></tr>
+  <tr><td><strong>Triple</strong></td><td>3개 릴 모두 같은 원소</td><td>강화 카드 드로우 기회</td></tr>
+  <tr><td><strong>Double</strong></td><td>2개 릴이 같은 원소</td><td>일반 카드 드로우</td></tr>
+  <tr><td><strong>AllDifferent</strong></td><td>3개 모두 다른 원소</td><td>선택 드로우 또는 패널티</td></tr>
+</table>
+
+<h3>스핀 충전</h3>
+<table>
+  <tr><th>항목</th><th>값</th></tr>
+  <tr><td>충전 간격</td><td>6초마다 스핀 1회 충전</td></tr>
+  <tr><td>최대 충전량</td><td>10회</td></tr>
+  <tr><td>시작 충전량</td><td>3회</td></tr>
+</table>
+
+<h2>4. 원소 에너지 시스템</h2>
+<p>릴 결과로 원소 에너지(화·철·생명)가 적립되며, 카드 시전에 사용된다.</p>
+<table>
+  <tr><th>원소</th><th>용도</th></tr>
+  <tr><td><span class="el-tag el-fire">화 (Fire)</span></td><td>공격형 유닛 및 스킬 비용</td></tr>
+  <tr><td><span class="el-tag el-iron">철 (Iron)</span></td><td>방어·건물 비용</td></tr>
+  <tr><td><span class="el-tag el-life">생명 (Life)</span></td><td>회복·버프 비용</td></tr>
+</table>
+
+<h2>5. 카드 시스템</h2>
+
+<h3>카드 타입</h3>
+<div class="grid grid-2">
+  <div class="card">
+    <span class="card-type ct-unit">Unit</span>
+    <p style="margin-top:8px;font-size:14px">전투 유닛 소환. HP·공격력·이동속도·사거리·공격속도·시야 스탯 보유. 공중 유닛 공격 및 비행 여부 포함.</p>
+  </div>
+  <div class="card">
+    <span class="card-type ct-skill">Skill</span>
+    <p style="margin-top:8px;font-size:14px">즉발 스킬 효과. 범위 공격, 속도 증가, 자원 획득 등 다양한 스킬 이펙트.</p>
+  </div>
+  <div class="card">
+    <span class="card-type ct-buff">Buff</span>
+    <p style="margin-top:8px;font-size:14px">글로벌 버프 적용. 전체 유닛 강화, 마을 회복, 에너지 생산 등.</p>
+  </div>
+  <div class="card">
+    <span class="card-type ct-building">Building</span>
+    <p style="margin-top:8px;font-size:14px">건물 배치. 생산 건물(자원 생성) 또는 전투 건물(타워 등).</p>
+  </div>
+</div>
+
+<h3>카드 티어</h3>
+<div class="grid grid-2">
+  <div class="card">
+    <p style="font-size:1rem;font-weight:700">Normal <span style="color:var(--text-muted);font-size:13px;">일반</span></p>
+    <p style="font-size:13px;margin-top:4px;">기본 스탯의 카드. 덱에서 주로 드로우.</p>
+  </div>
+  <div class="card" style="border-color:var(--accent)">
+    <p style="font-size:1rem;font-weight:700">Enhanced <span style="color:var(--accent);font-size:13px;">★ 강화</span></p>
+    <p style="font-size:13px;margin-top:4px;">Triple 슬롯 결과 시 드로우 가능한 강화 버전.</p>
+  </div>
+</div>
+
+<h3>핸드 & 덱</h3>
+<div class="card">
+  <ul>
+    <li>핸드: 최대 4장 유지 (빈 슬롯 생기면 덱에서 즉시 보충)</li>
+    <li>덱: FixedDeckConfig로 사전 정의된 카드 풀에서 순서대로 드로우</li>
+    <li>유닛 소환 시 해당 원소 비용 차감</li>
+  </ul>
+</div>
+
+<h2>6. 전투 시스템</h2>
+
+<h3>엔티티</h3>
+<table>
+  <tr><th>엔티티</th><th>설명</th></tr>
+  <tr><td>UnitController</td><td>전투 유닛. 이동·공격·시야 처리.</td></tr>
+  <tr><td>Village</td><td>플레이어 / 적 마을. HP 1000, 피격 시 GameEvents 발행.</td></tr>
+  <tr><td>Portal</td><td>적 유닛 스폰 포탈.</td></tr>
+  <tr><td>BuildingController</td><td>배치된 건물 (전투/생산).</td></tr>
+  <tr><td>BattleBuilding</td><td>공격 기능 건물.</td></tr>
+  <tr><td>ProductionBuilding</td><td>에너지/자원 생산 건물.</td></tr>
+</table>
+
+<h3>승패 조건</h3>
+<table>
+  <tr><th>결과</th><th>조건</th></tr>
+  <tr><td style="color:var(--success)">PlayerWin</td><td>적 마을 HP = 0</td></tr>
+  <tr><td style="color:#f07070">PlayerLose</td><td>플레이어 마을 HP = 0</td></tr>
+  <tr><td style="color:var(--accent)">PlayerWin (시간)</td><td>시간 종료 + 플레이어 HP > 적 HP</td></tr>
+  <tr><td style="color:#f07070">PlayerLose (시간)</td><td>시간 종료 + 적 HP > 플레이어 HP</td></tr>
+  <tr><td style="color:var(--text-muted)">Draw</td><td>시간 종료 + HP 동일</td></tr>
+</table>
+
+<h2>7. 기타 시스템</h2>
+<table>
+  <tr><th>시스템</th><th>설명</th></tr>
+  <tr><td>ArenaSystem</td><td>전투 공간 관리</td></tr>
+  <tr><td>RecordSystem</td><td>전적 기록</td></tr>
+  <tr><td>TransferSystem</td><td>엔티티 이동 처리</td></tr>
+</table>
+
+<h2>8. 빌드 & 배포</h2>
+<div class="card">
+  <ul>
+    <li>플랫폼: Windows 64bit</li>
+    <li>빌드: Unity CLI 또는 Editor에서 직접 빌드</li>
+    <li>출력: <code>release/LotteryFantasy.exe</code></li>
+    <li>루트 배치: <code>LotteryFantasy_v{버전}_portable.exe</code></li>
+  </ul>
+</div>
+
+<div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:12px;text-align:center;">
+  Lottery Fantasy 기획서 · 2026-05-12
+</div>
+</div>
+</body>
+</html>
