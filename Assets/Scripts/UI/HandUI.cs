@@ -33,10 +33,6 @@ namespace SlotDefense
 
         private void Update() => RefreshDisplay();
 
-        private static readonly Color ColorNormal   = new Color(0.2f, 0.25f, 0.45f, 0.9f);
-        private static readonly Color ColorSelected = new Color(0.2f, 0.65f, 0.25f, 0.9f);
-        private static readonly Color ColorBuff     = new Color(0.5f, 0.38f, 0.05f, 0.9f);
-        private static readonly Color ColorSkill    = new Color(0.4f, 0.1f, 0.55f, 0.9f);
         private static readonly Color ColorEnhanced = new Color(1f, 0.85f, 0.1f, 0.9f);
 
         private void RefreshDisplay()
@@ -58,12 +54,12 @@ namespace SlotDefense
                 if (card == null)
                 {
                     cardNames[i].text = "---";
-                    bgColor = ColorNormal;
+                    bgColor = UIStyle.CardBackground(CardType.Unit, canAfford: false, selected: false);
                 }
                 else if (card.cardType == CardType.Buff)
                 {
                     cardNames[i].text = $"{card.cardName}\n[클릭 → 즉시 발동]";
-                    bgColor = ColorBuff;
+                    bgColor = UIStyle.CardBackground(CardType.Buff, canAfford: true, selected: false);
                     canUse  = true;
                 }
                 else if (card.cardType == CardType.Skill)
@@ -76,9 +72,7 @@ namespace SlotDefense
                     cardNames[i].text = skillSelected
                         ? $"{card.cardName}\n> 지점 클릭"
                         : $"{card.cardName}\n[클릭 → 지점 선택]";
-                    bgColor = skillSelected ? new Color(0.7f, 0.3f, 0.9f, 0.95f)
-                            : canAfford     ? ColorSkill
-                            : new Color(0.15f, 0.04f, 0.22f, 0.88f);
+                    bgColor = UIStyle.CardBackground(CardType.Skill, canAfford, skillSelected);
                 }
                 else
                 {
@@ -106,7 +100,7 @@ namespace SlotDefense
                     string costStr = costParts.Count > 0 ? string.Join("  ", costParts) : "<color=#AAAAAA>무료</color>";
                     string action  = isSelected ? "\n<color=#88FFCC>> 배치 클릭</color>" : "";
                     cardNames[i].text = $"<b>{card.cardName}</b>\n{costStr}{action}";
-                    bgColor = isSelected ? ColorSelected : canAfford ? ColorNormal : new Color(0.12f, 0.08f, 0.20f, 0.88f);
+                    bgColor = UIStyle.CardBackground(card.cardType, canAfford, isSelected);
                 }
 
                 if (cardButtons[i].targetGraphic is Image bg)

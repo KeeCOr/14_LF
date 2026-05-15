@@ -314,13 +314,13 @@ namespace SlotDefense
                 rt.pivot = new Vector2(0.5f, 1f);
                 rt.sizeDelta = new Vector2(0f, 170f); rt.anchoredPosition = Vector2.zero;
                 var img = go.AddComponent<Image>();
-                img.color = new Color(0.04f, 0.05f, 0.15f, 0.96f); img.raycastTarget = false;
+                img.color = UIStyle.PanelDeep; img.raycastTarget = false;
                 go.transform.SetSiblingIndex(0);
                 var bgo = Child(go.transform, "Border");
                 var brt = (RectTransform)bgo.transform;
                 brt.anchorMin = new Vector2(0f, 0f); brt.anchorMax = new Vector2(1f, 0f);
                 brt.pivot = new Vector2(0.5f, 0f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
-                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.55f, 1f, 0.55f); bi.raycastTarget = false;
+                var bi = bgo.AddComponent<Image>(); bi.color = UIStyle.Stroke; bi.raycastTarget = false;
             }
 
             // ── 하단 패널 배경 (sibling 1) ────────────────────────────────
@@ -331,13 +331,13 @@ namespace SlotDefense
                 rt.pivot = new Vector2(0.5f, 0f);
                 rt.sizeDelta = new Vector2(0f, 280f); rt.anchoredPosition = Vector2.zero;
                 var img = go.AddComponent<Image>();
-                img.color = new Color(0.04f, 0.05f, 0.15f, 0.96f); img.raycastTarget = false;
+                img.color = UIStyle.PanelDeep; img.raycastTarget = false;
                 go.transform.SetSiblingIndex(1);
                 var bgo = Child(go.transform, "Border");
                 var brt = (RectTransform)bgo.transform;
                 brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
                 brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
-                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.55f, 1f, 0.55f); bi.raycastTarget = false;
+                var bi = bgo.AddComponent<Image>(); bi.color = UIStyle.Stroke; bi.raycastTarget = false;
             }
 
             // ── ArenaHUD ──────────────────────────────────────────────────
@@ -345,14 +345,15 @@ namespace SlotDefense
             var hud   = hudGo.AddComponent<ArenaHUD>();
             LabelText(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-640, 508));
             LabelText(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 350, 508));
-            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-640, 484), Color.green);
-            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 350, 484), Color.red);
+            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-640, 484), UIStyle.Green);
+            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 350, 484), UIStyle.Red);
             hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 504), 38);
             hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 465), 24);
             hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 442), 17);
             hud.stageText  = MakeText(hudGo.transform, "Stage",  "STAGE 1",              new Vector2(0, 417), 19);
             // 덱 보기 버튼 — EnergyHUD와 겹치지 않도록 왼쪽에 배치
-            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(610f, 484f), new Vector2(110f, 36f));
+            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(610f, 484f), new Vector2(118f, 38f));
+            SetButtonAccent(deckBtn, UIStyle.Cyan);
 
             // ── 배치 구역 오버레이 (기본 투명 — HandUI가 카드 선택 시에만 표시) ──
             var zoneGo = Child(canvasGo.transform, "DeployZone");
@@ -380,16 +381,17 @@ namespace SlotDefense
                 var rt = (RectTransform)go.transform;
                 rt.anchoredPosition = new Vector2(480f, -400f); rt.sizeDelta = new Vector2(918f, 258f);
                 var img = go.AddComponent<Image>();
-                img.color = new Color(0.05f, 0.07f, 0.18f, 0.97f); img.raycastTarget = false;
+                img.color = UIStyle.Panel; img.raycastTarget = false;
                 var bgo = Child(go.transform, "TopBorder");
                 var brt = (RectTransform)bgo.transform;
                 brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
                 brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 2f); brt.anchoredPosition = Vector2.zero;
-                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.4f, 0.6f, 1f, 0.6f); bi.raycastTarget = false;
+                var bi = bgo.AddComponent<Image>(); bi.color = UIStyle.Stroke; bi.raycastTarget = false;
+                AddEdgeLine(go.transform, "BottomBorder", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
             }
 
             var slotHeader = MakeText(slotGo.transform, "SlotHeader", "[ SLOT MACHINE ]", new Vector2(480f, -274f), 14);
-            slotHeader.color = new Color(0.55f, 0.75f, 1f, 0.85f);
+            slotHeader.color = UIStyle.TextMuted;
 
             var reelNameTexts = new Text[3];
             float[] reelX     = { 320f, 480f, 640f };
@@ -398,18 +400,21 @@ namespace SlotDefense
             {
                 var reelBox = Child(slotGo.transform, $"Reel{i}");
                 var reelRt  = (RectTransform)reelBox.transform;
-                reelRt.anchoredPosition = new Vector2(reelX[i], -310f);
-                reelRt.sizeDelta        = new Vector2(140f, 56f);
-                reelBox.AddComponent<Image>().color = new Color(0.08f, 0.12f, 0.28f, 0.95f);
-                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 18), 12).color = new Color(0.55f, 0.65f, 1f);
-                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -7), 26);
+                reelRt.anchoredPosition = new Vector2(reelX[i], -318f);
+                reelRt.sizeDelta        = new Vector2(148f, 82f);
+                reelBox.AddComponent<Image>().color = UIStyle.PanelRaised;
+                AddEdgeLine(reelBox.transform, "TopAccent", RectEdge.Top, 3f, i == 0 ? new Color(1f, 0.48f, 0.18f, 0.95f) : i == 1 ? new Color(0.55f, 0.80f, 1f, 0.95f) : new Color(0.25f, 1f, 0.50f, 0.95f));
+                AddEdgeLine(reelBox.transform, "BottomShade", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
+                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 26), 12).color = UIStyle.TextMuted;
+                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -8), 34);
             }
             slotUI.reelLabels = reelNameTexts;
 
             slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -356f), 20);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -400f), new Vector2(175f, 42f));
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -408f), new Vector2(175f, 48f));
+            SetButtonAccent(slotUI.spinButton, UIStyle.Green);
 
-            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -400f), new Vector2(70f, 42f));
+            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -408f), new Vector2(74f, 48f));
             autoBtn.GetComponentInChildren<Text>().fontSize = 13;
             if (autoBtn.targetGraphic is Image autoBtnImg) autoBtnImg.color = new Color(0.22f, 0.22f, 0.35f);
             slotUI.autoButton      = autoBtn;
@@ -420,12 +425,12 @@ namespace SlotDefense
                 var ggo = Child(slotGo.transform, "LuckGauge");
                 var grt = (RectTransform)ggo.transform;
                 grt.anchoredPosition = new Vector2(480f, -440f); grt.sizeDelta = new Vector2(260f, 12f);
-                var bgImg = ggo.AddComponent<Image>(); bgImg.color = new Color(0.08f, 0.06f, 0.02f, 0.95f); bgImg.raycastTarget = false;
+                var bgImg = ggo.AddComponent<Image>(); bgImg.color = UIStyle.PanelDeep; bgImg.raycastTarget = false;
                 var fgo = Child(ggo.transform, "Fill");
                 var frt = (RectTransform)fgo.transform;
                 frt.anchorMin = Vector2.zero; frt.anchorMax = new Vector2(0f, 1f);
                 frt.pivot = new Vector2(0f, 0.5f); frt.sizeDelta = Vector2.zero; frt.anchoredPosition = Vector2.zero;
-                var fi = fgo.AddComponent<Image>(); fi.color = new Color(1f, 0.82f, 0.15f, 0.95f); fi.raycastTarget = false;
+                var fi = fgo.AddComponent<Image>(); fi.color = UIStyle.Gold; fi.raycastTarget = false;
                 slotUI.luckGaugeFillRt = frt;
             }
             slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -460f), 14);
@@ -441,7 +446,7 @@ namespace SlotDefense
             handUI.cardNames   = new Text[4];
 
             MakeText(handGo.transform, "HandHeader", "[ HAND ]", new Vector2(-480f, -274f), 14)
-                .color = new Color(0.55f, 0.75f, 1f, 0.85f);
+                .color = UIStyle.TextMuted;
 
             // 카드: 왼쪽 절반(-960~0)에 4장, 140px 간격
             float[] cardXPos = { -675f, -535f, -395f, -255f };
@@ -453,10 +458,13 @@ namespace SlotDefense
                 rt.sizeDelta        = new Vector2(122f, 200f);
 
                 var bg  = cardGo.AddComponent<Image>();
-                bg.color = new Color(0.15f, 0.20f, 0.40f, 0.92f);
+                bg.color = UIStyle.CardUnit;
                 var btn = cardGo.AddComponent<Button>();
                 btn.targetGraphic = bg;
+                btn.colors = UIStyle.AccentButtonColors(UIStyle.Cyan);
                 handUI.cardButtons[i] = btn;
+                AddEdgeLine(cardGo.transform, "CardTopAccent", RectEdge.Top, 4f, UIStyle.Gold);
+                AddEdgeLine(cardGo.transform, "CardBottomShade", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
 
                 var drag = cardGo.AddComponent<CardDragHandler>();
                 drag.slotIndex   = i;
@@ -465,12 +473,12 @@ namespace SlotDefense
 
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
-                iconRt.anchoredPosition = new Vector2(0, 60);
-                iconRt.sizeDelta        = new Vector2(36, 36);
+                iconRt.anchoredPosition = new Vector2(0, 62);
+                iconRt.sizeDelta        = new Vector2(46, 46);
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, -10), 15);
+                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, -16), 15);
                 nameText.supportRichText = true;
                 nameText.lineSpacing     = 1.2f;
                 handUI.cardNames[i] = nameText;
@@ -482,7 +490,7 @@ namespace SlotDefense
                 var rt = (RectTransform)go.transform;
                 rt.anchorMin = new Vector2(0.5f, 0f); rt.anchorMax = new Vector2(0.5f, 0f);
                 rt.pivot = new Vector2(0.5f, 0f); rt.sizeDelta = new Vector2(2f, 278f); rt.anchoredPosition = new Vector2(0f, 0f);
-                var img = go.AddComponent<Image>(); img.color = new Color(0.3f, 0.55f, 1f, 0.3f); img.raycastTarget = false;
+                var img = go.AddComponent<Image>(); img.color = UIStyle.StrokeSoft; img.raycastTarget = false;
             }
 
             // ── ResultUI ─────────────────────────────────────────────────
@@ -491,10 +499,11 @@ namespace SlotDefense
             var resultUI = resultUIGo.AddComponent<ResultUI>();
             var panelGo = Child(resultUIGo.transform, "Panel");
             StretchFull((RectTransform)panelGo.transform);
-            panelGo.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.82f);
+            panelGo.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.86f);
             resultUI.panel       = panelGo;
             resultUI.resultText  = MakeText(panelGo.transform, "ResultText", "", Vector2.zero, 70);
             resultUI.retryButton = MakeButton(panelGo.transform, "RetryBtn", "RETRY", new Vector2(0, -110), new Vector2(220, 65));
+            SetButtonAccent(resultUI.retryButton, UIStyle.Gold);
 
             // ── DeckViewer ────────────────────────────────────────────────
             var dvGo = Child(canvasGo.transform, "DeckViewer");
@@ -502,8 +511,9 @@ namespace SlotDefense
             var dvPanel   = Child(dvGo.transform, "Panel");
             var dvPanelRt = (RectTransform)dvPanel.transform;
             dvPanelRt.anchoredPosition = Vector2.zero; dvPanelRt.sizeDelta = new Vector2(960f, 540f);
-            dvPanel.AddComponent<Image>().color = new Color(0.04f, 0.07f, 0.14f, 0.97f);
-            MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26).color = new Color(0.55f, 0.88f, 1f);
+            dvPanel.AddComponent<Image>().color = UIStyle.Panel;
+            AddEdgeLine(dvPanel.transform, "TopAccent", RectEdge.Top, 4f, UIStyle.Cyan);
+            MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26).color = UIStyle.Cyan;
             var dvContent = MakeText(dvPanel.transform, "Content", "", new Vector2(-20f, -20f), 18);
             dvContent.alignment = TextAnchor.UpperLeft;
             ((RectTransform)dvContent.transform).sizeDelta = new Vector2(900f, 420f);
@@ -721,7 +731,7 @@ namespace SlotDefense
         static Text LabelText(Transform parent, string name, string content, Vector2 pos)
         {
             var t = MakeText(parent, name, content, pos, 17);
-            t.color = new Color(0.75f, 0.85f, 1f);
+            t.color = UIStyle.TextMuted;
             ((RectTransform)t.transform).sizeDelta = new Vector2(800, 36);
             return t;
         }
@@ -769,7 +779,7 @@ namespace SlotDefense
             rt.anchoredPosition = pos;
             rt.sizeDelta        = new Vector2(320, 28);
             var bgImg = go.AddComponent<Image>();
-            bgImg.color = new Color(0.15f, 0.15f, 0.15f, 0.9f);
+            bgImg.color = UIStyle.PanelDeep;
             var slider = go.AddComponent<Slider>();
             slider.minValue = 0f; slider.maxValue = 1f; slider.value = 1f;
 
@@ -781,6 +791,7 @@ namespace SlotDefense
             var fillRt  = (RectTransform)fill.transform;
             fillRt.anchorMin = Vector2.zero; fillRt.anchorMax = Vector2.one; fillRt.sizeDelta = Vector2.zero;
             fill.AddComponent<Image>().color = fillColor;
+            AddEdgeLine(go.transform, "SliderTopLight", RectEdge.Top, 2f, UIStyle.StrokeSoft);
 
             slider.fillRect = fillRt;
             return slider;
@@ -793,11 +804,63 @@ namespace SlotDefense
             rt.anchoredPosition = pos;
             rt.sizeDelta        = size;
             var img = go.AddComponent<Image>();
-            img.color = new Color(0.25f, 0.55f, 0.25f);
+            img.color = UIStyle.Darken(UIStyle.Green, 0.68f);
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
-            MakeText(go.transform, "Label", label, Vector2.zero, 24);
+            btn.colors = UIStyle.AccentButtonColors(UIStyle.Green);
+            var labelText = MakeText(go.transform, "Label", label, Vector2.zero, 22);
+            labelText.color = Color.white;
+            labelText.fontStyle = FontStyle.Bold;
             return btn;
+        }
+
+        enum RectEdge { Top, Bottom, Left, Right }
+
+        static void SetButtonAccent(Button button, Color color)
+        {
+            if (button == null) return;
+            button.colors = UIStyle.AccentButtonColors(color);
+            if (button.targetGraphic is Image img)
+                img.color = UIStyle.Darken(color, 0.68f);
+        }
+
+        static void AddEdgeLine(Transform parent, string name, RectEdge edge, float thickness, Color color)
+        {
+            var go = Child(parent, name);
+            var rt = (RectTransform)go.transform;
+
+            switch (edge)
+            {
+                case RectEdge.Top:
+                    rt.anchorMin = new Vector2(0f, 1f);
+                    rt.anchorMax = new Vector2(1f, 1f);
+                    rt.pivot = new Vector2(0.5f, 1f);
+                    rt.sizeDelta = new Vector2(0f, thickness);
+                    break;
+                case RectEdge.Bottom:
+                    rt.anchorMin = new Vector2(0f, 0f);
+                    rt.anchorMax = new Vector2(1f, 0f);
+                    rt.pivot = new Vector2(0.5f, 0f);
+                    rt.sizeDelta = new Vector2(0f, thickness);
+                    break;
+                case RectEdge.Left:
+                    rt.anchorMin = new Vector2(0f, 0f);
+                    rt.anchorMax = new Vector2(0f, 1f);
+                    rt.pivot = new Vector2(0f, 0.5f);
+                    rt.sizeDelta = new Vector2(thickness, 0f);
+                    break;
+                case RectEdge.Right:
+                    rt.anchorMin = new Vector2(1f, 0f);
+                    rt.anchorMax = new Vector2(1f, 1f);
+                    rt.pivot = new Vector2(1f, 0.5f);
+                    rt.sizeDelta = new Vector2(thickness, 0f);
+                    break;
+            }
+
+            rt.anchoredPosition = Vector2.zero;
+            var img = go.AddComponent<Image>();
+            img.color = color;
+            img.raycastTarget = false;
         }
     }
 }

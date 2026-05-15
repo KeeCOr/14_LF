@@ -16,9 +16,9 @@ namespace SlotDefense
 
         private static readonly string[] SpinPool   = { "🔥", "⚔", "💚", "🔥", "⚔", "💚", "🔥" };
         private static readonly string[] StopLabels = { "🔒 릴 1 정지", "🔒 릴 2 정지", "🔒 릴 3 정지" };
-        private static readonly Color    GoldColor  = new Color(1f, 0.85f, 0.1f);
+        private static readonly Color    GoldColor  = UIStyle.Gold;
         private static readonly Color    WhiteColor = Color.white;
-        private static readonly Color    ReelIdleColor = new Color(0.08f, 0.12f, 0.28f, 0.95f);
+        private static readonly Color    ReelIdleColor = UIStyle.PanelRaised;
         private static readonly Color[]  ReelHighlight = {
             new Color(1f,  0.55f, 0.15f, 1f),  // fire
             new Color(0.5f, 0.75f, 1f,  1f),   // iron
@@ -65,11 +65,11 @@ namespace SlotDefense
             if (canSpin)
             {
                 float t = (Mathf.Sin(Time.time * 4f) + 1f) * 0.5f;
-                cb.normalColor = Color.Lerp(new Color(0.2f, 0.55f, 0.2f), new Color(0.4f, 0.9f, 0.35f), t);
+                cb.normalColor = Color.Lerp(UIStyle.Darken(UIStyle.Green, 0.62f), UIStyle.Green, t);
             }
             else
             {
-                cb.normalColor = new Color(0.18f, 0.18f, 0.18f);
+                cb.normalColor = new Color(0.16f, 0.16f, 0.20f, 0.55f);
             }
             spinButton.colors = cb;
 
@@ -91,8 +91,8 @@ namespace SlotDefense
             {
                 var acb = autoButton.colors;
                 acb.normalColor = _autoSpin
-                    ? new Color(0.8f, 0.5f, 0.1f)
-                    : new Color(0.22f, 0.22f, 0.35f);
+                    ? UIStyle.Darken(UIStyle.Gold, 0.82f)
+                    : UIStyle.PanelRaised;
                 autoButton.colors = acb;
                 if (autoButtonLabel != null)
                     autoButtonLabel.text = _autoSpin ? "AUTO\nON" : "AUTO\nOFF";
@@ -179,7 +179,7 @@ namespace SlotDefense
                             if (!localStopped[i] && _reelBgs[i] != null)
                             {
                                 float p = (Mathf.Sin(now * 7f + i * 2.1f) + 1f) * 0.5f;
-                                _reelBgs[i].color = Color.Lerp(ReelIdleColor, new Color(0.18f, 0.28f, 0.52f, 0.95f), p);
+                                _reelBgs[i].color = Color.Lerp(ReelIdleColor, new Color(0.14f, 0.27f, 0.50f, 0.97f), p);
                             }
                         }
 
@@ -281,12 +281,12 @@ namespace SlotDefense
         // 잭팟 연출: 릴 박스 색상을 금색으로 3회 점멸
         private IEnumerator JackpotPulse()
         {
-            var goldColor = new Color(1f, 0.82f, 0.1f, 1f);
+                var goldColor = UIStyle.Gold;
             for (int pulse = 0; pulse < 3; pulse++)
             {
                 foreach (var bg in _reelBgs) if (bg != null) bg.color = goldColor;
                 yield return new WaitForSeconds(0.12f);
-                foreach (var bg in _reelBgs) if (bg != null) bg.color = new Color(0.1f, 0.18f, 0.38f, 0.95f);
+                foreach (var bg in _reelBgs) if (bg != null) bg.color = UIStyle.PanelRaised;
                 yield return new WaitForSeconds(0.12f);
             }
         }
