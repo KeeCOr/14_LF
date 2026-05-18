@@ -33,6 +33,18 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 슬롯머신 | 릴 박스 크기 확대, 속성별 상단 accent, STOP/AUTO 버튼 상태색 강화 |
 | 결과/덱 화면 | 어두운 오버레이와 금색/청색 accent로 모달 느낌 강화 |
 
+## 오브젝트 및 캐릭터 에셋 방향
+
+2026-05-18 업데이트에서는 새 외부 다운로드보다 프로젝트에 이미 포함된 무료/샘플 에셋을 우선 사용한다. 게임플레이 루트 오브젝트의 `Rigidbody2D`, `Collider2D`, `HpBar`, 컨트롤러 구조는 유지하고, 로우폴리 모델과 자연 소품은 자식 장식 오브젝트로 붙인다.
+
+| 영역 | 사용 에셋 |
+|---|---|
+| 유닛 | `Polytope Studio` 로우폴리 캐릭터/장비 프리팹 |
+| 몬스터 | `Polytope Studio` 캐릭터 파츠를 몬스터/엘리트 구분용 장식으로 사용 |
+| 기지 | `SimpleNaturePack` 나무/자연 프리팹으로 마을 실루엣 강화 |
+| 포털 | `Polytope Studio` 목재/소품 프리팹을 포털 relic 장식으로 사용 |
+| 전장 | `SimpleNaturePack` 나무, 바위, 덤불, 꽃과 `Polytope Studio` 울타리로 주변부 장식 |
+
 ## 빌드 및 배포
 
 - Unity 프로젝트 경로: `C:/Development/14_LT/LotteryFantasy`
