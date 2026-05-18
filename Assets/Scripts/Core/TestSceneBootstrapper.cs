@@ -215,6 +215,8 @@ namespace SlotDefense
             var eVillage = isSurvival ? null : MakeVillage("EnemyVillage", new Vector3(7.5f, 0, 0), false);
             var pSpawn   = Spawn("PlayerSpawn", new Vector3(-2.5f, 0, 0));
             var eSpawn   = Spawn("EnemySpawn",  isSurvival ? new Vector3(5.5f, 0, 0) : new Vector3(2.5f, 0, 0));
+            var sceneryRoot = new GameObject("ArenaScenery");
+            GameVisualKit.AddArenaScenery(sceneryRoot.transform, isSurvival);
 
             // --- Portal ---
             Portal portalComp = null;
@@ -226,6 +228,7 @@ namespace SlotDefense
                 portalSr.sortingOrder = 1;
                 portalComp = portalGo.AddComponent<Portal>();
                 portalComp.eliteConfig = _eliteCfg;
+                GameVisualKit.AttachPortalVisual(portalGo);
             }
 
             // 비활성화를 AddComponent 전에 해야 Awake()가 실행되지 않음.
@@ -649,6 +652,7 @@ namespace SlotDefense
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = MakeSprite(isPlayer ? Color.cyan : new Color(1f, 0.6f, 0f), 1f, 2.5f);
             var v = go.AddComponent<Village>();
+            GameVisualKit.AttachVillageVisual(go, isPlayer);
             typeof(Village)
                 .GetField("isPlayerVillage", BindingFlags.NonPublic | BindingFlags.Instance)
                 ?.SetValue(v, isPlayer);

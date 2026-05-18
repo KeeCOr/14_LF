@@ -86,6 +86,7 @@ namespace SlotDefense
                 var prefab = card.unitPrefab != null ? card.unitPrefab : unitPrefab;
                 var go = Instantiate(prefab, spawnPos, Quaternion.identity);
                 go.GetComponent<UnitController>().Init(card.unitStats);
+                GameVisualKit.AttachUnitVisual(go, card.cardName, VisualFacing.Enemy);
                 go.SetActive(true);
                 break;
             }

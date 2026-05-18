@@ -84,6 +84,7 @@ namespace SlotDefense
             var prefab   = cfg.prefab != null ? cfg.prefab : monsterPrefab;
             var go = Instantiate(prefab, spawnPos, Quaternion.identity);
             go.GetComponent<MonsterController>().Init(cfg, village, isPlayerArena);
+            GameVisualKit.AttachMonsterVisual(go, cfg == eliteMonsterConfig, isPlayerArena ? VisualFacing.Enemy : VisualFacing.Player);
             go.SetActive(true);
         }
 
@@ -111,6 +112,7 @@ namespace SlotDefense
             var prefab = cfg.prefab != null ? cfg.prefab : monsterPrefab;
             var go     = Instantiate(prefab, pos, Quaternion.identity);
             go.GetComponent<MonsterController>().Init(cfg, playerVillage, playerArena: true);
+            GameVisualKit.AttachMonsterVisual(go, cfg == eliteMonsterConfig, VisualFacing.Enemy);
             go.SetActive(true);
         }
 
@@ -196,12 +198,14 @@ namespace SlotDefense
                 else
                     bc = bgo.AddComponent<ProductionBuilding>();
                 bc.Init(unitCard.buildingData);
+                GameVisualKit.AttachBuildingVisual(bgo, unitCard);
             }
             else
             {
                 var prefab = unitCard.unitPrefab != null ? unitCard.unitPrefab : unitPrefab;
                 var go = Instantiate(prefab, worldPos, Quaternion.identity);
                 go.GetComponent<UnitController>().Init(unitCard.unitStats, isPlayerUnit: true, portal: portal, element: DominantElement(unitCard));
+                GameVisualKit.AttachUnitVisual(go, unitCard.cardName, VisualFacing.Player);
                 go.SetActive(true);
             }
         }
