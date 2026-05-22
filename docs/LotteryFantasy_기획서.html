@@ -248,7 +248,19 @@
   <tr><td>전장</td><td><code>SimpleNaturePack</code> 나무, 바위, 덤불, 꽃과 울타리로 주변부 장식.</td></tr>
 </table>
 
-<h2>10. 빌드 & 배포</h2>
+<h2>10. 예시 이미지 기반 전장 연출 <span class="badge">2026-05-22</span></h2>
+<div class="card highlight">
+  <p><code>docs/LotteryFantasy_gameplay_preview.png</code>의 밝은 캐주얼 판타지 방향을 기준으로 런타임 전장 장식을 보강했다. UI와 게임플레이 구조는 유지하고, 게임 시작 시 전장 바닥, 중앙 흙길, 석재 테라스, 진영 실루엣, 깃발과 금색 문장을 생성한다.</p>
+</div>
+<table>
+  <tr><th>영역</th><th>변경 방향</th></tr>
+  <tr><td>전장 배경</td><td>밝은 녹색 전장, 먼 언덕, 중앙 흙길을 추가해 공간 깊이를 만든다.</td></tr>
+  <tr><td>플레이어/적 기지</td><td>파랑/빨강 배너와 금색 문장을 배치해 진영 구분을 강화한다.</td></tr>
+  <tr><td>생존 모드</td><td>적 기지 대신 보라색 포털 받침대 실루엣을 배치해 모드 목적을 명확히 한다.</td></tr>
+  <tr><td>구현 방식</td><td>외부 다운로드 없이 코드 생성 SpriteRenderer와 기존 포함 에셋만 사용한다.</td></tr>
+</table>
+
+<h2>11. 빌드 & 배포</h2>
 <div class="card">
   <ul>
     <li>플랫폼: Windows 64bit</li>
