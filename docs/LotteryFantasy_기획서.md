@@ -1,6 +1,6 @@
 # Lottery Fantasy 기획서
 
-> 최신 업데이트: 2026-05-27, 룰렛 횟수 축소 및 유닛 식별성 강화 반영
+> 최신 업데이트: 2026-05-28, 생성형 이미지/UI 리소스 시트 추가
 
 ## 게임 개요
 
@@ -67,6 +67,16 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 충전 간격 | 플레이어 자동 충전은 6초에서 10초, AI 충전은 3초에서 6초로 늘린다. |
 | AI 사용 빈도 | AI 슬롯 사용 간격을 4초에서 7초로 늘려 초반 압박을 완화한다. |
 | 유닛 식별성 | 검사/기사/궁수/마법/힐러/거인 계열에 서로 다른 accent 색, 스케일, 무기 위치를 적용한다. |
+
+## 생성형 이미지/UI 리소스
+
+2026-05-28 업데이트에서는 예시 이미지의 밝은 캐주얼 판타지 톤을 기준으로 카드/유닛 아이콘, UI 아틀라스, 전장 오브젝트 시트를 생성했다. 실제 사용 목록과 슬라이스 가이드는 `docs/LotteryFantasy_이미지_UI_리소스_목록.md`에 정리한다.
+
+| 파일 | 용도 |
+|---|---|
+| `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png` | 카드 초상화와 유닛 아이콘 후보 |
+| `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png` | HUD, 슬롯머신, 버튼, 속성 심볼, 배지 후보 |
+| `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-battlefield-props-sheet.png` | 기지, 포털, 전장 장식 후보 |
 
 ## 빌드 및 배포
 
