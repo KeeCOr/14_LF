@@ -4,26 +4,28 @@ namespace SlotDefense
     public class SlotMachineSystem
     {
         private readonly float _chargeInterval;
+        private readonly int _maxCharges;
         private float _chargeTimer;
         private int _spinCharges;
-        private const int MaxCharges = 10;
+        public const int DefaultMaxCharges = 6;
 
         public int   SpinCharges    => _spinCharges;
-        public int   MaxSpinCharges => MaxCharges;
-        public float ChargeRatio    => (float)_spinCharges / MaxCharges;
-        public float SecondsToNext  => _spinCharges >= MaxCharges ? 0f : _chargeInterval - _chargeTimer;
+        public int   MaxSpinCharges => _maxCharges;
+        public float ChargeRatio    => _maxCharges <= 0 ? 0f : (float)_spinCharges / _maxCharges;
+        public float SecondsToNext  => _spinCharges >= _maxCharges ? 0f : _chargeInterval - _chargeTimer;
 
-        public SlotMachineSystem(float chargeInterval = 12f, int initialCharges = 0)
+        public SlotMachineSystem(float chargeInterval = 12f, int initialCharges = 0, int maxCharges = DefaultMaxCharges)
         {
             _chargeInterval = chargeInterval;
-            _spinCharges    = initialCharges;
+            _maxCharges     = Mathf.Max(1, maxCharges);
+            _spinCharges    = Mathf.Clamp(initialCharges, 0, _maxCharges);
         }
 
         public void Tick(float deltaTime)
         {
-            if (_spinCharges >= MaxCharges) return;
+            if (_spinCharges >= _maxCharges) return;
             _chargeTimer += deltaTime;
-            while (_chargeTimer >= _chargeInterval && _spinCharges < MaxCharges)
+            while (_chargeTimer >= _chargeInterval && _spinCharges < _maxCharges)
             {
                 _chargeTimer -= _chargeInterval;
                 _spinCharges++;
@@ -46,7 +48,7 @@ namespace SlotDefense
 
         public void AddCharge(int amount)
         {
-            _spinCharges = Mathf.Min(_spinCharges + amount, MaxCharges);
+            _spinCharges = Mathf.Clamp(_spinCharges + amount, 0, _maxCharges);
         }
     }
 }

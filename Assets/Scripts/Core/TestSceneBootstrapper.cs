@@ -209,6 +209,7 @@ namespace SlotDefense
                 Camera.main.backgroundColor = isSurvival ? _bgCfg.survivalSkyColor : _bgCfg.battleSkyColor;
             else if (Camera.main != null)
                 Camera.main.backgroundColor = isSurvival ? new Color(0.10f, 0.08f, 0.18f) : new Color(0.48f, 0.72f, 0.88f);
+            GameVisualKit.AddArenaBackdrop(isSurvival);
 
             // --- Arenas ---
             var pVillage = MakeVillage("PlayerVillage", new Vector3(-7.5f, 0, 0), true);

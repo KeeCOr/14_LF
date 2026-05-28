@@ -10,7 +10,7 @@ namespace SlotDefense
         public GameObject unitPrefab;
 
         [Header("AI Difficulty")]
-        [SerializeField] private float spinInterval = 4f;
+        [SerializeField] private float spinInterval = 7f;
         [SerializeField] private float placeInterval = 6f;
 
         private HandSystem _hand;
@@ -25,7 +25,7 @@ namespace SlotDefense
         {
             _hand        = new HandSystem(4);
             _deck        = new DeckSystem(deckConfig.cards);
-            _slotMachine = new SlotMachineSystem(chargeInterval: 3f, initialCharges: 3);
+            _slotMachine = new SlotMachineSystem(chargeInterval: 6f, initialCharges: 1);
             _rng         = new System.Random();
             _spinTimer   = spinInterval;
             _placeTimer  = placeInterval;

@@ -9,8 +9,37 @@ namespace SlotDefense
         Neutral
     }
 
+    public readonly struct UnitVisualStyle
+    {
+        public readonly Color accentColor;
+        public readonly float visualScale;
+        public readonly Vector3 visualOffset;
+        public readonly Vector3 weaponOffset;
+        public readonly float weaponScale;
+        public readonly float weaponRotationZ;
+        public readonly string weaponPath;
+
+        public UnitVisualStyle(Color accentColor, float visualScale, Vector3 visualOffset,
+            Vector3 weaponOffset, float weaponScale, float weaponRotationZ, string weaponPath)
+        {
+            this.accentColor = accentColor;
+            this.visualScale = visualScale;
+            this.visualOffset = visualOffset;
+            this.weaponOffset = weaponOffset;
+            this.weaponScale = weaponScale;
+            this.weaponRotationZ = weaponRotationZ;
+            this.weaponPath = weaponPath;
+        }
+    }
+
     public static class GameVisualKit
     {
+        public const string ArenaBackdropName = "ArenaBackdrop";
+
+        public static readonly Color PlayerBlue = new Color(0.05f, 0.32f, 0.85f, 1f);
+        public static readonly Color EnemyRed = new Color(0.78f, 0.16f, 0.12f, 1f);
+        public static readonly Color RoyalGold = new Color(1f, 0.73f, 0.16f, 1f);
+
         public static readonly string[] SceneryPaths =
         {
             "Asset/SimpleNaturePack/Prefabs/Tree_01",
@@ -57,11 +86,101 @@ namespace SlotDefense
             return Resources.Load<GameObject>(resourcesPath);
         }
 
+        public static UnitVisualStyle UnitRoleStyle(string unitName)
+        {
+            if (ContainsAny(unitName, "궁수", "Archer"))
+                return new UnitVisualStyle(
+                    new Color(0.20f, 0.95f, 0.35f, 0.88f),
+                    0.64f,
+                    new Vector3(0f, -0.38f, -0.08f),
+                    new Vector3(0.32f, -0.03f, -0.13f),
+                    0.28f,
+                    -52f,
+                    "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a");
+
+            if (ContainsAny(unitName, "마법", "화염", "Mage", "Pyro"))
+                return new UnitVisualStyle(
+                    new Color(0.95f, 0.28f, 1f, 0.90f),
+                    0.70f,
+                    new Vector3(0f, -0.40f, -0.08f),
+                    new Vector3(0.10f, 0.08f, -0.13f),
+                    0.32f,
+                    74f,
+                    "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a");
+
+            if (ContainsAny(unitName, "힐러", "행운", "성기사", "Healer", "Cleric", "Luck"))
+                return new UnitVisualStyle(
+                    new Color(0.35f, 1f, 0.64f, 0.88f),
+                    0.58f,
+                    new Vector3(0f, -0.36f, -0.08f),
+                    new Vector3(-0.16f, -0.08f, -0.13f),
+                    0.32f,
+                    12f,
+                    "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a");
+
+            if (ContainsAny(unitName, "거인", "골렘", "Giant", "Golem", "Iron"))
+                return new UnitVisualStyle(
+                    new Color(0.55f, 0.78f, 1f, 0.90f),
+                    0.88f,
+                    new Vector3(0f, -0.48f, -0.08f),
+                    new Vector3(-0.22f, -0.06f, -0.13f),
+                    0.44f,
+                    -8f,
+                    "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a");
+
+            if (ContainsAny(unitName, "기사", "Knight"))
+                return new UnitVisualStyle(
+                    new Color(1f, 0.72f, 0.18f, 0.90f),
+                    0.80f,
+                    new Vector3(0f, -0.44f, -0.08f),
+                    new Vector3(-0.18f, -0.08f, -0.13f),
+                    0.38f,
+                    -6f,
+                    "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a");
+
+            return new UnitVisualStyle(
+                new Color(0.28f, 0.62f, 1f, 0.88f),
+                0.76f,
+                new Vector3(0f, -0.42f, -0.08f),
+                new Vector3(0.22f, -0.10f, -0.13f),
+                0.34f,
+                -18f,
+                "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a");
+        }
+
+        public static GameObject AddArenaBackdrop(bool survivalMode)
+        {
+            var root = GameObject.Find(ArenaBackdropName);
+            if (root != null) return root;
+
+            root = new GameObject(ArenaBackdropName);
+            CreateSprite("DistantHills", root.transform, new Vector3(0f, 1.32f, 0.32f), new Vector2(18.8f, 2.0f),
+                survivalMode ? new Color(0.12f, 0.14f, 0.24f, 0.95f) : new Color(0.44f, 0.62f, 0.48f, 0.92f), -28);
+            CreateSprite("BattlefieldGrass", root.transform, new Vector3(0f, -0.34f, 0.34f), new Vector2(19.6f, 4.1f),
+                survivalMode ? new Color(0.13f, 0.18f, 0.14f, 1f) : new Color(0.34f, 0.58f, 0.22f, 1f), -25);
+            CreateSprite("CenterDirtLane", root.transform, new Vector3(0f, -0.48f, 0.33f), new Vector2(13.6f, 0.82f),
+                survivalMode ? new Color(0.25f, 0.20f, 0.17f, 0.88f) : new Color(0.60f, 0.46f, 0.25f, 0.92f), -24);
+            CreateSprite("StoneTerrace", root.transform, new Vector3(0f, -2.16f, 0.31f), new Vector2(19.6f, 0.48f),
+                new Color(0.28f, 0.30f, 0.33f, 1f), -23);
+            CreateSprite("CenterEmblem", root.transform, new Vector3(0f, -0.48f, 0.30f), new Vector2(0.52f, 0.52f),
+                RoyalGold, -22);
+
+            AddBaseSilhouette(root.transform, new Vector3(-7.5f, 0f, 0.28f), true);
+            if (!survivalMode)
+                AddBaseSilhouette(root.transform, new Vector3(7.5f, 0f, 0.28f), false);
+            else
+                AddPortalPedestal(root.transform, new Vector3(7.5f, 0f, 0.28f));
+
+            return root;
+        }
+
         public static GameObject AttachUnitVisual(GameObject root, string unitName, VisualFacing facing)
         {
-            var visual = AttachVisual(root, UnitVisualPath(unitName), "UnitVisual", facing, new Vector3(0f, -0.42f, -0.08f), 0.72f);
-            AttachWeapon(root, unitName, facing);
-            FadeFallbackSprite(root, 0.28f);
+            var style = UnitRoleStyle(unitName);
+            var visual = AttachVisual(root, UnitVisualPath(unitName), "UnitVisual", facing, style.visualOffset, style.visualScale);
+            AttachRoleAccent(root, style, facing);
+            AttachWeapon(root, style, facing);
+            FadeFallbackSprite(root, 0.18f);
             return visual;
         }
 
@@ -126,6 +245,36 @@ namespace SlotDefense
             }
         }
 
+        private static void AddBaseSilhouette(Transform parent, Vector3 position, bool isPlayer)
+        {
+            var side = isPlayer ? PlayerBlue : EnemyRed;
+            var root = new GameObject(isPlayer ? "PlayerBaseSilhouette" : "EnemyBaseSilhouette");
+            root.transform.SetParent(parent, false);
+            root.transform.position = position;
+
+            CreateSprite("BackBanner", root.transform, new Vector3(0f, 0.02f, 0f), new Vector2(1.55f, 2.65f), Darken(side, 0.72f), -18);
+            CreateSprite("KeepWall", root.transform, new Vector3(0f, -0.44f, -0.01f), new Vector2(1.78f, 1.54f), new Color(0.40f, 0.38f, 0.35f, 1f), -17);
+            CreateSprite("Roof", root.transform, new Vector3(0f, 0.52f, -0.02f), new Vector2(1.98f, 0.34f), side, -16);
+            CreateSprite("Gate", root.transform, new Vector3(0f, -0.80f, -0.03f), new Vector2(0.56f, 0.68f), new Color(0.09f, 0.08f, 0.07f, 1f), -15);
+            CreateSprite("CrownPlaque", root.transform, new Vector3(0f, 0.04f, -0.04f), new Vector2(0.58f, 0.36f), RoyalGold, -14);
+
+            float flagX = isPlayer ? -0.72f : 0.72f;
+            CreateSprite("FlagPole", root.transform, new Vector3(flagX, 1.24f, -0.05f), new Vector2(0.05f, 1.12f), RoyalGold, -14);
+            CreateSprite("FactionFlag", root.transform, new Vector3(flagX + (isPlayer ? 0.22f : -0.22f), 1.46f, -0.06f),
+                new Vector2(0.46f, 0.28f), side, -13);
+        }
+
+        private static void AddPortalPedestal(Transform parent, Vector3 position)
+        {
+            var root = new GameObject("PortalPedestalSilhouette");
+            root.transform.SetParent(parent, false);
+            root.transform.position = position;
+            CreateSprite("PedestalGlow", root.transform, new Vector3(0f, -0.12f, 0f), new Vector2(1.42f, 2.25f), new Color(0.48f, 0.16f, 0.80f, 0.46f), -18);
+            CreateSprite("StoneBase", root.transform, new Vector3(0f, -0.90f, -0.01f), new Vector2(1.68f, 0.38f), new Color(0.35f, 0.32f, 0.42f, 1f), -17);
+            CreateSprite("Runestone", root.transform, new Vector3(0f, -0.10f, -0.02f), new Vector2(0.56f, 1.52f), new Color(0.20f, 0.12f, 0.34f, 1f), -16);
+            CreateSprite("Rune", root.transform, new Vector3(0f, 0.06f, -0.03f), new Vector2(0.28f, 0.64f), RoyalGold, -15);
+        }
+
         private static GameObject AttachVisual(GameObject root, string path, string name, VisualFacing facing, Vector3 localPosition, float scale)
         {
             if (root == null) return null;
@@ -141,13 +290,26 @@ namespace SlotDefense
             return visual;
         }
 
-        private static void AttachWeapon(GameObject root, string unitName, VisualFacing facing)
+        private static void AttachRoleAccent(GameObject root, UnitVisualStyle style, VisualFacing facing)
         {
-            string path = unitName.Contains("궁수")
-                ? "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a"
-                : "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a";
-            var weapon = AttachVisual(root, path, "WeaponAccent", facing, new Vector3(0.18f, -0.12f, -0.12f), 0.34f);
-            if (weapon != null) weapon.transform.localRotation *= Quaternion.Euler(0f, 0f, -18f);
+            if (root == null) return;
+
+            CreateSprite("UnitShadow", root.transform, new Vector3(0f, -0.60f, 0.08f), new Vector2(0.72f, 0.12f),
+                new Color(0f, 0f, 0f, 0.34f), 0);
+            CreateSprite("RoleAccent", root.transform, new Vector3(0f, -0.52f, 0.06f), new Vector2(0.64f, 0.08f),
+                style.accentColor, 1);
+            var badgeX = facing == VisualFacing.Enemy ? -0.38f : 0.38f;
+            CreateSprite("RoleBadge", root.transform, new Vector3(badgeX, -0.10f, 0.05f), new Vector2(0.16f, 0.16f),
+                style.accentColor, 3);
+        }
+
+        private static void AttachWeapon(GameObject root, UnitVisualStyle style, VisualFacing facing)
+        {
+            var offset = style.weaponOffset;
+            if (facing == VisualFacing.Enemy) offset.x *= -1f;
+            var weapon = AttachVisual(root, style.weaponPath, "WeaponAccent", facing, offset, style.weaponScale);
+            if (weapon != null) weapon.transform.localRotation *= Quaternion.Euler(0f, 0f,
+                facing == VisualFacing.Enemy ? -style.weaponRotationZ : style.weaponRotationZ);
         }
 
         private static void FadeFallbackSprite(GameObject root, float alpha)
@@ -169,6 +331,43 @@ namespace SlotDefense
                 Object.Destroy(collider);
             foreach (var collider in root.GetComponentsInChildren<Collider2D>(true))
                 Object.Destroy(collider);
+        }
+
+        private static GameObject CreateSprite(string name, Transform parent, Vector3 localPosition, Vector2 size, Color color, int sortingOrder)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = localPosition;
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = MakeSprite(color, size.x, size.y);
+            sr.sortingOrder = sortingOrder;
+            return go;
+        }
+
+        private static Sprite MakeSprite(Color color, float width, float height)
+        {
+            int pw = Mathf.Max(1, Mathf.RoundToInt(width * 32f));
+            int ph = Mathf.Max(1, Mathf.RoundToInt(height * 32f));
+            var texture = new Texture2D(pw, ph);
+            var pixels = new Color[pw * ph];
+            for (int i = 0; i < pixels.Length; i++) pixels[i] = color;
+            texture.SetPixels(pixels);
+            texture.Apply();
+            return Sprite.Create(texture, new Rect(0, 0, pw, ph), new Vector2(0.5f, 0.5f), 32f);
+        }
+
+        private static Color Darken(Color color, float amount)
+        {
+            return new Color(color.r * amount, color.g * amount, color.b * amount, color.a);
+        }
+
+        private static bool ContainsAny(string value, params string[] terms)
+        {
+            if (string.IsNullOrEmpty(value)) return false;
+            foreach (var term in terms)
+                if (value.Contains(term))
+                    return true;
+            return false;
         }
     }
 }

@@ -13,6 +13,20 @@ public class GameVisualKitTests
     }
 
     [Test]
+    public void UnitRoleStyle_DistinguishesCoreRoles()
+    {
+        var sword = GameVisualKit.UnitRoleStyle("검사");
+        var archer = GameVisualKit.UnitRoleStyle("궁수");
+        var mage = GameVisualKit.UnitRoleStyle("마법사");
+        var healer = GameVisualKit.UnitRoleStyle("힐러");
+
+        Assert.AreNotEqual(sword.accentColor, archer.accentColor);
+        Assert.AreNotEqual(mage.accentColor, healer.accentColor);
+        Assert.AreNotEqual(archer.weaponOffset, sword.weaponOffset);
+        Assert.Greater(sword.visualScale, archer.visualScale);
+    }
+
+    [Test]
     public void MonsterVisualPath_SeparatesNormalAndElite()
     {
         Assert.That(GameVisualKit.MonsterVisualPath(elite: false), Does.Contain("Polytope Studio"));
@@ -27,6 +41,19 @@ public class GameVisualKitTests
         Assert.That(GameVisualKit.PortalAccentPath(), Does.Contain("Polytope Studio"));
         Assert.That(GameVisualKit.SceneryPaths, Has.Length.GreaterThanOrEqualTo(4));
         Assert.That(GameVisualKit.SceneryPaths[0], Does.Contain("SimpleNaturePack"));
+    }
+
+    [Test]
+    public void AddArenaBackdrop_CreatesFactionBaseDecor()
+    {
+        var backdrop = GameVisualKit.AddArenaBackdrop(survivalMode: false);
+
+        Assert.IsNotNull(backdrop);
+        Assert.AreEqual(GameVisualKit.ArenaBackdropName, backdrop.name);
+        Assert.IsNotNull(backdrop.transform.Find("PlayerBaseSilhouette"));
+        Assert.IsNotNull(backdrop.transform.Find("EnemyBaseSilhouette"));
+
+        Object.DestroyImmediate(backdrop);
     }
 
     [Test]

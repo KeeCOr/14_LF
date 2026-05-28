@@ -40,7 +40,7 @@ namespace SlotDefense
             _rng = new System.Random();
             if (isSurvivalMode) battleDuration = 99999f;
             Battle          = new BattleManager(villageHp, battleDuration);
-            SlotMachine     = new SlotMachineSystem(chargeInterval: 6f, initialCharges: 3);
+            SlotMachine     = new SlotMachineSystem(chargeInterval: 10f, initialCharges: 1);
             Hand            = new HandSystem(4);
             Deck            = new DeckSystem(deckConfig.cards);
             ElementalEnergy = new ElementalEnergySystem();
