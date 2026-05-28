@@ -77,6 +77,8 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png` | 카드 초상화와 유닛 아이콘 후보 |
 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png` | HUD, 슬롯머신, 버튼, 속성 심볼, 배지 후보 |
 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-battlefield-props-sheet.png` | 기지, 포털, 전장 장식 후보 |
+| `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-buttons-sheet.png` | STOP, Draw, 확인, 보상, 비활성, 탭, 토글 버튼 후보 |
+| `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png` | HUD, 슬롯머신, 카드, 모달, 툴팁 프레임 후보 |
 
 ## 빌드 및 배포
 
