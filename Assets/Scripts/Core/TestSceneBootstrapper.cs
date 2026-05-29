@@ -186,13 +186,14 @@ namespace SlotDefense
             var battleBtn = MakeButton(_startMenuGo.transform, "BattleBtn",
                 "⚔  전투 모드\n상대 기지를 먼저 파괴하세요",
                 new Vector2(0, -20f), new Vector2(380f, 80f));
+            UIArtKit.Apply(battleBtn, UIArtSprite.BlueButton);
             battleBtn.onClick.AddListener(() => Launch(GameMode.Battle));
 
             var survBtn = MakeButton(_startMenuGo.transform, "SurvBtn",
                 "🌊  생존 모드\n웨이브를 최대한 버티세요",
                 new Vector2(0, -130f), new Vector2(380f, 80f));
+            UIArtKit.Apply(survBtn, UIArtSprite.GoldButton);
             survBtn.onClick.AddListener(() => Launch(GameMode.Survival));
-            if (survBtn.targetGraphic is Image si) si.color = new Color(0.5f, 0.25f, 0.05f);
         }
 
         // ============================================================
@@ -347,6 +348,9 @@ namespace SlotDefense
             // ── ArenaHUD ──────────────────────────────────────────────────
             var hudGo = Child(canvasGo.transform, "ArenaHUD");
             var hud   = hudGo.AddComponent<ArenaHUD>();
+            MakeArt(hudGo.transform, "PlayerHpFrame", UIArtSprite.PlayerHpFrame, new Vector2(-640, 485), new Vector2(390, 80));
+            MakeArt(hudGo.transform, "EnemyHpFrame", UIArtSprite.EnemyHpFrame, new Vector2(350, 485), new Vector2(390, 80));
+            MakeArt(hudGo.transform, "TimerBanner", UIArtSprite.TitleBannerFrame, new Vector2(0, 476), new Vector2(460, 118));
             LabelText(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-640, 508));
             LabelText(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 350, 508));
             hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-640, 484), UIStyle.Green);
@@ -357,6 +361,7 @@ namespace SlotDefense
             hud.stageText  = MakeText(hudGo.transform, "Stage",  "STAGE 1",              new Vector2(0, 417), 19);
             // 덱 보기 버튼 — EnergyHUD와 겹치지 않도록 왼쪽에 배치
             var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(610f, 484f), new Vector2(118f, 38f));
+            UIArtKit.Apply(deckBtn, UIArtSprite.BlueTab);
             SetButtonAccent(deckBtn, UIStyle.Cyan);
 
             // ── 배치 구역 오버레이 (기본 투명 — HandUI가 카드 선택 시에만 표시) ──
@@ -385,7 +390,8 @@ namespace SlotDefense
                 var rt = (RectTransform)go.transform;
                 rt.anchoredPosition = new Vector2(480f, -400f); rt.sizeDelta = new Vector2(918f, 258f);
                 var img = go.AddComponent<Image>();
-                img.color = UIStyle.Panel; img.raycastTarget = false;
+                UIArtKit.Apply(img, UIArtSprite.SlotMachineFrame);
+                img.raycastTarget = false;
                 var bgo = Child(go.transform, "TopBorder");
                 var brt = (RectTransform)bgo.transform;
                 brt.anchorMin = new Vector2(0f, 1f); brt.anchorMax = new Vector2(1f, 1f);
@@ -398,6 +404,7 @@ namespace SlotDefense
             slotHeader.color = UIStyle.TextMuted;
 
             var reelNameTexts = new Text[3];
+            var reelIconImages = new Image[3];
             float[] reelX     = { 320f, 480f, 640f };
             string[] reelLbls = { "릴 1", "릴 2", "릴 3" };
             for (int i = 0; i < 3; i++)
@@ -406,21 +413,32 @@ namespace SlotDefense
                 var reelRt  = (RectTransform)reelBox.transform;
                 reelRt.anchoredPosition = new Vector2(reelX[i], -318f);
                 reelRt.sizeDelta        = new Vector2(148f, 82f);
-                reelBox.AddComponent<Image>().color = UIStyle.PanelRaised;
+                var reelImg = reelBox.AddComponent<Image>();
+                UIArtKit.Apply(reelImg, UIArtSprite.SquareIconFrame);
                 AddEdgeLine(reelBox.transform, "TopAccent", RectEdge.Top, 3f, i == 0 ? new Color(1f, 0.48f, 0.18f, 0.95f) : i == 1 ? new Color(0.55f, 0.80f, 1f, 0.95f) : new Color(0.25f, 1f, 0.50f, 0.95f));
                 AddEdgeLine(reelBox.transform, "BottomShade", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
-                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 26), 12).color = UIStyle.TextMuted;
-                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "?", new Vector2(0, -8), 34);
+                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 30), 12).color = UIStyle.TextMuted;
+                var iconGo = Child(reelBox.transform, "Icon");
+                var iconRt = (RectTransform)iconGo.transform;
+                iconRt.anchoredPosition = new Vector2(0f, -2f);
+                iconRt.sizeDelta = new Vector2(58f, 58f);
+                reelIconImages[i] = iconGo.AddComponent<Image>();
+                reelIconImages[i].sprite = UIArtKit.ElementIcon(i == 0 ? ElementType.Fire : i == 1 ? ElementType.Iron : ElementType.Life);
+                reelIconImages[i].preserveAspect = true;
+                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "", new Vector2(0, -34), 13);
+                reelNameTexts[i].fontStyle = FontStyle.Bold;
             }
             slotUI.reelLabels = reelNameTexts;
+            slotUI.reelIcons  = reelIconImages;
 
             slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -356f), 20);
             slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -408f), new Vector2(175f, 48f));
+            UIArtKit.Apply(slotUI.spinButton, UIArtSprite.RedButton);
             SetButtonAccent(slotUI.spinButton, UIStyle.Green);
 
             var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -408f), new Vector2(74f, 48f));
+            UIArtKit.Apply(autoBtn, UIArtSprite.DarkSquareButton);
             autoBtn.GetComponentInChildren<Text>().fontSize = 13;
-            if (autoBtn.targetGraphic is Image autoBtnImg) autoBtnImg.color = new Color(0.22f, 0.22f, 0.35f);
             slotUI.autoButton      = autoBtn;
             slotUI.autoButtonLabel = autoBtn.GetComponentInChildren<Text>();
 
@@ -462,7 +480,9 @@ namespace SlotDefense
                 rt.sizeDelta        = new Vector2(122f, 200f);
 
                 var bg  = cardGo.AddComponent<Image>();
-                bg.color = UIStyle.CardUnit;
+                UIArtKit.Apply(bg, i == 0 ? UIArtSprite.CardFrameBronze :
+                    i == 1 ? UIArtSprite.CardFrameSilver :
+                    i == 2 ? UIArtSprite.CardFrameGold : UIArtSprite.CardFramePurple);
                 var btn = cardGo.AddComponent<Button>();
                 btn.targetGraphic = bg;
                 btn.colors = UIStyle.AccentButtonColors(UIStyle.Cyan);
@@ -477,8 +497,8 @@ namespace SlotDefense
 
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
-                iconRt.anchoredPosition = new Vector2(0, 62);
-                iconRt.sizeDelta        = new Vector2(46, 46);
+                iconRt.anchoredPosition = new Vector2(0, 58);
+                iconRt.sizeDelta        = new Vector2(82, 82);
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
@@ -504,9 +524,11 @@ namespace SlotDefense
             var panelGo = Child(resultUIGo.transform, "Panel");
             StretchFull((RectTransform)panelGo.transform);
             panelGo.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.86f);
+            MakeArt(panelGo.transform, "ResultFrame", UIArtSprite.ModalPanelFrame, Vector2.zero, new Vector2(560f, 330f));
             resultUI.panel       = panelGo;
             resultUI.resultText  = MakeText(panelGo.transform, "ResultText", "", Vector2.zero, 70);
             resultUI.retryButton = MakeButton(panelGo.transform, "RetryBtn", "RETRY", new Vector2(0, -110), new Vector2(220, 65));
+            UIArtKit.Apply(resultUI.retryButton, UIArtSprite.GoldButton);
             SetButtonAccent(resultUI.retryButton, UIStyle.Gold);
 
             // ── DeckViewer ────────────────────────────────────────────────
@@ -515,7 +537,8 @@ namespace SlotDefense
             var dvPanel   = Child(dvGo.transform, "Panel");
             var dvPanelRt = (RectTransform)dvPanel.transform;
             dvPanelRt.anchoredPosition = Vector2.zero; dvPanelRt.sizeDelta = new Vector2(960f, 540f);
-            dvPanel.AddComponent<Image>().color = UIStyle.Panel;
+            var dvPanelImage = dvPanel.AddComponent<Image>();
+            UIArtKit.Apply(dvPanelImage, UIArtSprite.ModalPanelFrame);
             AddEdgeLine(dvPanel.transform, "TopAccent", RectEdge.Top, 4f, UIStyle.Cyan);
             MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26).color = UIStyle.Cyan;
             var dvContent = MakeText(dvPanel.transform, "Content", "", new Vector2(-20f, -20f), 18);
@@ -545,7 +568,8 @@ namespace SlotDefense
             energyRt.anchoredPosition = new Vector2(-8f, -8f);
             energyRt.sizeDelta        = new Vector2(220f, 140f);
             var energyBg = energyGo.AddComponent<Image>();
-            energyBg.color = new Color(0.10f, 0.06f, 0.02f, 0.98f); energyBg.raycastTarget = false;
+            UIArtKit.Apply(energyBg, UIArtSprite.TooltipFrame);
+            energyBg.raycastTarget = false;
             // 금색 테두리 (상단)
             {
                 var bgo = Child(energyGo.transform, "TopBorder");
@@ -600,6 +624,7 @@ namespace SlotDefense
             card.ironCost    = iron;
             card.lifeCost    = life;
             card.skillEffect = new SkillEffect { type = type, damage = damage, radius = radius };
+            card.icon        = UIArtKit.CardIcon(card);
             return card;
         }
 
@@ -613,6 +638,7 @@ namespace SlotDefense
             card.ironCost     = iron;
             card.lifeCost     = life;
             card.buildingData = bdata;
+            card.icon         = UIArtKit.CardIcon(card);
             return card;
         }
 
@@ -643,6 +669,7 @@ namespace SlotDefense
                 luckGenRate = luckPerSec,
                 canAttackAir = canAttackAir, isFlying = isFlying
             };
+            card.icon      = UIArtKit.CardIcon(card);
             return card;
         }
 
@@ -762,6 +789,18 @@ namespace SlotDefense
             return txt;
         }
 
+        static Image MakeArt(Transform parent, string name, UIArtSprite spriteId, Vector2 pos, Vector2 size)
+        {
+            var go = Child(parent, name);
+            var rt = (RectTransform)go.transform;
+            rt.anchoredPosition = pos;
+            rt.sizeDelta = size;
+            var img = go.AddComponent<Image>();
+            UIArtKit.Apply(img, spriteId);
+            img.raycastTarget = false;
+            return img;
+        }
+
         static Text MakeLabel(Transform parent, string name, Vector2 offset)
         {
             var go   = Child(parent, name);
@@ -813,6 +852,7 @@ namespace SlotDefense
             var btn = go.AddComponent<Button>();
             btn.targetGraphic = img;
             btn.colors = UIStyle.AccentButtonColors(UIStyle.Green);
+            UIArtKit.Apply(btn, UIArtSprite.BlueButton);
             var labelText = MakeText(go.transform, "Label", label, Vector2.zero, 22);
             labelText.color = Color.white;
             labelText.fontStyle = FontStyle.Bold;
@@ -826,7 +866,7 @@ namespace SlotDefense
             if (button == null) return;
             button.colors = UIStyle.AccentButtonColors(color);
             if (button.targetGraphic is Image img)
-                img.color = UIStyle.Darken(color, 0.68f);
+                img.color = img.sprite != null ? Color.white : UIStyle.Darken(color, 0.68f);
         }
 
         static void AddEdgeLine(Transform parent, string name, RectEdge edge, float thickness, Color color)

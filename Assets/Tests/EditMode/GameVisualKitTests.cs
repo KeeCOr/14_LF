@@ -64,4 +64,20 @@ public class GameVisualKitTests
         Assert.IsNotNull(prefab);
         Assert.IsInstanceOf<GameObject>(prefab);
     }
+
+    [Test]
+    public void AddArenaScenery_AttachesWindMotion()
+    {
+        var root = new GameObject("WindSceneryRoot");
+        try
+        {
+            GameVisualKit.AddArenaScenery(root.transform, survivalMode: false);
+
+            Assert.GreaterOrEqual(root.GetComponentsInChildren<LowPolyWindAnimator>().Length, 6);
+        }
+        finally
+        {
+            Object.DestroyImmediate(root);
+        }
+    }
 }

@@ -44,6 +44,7 @@ namespace SlotDefense
         {
             "Asset/SimpleNaturePack/Prefabs/Tree_01",
             "Asset/SimpleNaturePack/Prefabs/Tree_03",
+            "Asset/Polytope Studio/Lowpoly_Environments/Prefabs/Plants/PT_Grass_02",
             "Asset/SimpleNaturePack/Prefabs/Rock_02",
             "Asset/SimpleNaturePack/Prefabs/Bush_01",
             "Asset/SimpleNaturePack/Prefabs/Flowers_01",
@@ -166,10 +167,18 @@ namespace SlotDefense
                 RoyalGold, -22);
 
             AddBaseSilhouette(root.transform, new Vector3(-7.5f, 0f, 0.28f), true);
+            CreateGeneratedSprite("PlayerTowerArt", root.transform, UIArtSprite.PlayerTower, new Vector3(-7.5f, -0.10f, 0.20f), 2.65f, -12, LowPolyWindProfile.Banner);
+            CreateGeneratedSprite("CenterGroundArt", root.transform, UIArtSprite.GroundPatch, new Vector3(0f, -0.78f, 0.20f), 1.10f, -20);
             if (!survivalMode)
+            {
                 AddBaseSilhouette(root.transform, new Vector3(7.5f, 0f, 0.28f), false);
+                CreateGeneratedSprite("EnemyTowerArt", root.transform, UIArtSprite.EnemyTower, new Vector3(7.5f, -0.10f, 0.20f), 2.65f, -12, LowPolyWindProfile.Banner);
+            }
             else
+            {
                 AddPortalPedestal(root.transform, new Vector3(7.5f, 0f, 0.28f));
+                CreateGeneratedSprite("PortalGateArt", root.transform, UIArtSprite.PortalGate, new Vector3(7.5f, -0.05f, 0.20f), 2.25f, -12, LowPolyWindProfile.Portal);
+            }
 
             return root;
         }
@@ -235,6 +244,8 @@ namespace SlotDefense
 
             for (int i = 0; i < positions.Length; i++)
             {
+                CreateGeneratedSprite($"GeneratedProp_{i}", parent, ScenerySprite(i), positions[i] + new Vector3(0f, -0.08f, -0.04f), SceneryHeight(i), -10 + i, SceneryWindProfile(i));
+
                 var prefab = LoadVisualPrefab(SceneryPaths[i % SceneryPaths.Length]);
                 if (prefab == null) continue;
 
@@ -242,6 +253,100 @@ namespace SlotDefense
                 go.name = $"Scenery_{i}_{prefab.name}";
                 go.transform.localScale = Vector3.one * (i % 2 == 0 ? 0.82f : 0.68f);
                 StripPhysics(go);
+                LowPolyWindAnimator.Attach(go, SceneryWindProfile(i), i * 0.73f);
+            }
+
+            AddWindGrass(parent, survivalMode);
+        }
+
+        private static UIArtSprite ScenerySprite(int index)
+        {
+            switch (index % 6)
+            {
+                case 0:
+                    return UIArtSprite.PineTree;
+                case 1:
+                    return UIArtSprite.WoodenFence;
+                case 2:
+                    return UIArtSprite.RockCluster;
+                case 3:
+                    return UIArtSprite.FlowerBush;
+                case 4:
+                    return UIArtSprite.Campfire;
+                default:
+                    return UIArtSprite.StoneWall;
+            }
+        }
+
+        private static float SceneryHeight(int index)
+        {
+            switch (index % 6)
+            {
+                case 0:
+                    return 1.35f;
+                case 1:
+                    return 0.72f;
+                case 2:
+                    return 0.88f;
+                case 3:
+                    return 0.72f;
+                case 4:
+                    return 0.92f;
+                default:
+                    return 0.82f;
+            }
+        }
+
+        private static LowPolyWindProfile SceneryWindProfile(int index)
+        {
+            switch (index % 6)
+            {
+                case 0:
+                    return LowPolyWindProfile.Tree;
+                case 1:
+                    return LowPolyWindProfile.Banner;
+                case 2:
+                    return LowPolyWindProfile.AmbientProp;
+                case 3:
+                    return LowPolyWindProfile.Grass;
+                case 4:
+                    return LowPolyWindProfile.Torch;
+                default:
+                    return LowPolyWindProfile.Banner;
+            }
+        }
+
+        private static void AddWindGrass(Transform parent, bool survivalMode)
+        {
+            var grassPrefab = LoadVisualPrefab("Asset/Polytope Studio/Lowpoly_Environments/Prefabs/Plants/PT_Grass_02");
+            var grassPositions = survivalMode
+                ? new[]
+                {
+                    new Vector3(-7.1f, -0.78f, 0.12f), new Vector3(-4.8f, -0.93f, 0.12f),
+                    new Vector3(-1.9f, -0.66f, 0.12f), new Vector3(1.9f, -0.86f, 0.12f),
+                    new Vector3(4.6f, -0.65f, 0.12f), new Vector3(7.0f, -0.88f, 0.12f)
+                }
+                : new[]
+                {
+                    new Vector3(-7.3f, -0.86f, 0.12f), new Vector3(-4.9f, -0.66f, 0.12f),
+                    new Vector3(-2.4f, -1.02f, 0.12f), new Vector3(2.4f, -1.02f, 0.12f),
+                    new Vector3(4.9f, -0.66f, 0.12f), new Vector3(7.3f, -0.86f, 0.12f)
+                };
+
+            for (int i = 0; i < grassPositions.Length; i++)
+            {
+                if (grassPrefab != null)
+                {
+                    var grass = Object.Instantiate(grassPrefab, grassPositions[i], Quaternion.Euler(0f, 0f, 0f), parent);
+                    grass.name = $"WindGrass_{i}";
+                    grass.transform.localScale = Vector3.one * (0.45f + 0.05f * (i % 3));
+                    StripPhysics(grass);
+                    LowPolyWindAnimator.Attach(grass, LowPolyWindProfile.Grass, i * 0.91f);
+                }
+                else
+                {
+                    CreateGeneratedSprite($"WindGrassFallback_{i}", parent, UIArtSprite.FlowerBush, grassPositions[i], 0.45f, -12 + i, LowPolyWindProfile.Grass);
+                }
             }
         }
 
@@ -287,6 +392,8 @@ namespace SlotDefense
             visual.transform.localRotation = Quaternion.Euler(0f, facing == VisualFacing.Enemy ? 180f : 0f, 0f);
             visual.transform.localScale = Vector3.one * scale;
             StripPhysics(visual);
+            if (name.Contains("Village") || name.Contains("Portal") || name.Contains("Building"))
+                LowPolyWindAnimator.Attach(visual, name.Contains("Portal") ? LowPolyWindProfile.Portal : LowPolyWindProfile.Banner, root.transform.position.x);
             return visual;
         }
 
@@ -341,6 +448,26 @@ namespace SlotDefense
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = MakeSprite(color, size.x, size.y);
             sr.sortingOrder = sortingOrder;
+            return go;
+        }
+
+        private static GameObject CreateGeneratedSprite(string name, Transform parent, UIArtSprite spriteId, Vector3 localPosition, float targetHeight, int sortingOrder, LowPolyWindProfile? windProfile = null)
+        {
+            var sprite = UIArtKit.Sprite(spriteId);
+            if (sprite == null) return null;
+
+            var go = new GameObject(name);
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = localPosition;
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            sr.sortingOrder = sortingOrder;
+
+            var height = Mathf.Max(sprite.bounds.size.y, 0.01f);
+            var scale = Mathf.Max(0.01f, targetHeight / height);
+            go.transform.localScale = Vector3.one * scale;
+            if (windProfile.HasValue)
+                LowPolyWindAnimator.Attach(go, windProfile.Value, localPosition.x * 0.47f + localPosition.y);
             return go;
         }
 
