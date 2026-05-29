@@ -286,7 +286,19 @@
   <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png</code></td><td>HUD, 슬롯머신, 카드, 모달, 툴팁 프레임 후보</td></tr>
 </table>
 
-<h2>13. 빌드 & 배포</h2>
+<h2>13. 생성 리소스 런타임 적용 <span class="badge">2026-05-29</span></h2>
+<div class="card highlight">
+  <p>생성된 버튼, 프레임, 카드 아이콘, 전장 오브젝트 시트를 <code>Resources/GeneratedArt</code>에서 런타임 로드해 실제 UI와 전장에 적용했다. <code>UIArtKit</code>이 시트별 스프라이트 좌표와 9-slice border를 관리한다.</p>
+</div>
+<table>
+  <tr><th>영역</th><th>적용 내용</th></tr>
+  <tr><td>카드</td><td>카드 아이콘 시트를 <code>CardData.icon</code>과 <code>HandUI</code> fallback 아이콘에 연결하고 손패 카드 프레임을 적용.</td></tr>
+  <tr><td>룰렛/버튼</td><td>STOP, AUTO, 덱 보기, 시작 메뉴, 재시도 버튼에 생성 버튼/프레임 리소스 적용.</td></tr>
+  <tr><td>HUD/패널</td><td>HP 프레임, 타이머 배너, 에너지 패널, 덱 보기 모달, 결과 모달에 생성 프레임 적용.</td></tr>
+  <tr><td>전장</td><td>플레이어/적 성, 생존 포탈, 중앙 길 패치, 나무/울타리/바위/횃불/성벽 장식을 SpriteRenderer로 추가.</td></tr>
+</table>
+
+<h2>14. 빌드 & 배포</h2>
 <div class="card">
   <ul>
     <li>플랫폼: Windows 64bit</li>

@@ -85,3 +85,13 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 - Unity 프로젝트 경로: `C:/Development/14_LT/LotteryFantasy`
 - Windows 빌드 출력: `C:/Development/14_LT/release/LotteryFantasy.exe`
 - 포터블 실행파일 배치: `C:/Development/14_LT/LotteryFantasy_v{버전}_portable.exe`
+## 생성 리소스 런타임 적용
+
+2026-05-29 업데이트에서 생성된 버튼, 프레임, 카드 아이콘, 전장 오브젝트 시트를 `Resources/GeneratedArt`에서 런타임 로드해 실제 UI와 전장에 적용했다. `UIArtKit`이 시트별 스프라이트 좌표와 9-slice border를 관리하며, 시작 메뉴/덱 보기/결과 모달/에너지 패널/룰렛 패널/손패 카드 프레임에 버튼 및 프레임 리소스를 사용한다.
+
+| 영역 | 적용 내용 |
+|---|---|
+| 카드 | 생성 카드 아이콘 시트를 `CardData.icon`과 `HandUI` fallback 아이콘에 연결하고, 손패 슬롯에 브론즈/실버/골드/퍼플 카드 프레임을 적용 |
+| 룰렛/버튼 | STOP, AUTO, 덱 보기, 시작 메뉴, 재시도 버튼에 생성 버튼 시트와 프레임 시트 적용 |
+| HUD/패널 | HP 프레임, 타이머 배너, 에너지 패널, 덱 보기 모달, 결과 모달에 생성 프레임 적용 |
+| 전장 | 플레이어/적 성, 생존 포탈, 중앙 길 패치, 나무/울타리/바위/횃불/성벽 장식을 생성 전장 오브젝트 시트에서 SpriteRenderer로 추가 |
