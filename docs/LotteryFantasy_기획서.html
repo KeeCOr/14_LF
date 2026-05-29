@@ -298,7 +298,19 @@
   <tr><td>전장</td><td>플레이어/적 성, 생존 포탈, 중앙 길 패치, 나무/울타리/바위/횃불/성벽 장식을 SpriteRenderer로 추가.</td></tr>
 </table>
 
-<h2>14. 빌드 & 배포</h2>
+<h2>14. Asset Store 대체 로우폴리 바람 연출 <span class="badge">2026-05-29</span></h2>
+<div class="card highlight">
+  <p><code>Low Poly Wind</code> 패키지를 직접 다운로드하지 못하는 상황을 대비해 프로젝트 내 런타임 바람 연출을 추가했다. <code>LowPolyWindAnimator</code>는 Tree, Grass, Banner, Torch, Portal 프로필별로 위치, 회전, 스케일을 미세하게 흔들어 맵의 정적인 느낌을 줄인다.</p>
+</div>
+<table>
+  <tr><th>영역</th><th>적용 내용</th></tr>
+  <tr><td>전장 풀</td><td>포함된 <code>PT_Grass_02</code> 프리팹을 전장 하단에 추가하고 Grass 프로필의 빠른 흔들림 적용.</td></tr>
+  <tr><td>나무/덤불/울타리</td><td>기존 자연 프리팹과 생성 오브젝트에 Tree/Banner/Grass 프로필을 연결.</td></tr>
+  <tr><td>성/포탈 장식</td><td>생성 성, 포탈, 건물 장식에 Banner/Portal 프로필을 적용해 깃발과 마법 장식이 은근히 움직이도록 구성.</td></tr>
+  <tr><td>검증</td><td><code>LowPolyWindAnimatorTests</code>와 <code>GameVisualKitTests</code>에 프로필/전장 연결 확인 테스트 추가.</td></tr>
+</table>
+
+<h2>15. 빌드 & 배포</h2>
 <div class="card">
   <ul>
     <li>플랫폼: Windows 64bit</li>

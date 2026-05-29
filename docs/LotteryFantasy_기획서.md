@@ -95,3 +95,13 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 룰렛/버튼 | STOP, AUTO, 덱 보기, 시작 메뉴, 재시도 버튼에 생성 버튼 시트와 프레임 시트 적용 |
 | HUD/패널 | HP 프레임, 타이머 배너, 에너지 패널, 덱 보기 모달, 결과 모달에 생성 프레임 적용 |
 | 전장 | 플레이어/적 성, 생존 포탈, 중앙 길 패치, 나무/울타리/바위/횃불/성벽 장식을 생성 전장 오브젝트 시트에서 SpriteRenderer로 추가 |
+## Asset Store 대체 로우폴리 바람 연출
+
+2026-05-29 업데이트에서 `Low Poly Wind` 패키지를 직접 다운로드하지 못하는 상황을 대비해 프로젝트 내 런타임 바람 연출을 추가했다. `LowPolyWindAnimator`는 Tree/Grass/Banner/Torch/Portal/AmbientProp 프로필별로 위치, 회전, 스케일을 미세하게 흔들어 로우폴리 맵의 정적인 느낌을 줄인다.
+
+| 영역 | 적용 내용 |
+|---|---|
+| 전장 풀 | 포함된 `PT_Grass_02` 프리팹을 전장 하단에 추가하고 Grass 프로필의 빠른 흔들림 적용 |
+| 나무/덤불/울타리 | 기존 자연 프리팹과 생성 오브젝트에 Tree/Banner/Grass 프로필을 연결 |
+| 성/포탈 장식 | 생성 성, 포탈, 건물 장식에 Banner/Portal 프로필을 적용해 깃발과 마법 장식이 은근히 움직이도록 구성 |
+| 검증 | `LowPolyWindAnimatorTests`와 `GameVisualKitTests`에 프로필/전장 연결 확인 테스트 추가 |
