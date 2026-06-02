@@ -7,23 +7,72 @@ public class GameVisualKitTests
     [Test]
     public void UnitVisualPath_MapsKnownRolesToIncludedAssets()
     {
-        Assert.That(GameVisualKit.UnitVisualPath("검사"), Does.Contain("Polytope Studio"));
-        Assert.That(GameVisualKit.UnitVisualPath("궁수"), Does.Contain("Polytope Studio"));
-        Assert.AreNotEqual(GameVisualKit.UnitVisualPath("검사"), GameVisualKit.UnitVisualPath("궁수"));
+        Assert.That(GameVisualKit.UnitVisualPath("Swordsman"), Does.Contain("Polytope Studio"));
+        Assert.That(GameVisualKit.UnitVisualPath("Archer"), Does.Contain("Polytope Studio"));
+        Assert.AreNotEqual(GameVisualKit.UnitVisualPath("Swordsman"), GameVisualKit.UnitVisualPath("Archer"));
     }
 
     [Test]
     public void UnitRoleStyle_DistinguishesCoreRoles()
     {
-        var sword = GameVisualKit.UnitRoleStyle("검사");
-        var archer = GameVisualKit.UnitRoleStyle("궁수");
-        var mage = GameVisualKit.UnitRoleStyle("마법사");
-        var healer = GameVisualKit.UnitRoleStyle("힐러");
+        var sword = GameVisualKit.UnitRoleStyle("Swordsman");
+        var archer = GameVisualKit.UnitRoleStyle("Archer");
+        var mage = GameVisualKit.UnitRoleStyle("Mage");
+        var healer = GameVisualKit.UnitRoleStyle("Healer");
 
         Assert.AreNotEqual(sword.accentColor, archer.accentColor);
         Assert.AreNotEqual(mage.accentColor, healer.accentColor);
         Assert.AreNotEqual(archer.weaponOffset, sword.weaponOffset);
         Assert.Greater(sword.visualScale, archer.visualScale);
+    }
+
+    [Test]
+    public void FactionColor_DistinguishesPlayerEnemyAndNeutral()
+    {
+        Assert.AreNotEqual(GameVisualKit.FactionColor(VisualFacing.Player), GameVisualKit.FactionColor(VisualFacing.Enemy));
+        Assert.AreNotEqual(GameVisualKit.FactionColor(VisualFacing.Enemy), GameVisualKit.FactionColor(VisualFacing.Neutral));
+        Assert.AreEqual(GameVisualKit.NeutralMonsterOrange, GameVisualKit.FactionColor(VisualFacing.Neutral));
+    }
+
+    [Test]
+    public void AttachUnitVisual_AddsFactionMarkerForPlayerAndEnemy()
+    {
+        var player = new GameObject("PlayerUnit");
+        var enemy = new GameObject("EnemyUnit");
+        try
+        {
+            GameVisualKit.AttachUnitVisual(player, "Swordsman", VisualFacing.Player);
+            GameVisualKit.AttachUnitVisual(enemy, "Swordsman", VisualFacing.Enemy);
+
+            Assert.IsNotNull(player.transform.Find("FactionMarker"));
+            Assert.IsNotNull(enemy.transform.Find("FactionMarker"));
+            Assert.IsNotNull(player.transform.Find("FactionMarker/FactionGroundStripe"));
+            Assert.IsNotNull(enemy.transform.Find("FactionMarker/FactionSideBadge"));
+        }
+        finally
+        {
+            Object.DestroyImmediate(player);
+            Object.DestroyImmediate(enemy);
+        }
+    }
+
+    [Test]
+    public void AttachMonsterVisual_AlwaysUsesNeutralMonsterMarker()
+    {
+        var monster = new GameObject("Monster");
+        try
+        {
+            GameVisualKit.AttachMonsterVisual(monster, elite: true, facing: VisualFacing.Enemy);
+
+            Assert.IsNotNull(monster.transform.Find("NeutralMonsterMarker"));
+            Assert.IsNotNull(monster.transform.Find("NeutralMonsterMarker/MonsterWarningCore"));
+            Assert.IsNotNull(monster.transform.Find("NeutralMonsterMarker/MonsterWarningTop"));
+            Assert.IsNull(monster.transform.Find("FactionMarker"));
+        }
+        finally
+        {
+            Object.DestroyImmediate(monster);
+        }
     }
 
     [Test]

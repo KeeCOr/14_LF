@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace SlotDefense
 {
     public class EnergyHUD : MonoBehaviour
@@ -11,32 +12,30 @@ namespace SlotDefense
 
         public static EnergyHUD Instance { get; private set; }
 
-        // 각 속성의 기본 색상
-        private static readonly Color FireColor = new Color(1f,  0.45f, 0.1f);
+        private static readonly Color FireColor = new Color(1f, 0.45f, 0.1f);
         private static readonly Color IronColor = new Color(0.6f, 0.8f, 1f);
-        private static readonly Color LifeColor = new Color(0.2f, 1f,  0.45f);
-        private static readonly Color DimColor  = new Color(0.55f, 0.55f, 0.55f);
+        private static readonly Color LifeColor = new Color(0.2f, 1f, 0.45f);
+        private static readonly Color DimColor = new Color(0.55f, 0.55f, 0.55f);
 
-        private void Awake()   { Instance = this; }
+        private void Awake() { Instance = this; }
         private void OnDestroy() { if (Instance == this) Instance = null; }
 
         private void Update()
         {
             if (GameManager.Instance == null) return;
             var e = GameManager.Instance.ElementalEnergy;
-            SetLabel(fireText, "🔥", e.Fire,  FireColor);
-            SetLabel(ironText, "⚔", e.Iron,  IronColor);
-            SetLabel(lifeText, "💚", e.Life, LifeColor);
+            SetLabel(fireText, "F", e.Fire, FireColor);
+            SetLabel(ironText, "I", e.Iron, IronColor);
+            SetLabel(lifeText, "L", e.Life, LifeColor);
         }
 
-        private static void SetLabel(Text t, string icon, int amount, Color col)
+        private static void SetLabel(Text text, string icon, int amount, Color color)
         {
-            if (t == null) return;
-            t.color = amount > 0 ? col : DimColor;
-            t.text = $"{icon} <b>{amount}</b>";
+            if (text == null) return;
+            text.color = amount > 0 ? color : DimColor;
+            text.text = $"{icon} <b>{amount}</b>";
         }
 
-        // 부족한 속성 라벨을 빨간색으로 3회 점멸
         public void FlashInsufficient(ElementalCost needed)
         {
             if (GameManager.Instance == null) return;
@@ -46,13 +45,13 @@ namespace SlotDefense
             if (e.Life < needed.life && lifeText != null) StartCoroutine(Flash(lifeText, LifeColor));
         }
 
-        private static IEnumerator Flash(Text t, Color baseColor)
+        private static IEnumerator Flash(Text text, Color baseColor)
         {
             for (int i = 0; i < 4; i++)
             {
-                t.color = Color.red;
+                text.color = Color.red;
                 yield return new WaitForSeconds(0.08f);
-                t.color = baseColor;
+                text.color = baseColor;
                 yield return new WaitForSeconds(0.08f);
             }
         }

@@ -79,14 +79,18 @@ namespace SlotDefense
             spinButton.colors = cb;
 
             if (luckGaugeFillRt != null)
-                luckGaugeFillRt.anchorMax = new Vector2(sm.ChargeRatio, 1f);
+            {
+                var size = luckGaugeFillRt.sizeDelta;
+                size.x = 410f * sm.ChargeRatio;
+                luckGaugeFillRt.sizeDelta = size;
+            }
 
             if (luckChargeText != null)
             {
                 float next = sm.SecondsToNext;
                 luckChargeText.text = charges >= sm.MaxSpinCharges
-                    ? $"LUCK {charges} / {sm.MaxSpinCharges}  MAX"
-                    : $"LUCK {charges} / {sm.MaxSpinCharges}  {next:F1}s";
+                    ? $"LUCK GAUGE  {charges} / {sm.MaxSpinCharges}  MAX"
+                    : $"LUCK GAUGE  {charges} / {sm.MaxSpinCharges}  {next:F1}s";
             }
 
             if (autoButton != null)

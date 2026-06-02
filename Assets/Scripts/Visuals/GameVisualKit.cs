@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SlotDefense
 {
@@ -39,6 +39,8 @@ namespace SlotDefense
         public static readonly Color PlayerBlue = new Color(0.05f, 0.32f, 0.85f, 1f);
         public static readonly Color EnemyRed = new Color(0.78f, 0.16f, 0.12f, 1f);
         public static readonly Color RoyalGold = new Color(1f, 0.73f, 0.16f, 1f);
+        public static readonly Color NeutralMonsterOrange = new Color(1f, 0.54f, 0.08f, 1f);
+        public static readonly Color NeutralMonsterViolet = new Color(0.58f, 0.18f, 0.90f, 1f);
 
         public static readonly string[] SceneryPaths =
         {
@@ -53,14 +55,27 @@ namespace SlotDefense
 
         public static string UnitVisualPath(string unitName)
         {
-            if (unitName.Contains("궁수") || unitName.Contains("Archer"))
+            if (ContainsAny(unitName, "Archer"))
                 return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/PT_Skeleton_Male_Modular";
-            if (unitName.Contains("마법") || unitName.Contains("Mage"))
+            if (ContainsAny(unitName, "Mage", "Pyro"))
                 return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/Separate_Parts/PT_Male_Skeleton_01_upper";
-            if (unitName.Contains("힐러") || unitName.Contains("Healer"))
+            if (ContainsAny(unitName, "Healer", "Cleric", "Luck"))
                 return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/Separate_Parts/PT_Male_Skeleton_01_head";
 
             return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_Armors/PT_Male_Armors_Skeleton_Modular";
+        }
+
+        public static Color FactionColor(VisualFacing facing)
+        {
+            switch (facing)
+            {
+                case VisualFacing.Player:
+                    return new Color(0.18f, 0.62f, 1f, 0.96f);
+                case VisualFacing.Enemy:
+                    return new Color(1f, 0.18f, 0.14f, 0.96f);
+                default:
+                    return NeutralMonsterOrange;
+            }
         }
 
         public static string MonsterVisualPath(bool elite)
@@ -89,7 +104,7 @@ namespace SlotDefense
 
         public static UnitVisualStyle UnitRoleStyle(string unitName)
         {
-            if (ContainsAny(unitName, "궁수", "Archer"))
+            if (ContainsAny(unitName, "Archer"))
                 return new UnitVisualStyle(
                     new Color(0.20f, 0.95f, 0.35f, 0.88f),
                     0.64f,
@@ -99,7 +114,7 @@ namespace SlotDefense
                     -52f,
                     "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a");
 
-            if (ContainsAny(unitName, "마법", "화염", "Mage", "Pyro"))
+            if (ContainsAny(unitName, "Mage", "Pyro"))
                 return new UnitVisualStyle(
                     new Color(0.95f, 0.28f, 1f, 0.90f),
                     0.70f,
@@ -109,7 +124,7 @@ namespace SlotDefense
                     74f,
                     "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Sword_01_a");
 
-            if (ContainsAny(unitName, "힐러", "행운", "성기사", "Healer", "Cleric", "Luck"))
+            if (ContainsAny(unitName, "Healer", "Cleric", "Luck"))
                 return new UnitVisualStyle(
                     new Color(0.35f, 1f, 0.64f, 0.88f),
                     0.58f,
@@ -119,7 +134,7 @@ namespace SlotDefense
                     12f,
                     "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a");
 
-            if (ContainsAny(unitName, "거인", "골렘", "Giant", "Golem", "Iron"))
+            if (ContainsAny(unitName, "Giant", "Golem", "Iron"))
                 return new UnitVisualStyle(
                     new Color(0.55f, 0.78f, 1f, 0.90f),
                     0.88f,
@@ -129,7 +144,7 @@ namespace SlotDefense
                     -8f,
                     "Asset/Polytope Studio/Lowpoly_Weapons/Prefabs/PT_Shield_01_a");
 
-            if (ContainsAny(unitName, "기사", "Knight"))
+            if (ContainsAny(unitName, "Knight", "Paladin", "Crusader"))
                 return new UnitVisualStyle(
                     new Color(1f, 0.72f, 0.18f, 0.90f),
                     0.80f,
@@ -187,6 +202,7 @@ namespace SlotDefense
         {
             var style = UnitRoleStyle(unitName);
             var visual = AttachVisual(root, UnitVisualPath(unitName), "UnitVisual", facing, style.visualOffset, style.visualScale);
+            AttachFactionMarker(root, facing, false);
             AttachRoleAccent(root, style, facing);
             AttachWeapon(root, style, facing);
             FadeFallbackSprite(root, 0.18f);
@@ -197,6 +213,7 @@ namespace SlotDefense
         {
             var visual = AttachVisual(root, MonsterVisualPath(elite), elite ? "EliteMonsterVisual" : "MonsterVisual",
                 facing, new Vector3(0f, -0.34f, -0.08f), elite ? 0.78f : 0.64f);
+            AttachFactionMarker(root, VisualFacing.Neutral, elite);
             FadeFallbackSprite(root, elite ? 0.36f : 0.30f);
             return visual;
         }
@@ -218,7 +235,7 @@ namespace SlotDefense
 
         public static GameObject AttachBuildingVisual(GameObject root, CardData card)
         {
-            string path = card != null && card.cardName.Contains("탑")
+            string path = card != null && card.cardName.Contains("Tower")
                 ? "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_02"
                 : "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_03";
             var visual = AttachVisual(root, path, "BuildingVisual", VisualFacing.Player, new Vector3(0f, -0.42f, -0.10f), 0.62f);
@@ -395,6 +412,29 @@ namespace SlotDefense
             if (name.Contains("Village") || name.Contains("Portal") || name.Contains("Building"))
                 LowPolyWindAnimator.Attach(visual, name.Contains("Portal") ? LowPolyWindProfile.Portal : LowPolyWindProfile.Banner, root.transform.position.x);
             return visual;
+        }
+
+        private static void AttachFactionMarker(GameObject root, VisualFacing facing, bool eliteMonster)
+        {
+            if (root == null) return;
+
+            var marker = new GameObject(facing == VisualFacing.Neutral ? "NeutralMonsterMarker" : "FactionMarker");
+            marker.transform.SetParent(root.transform, false);
+            marker.transform.localPosition = Vector3.zero;
+
+            var main = FactionColor(facing);
+            var glow = new Color(main.r, main.g, main.b, facing == VisualFacing.Neutral ? 0.34f : 0.28f);
+            var badgeX = facing == VisualFacing.Enemy ? -0.46f : 0.46f;
+            var baseWidth = eliteMonster ? 1.04f : 0.86f;
+
+            CreateSprite("FactionGroundGlow", marker.transform, new Vector3(0f, -0.65f, 0.07f), new Vector2(baseWidth, 0.20f), glow, 2);
+            CreateSprite("FactionGroundStripe", marker.transform, new Vector3(0f, -0.52f, 0.04f), new Vector2(baseWidth * 0.82f, 0.07f), main, 4);
+            CreateSprite("FactionSideBadge", marker.transform, new Vector3(badgeX, 0.02f, 0.03f), new Vector2(0.17f, 0.17f), main, 5);
+
+            if (facing != VisualFacing.Neutral) return;
+
+            CreateSprite("MonsterWarningCore", marker.transform, new Vector3(0f, -0.16f, 0.02f), new Vector2(eliteMonster ? 0.30f : 0.22f, eliteMonster ? 0.30f : 0.22f), NeutralMonsterOrange, 6);
+            CreateSprite("MonsterWarningTop", marker.transform, new Vector3(0f, eliteMonster ? 0.22f : 0.14f, 0.01f), new Vector2(eliteMonster ? 0.38f : 0.28f, 0.07f), NeutralMonsterViolet, 7);
         }
 
         private static void AttachRoleAccent(GameObject root, UnitVisualStyle style, VisualFacing facing)

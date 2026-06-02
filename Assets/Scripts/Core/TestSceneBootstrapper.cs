@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,7 +8,7 @@ namespace SlotDefense
     [DefaultExecutionOrder(-100)]
     public class TestSceneBootstrapper : MonoBehaviour
     {
-        [Header("유닛 프리팹 (비워두면 Resources 자동 로드)")]
+        [Header("?좊떅 ?꾨━??(鍮꾩썙?먮㈃ Resources ?먮룞 濡쒕뱶)")]
         public GameObject swordsmanPrefab;
         public GameObject archerPrefab;
         public GameObject knightPrefab;
@@ -16,7 +16,7 @@ namespace SlotDefense
         public GameObject healerPrefab;
         public GameObject luckGenPrefab;
 
-        [Header("몬스터 프리팹 (비워두면 기본 박스 사용)")]
+        [Header("紐ъ뒪???꾨━??(鍮꾩썙?먮㈃ 湲곕낯 諛뺤뒪 ?ъ슜)")]
         public GameObject monsterPrefabOverride;
         public GameObject elitePrefabOverride;
 
@@ -61,48 +61,48 @@ namespace SlotDefense
 
             _deckCfg = Inst<FixedDeckConfig>(d =>
             {
-                // 유닛 14종
-                var swordsman   = MakeCard("검사",     hp:80,  dmg:15, speed:2f,   range:1.5f, rate:1f,   sight:5f,  iron:1);
-                var archer      = MakeCard("궁수",     hp:50,  dmg:10, speed:1.5f, range:5f,   rate:2f,   sight:8f,  canAttackAir:true, fire:1, iron:1);
-                var knight      = MakeCard("기사",     hp:120, dmg:20, speed:1.2f, range:1f,   rate:0.8f, sight:4f,  iron:2);
-                var mage        = MakeCard("마법사",   hp:40,  dmg:28, speed:1.8f, range:4.5f, rate:0.6f, sight:8f,  canAttackAir:true, fire:2);
-                var healer      = MakeCard("힐러",     hp:70,  dmg:0,  speed:1.6f, range:2f,   rate:0.8f, sight:6f,  heal:8f, life:2);
-                var luckGen     = MakeCard("행운술사", hp:60,  dmg:0,  speed:0.8f, range:0f,   rate:0f,   sight:0f,  luckPerSec:0.5f, iron:1, life:1);
-                var paladin     = MakeCard("팔라딘",   hp:200, dmg:18, speed:0.9f, range:1.2f, rate:0.7f, sight:4f,  iron:2, life:2);
-                var pyromancer  = MakeCard("화염술사", hp:40,  dmg:35, speed:1.7f, range:4f,   rate:0.5f, sight:8f,  canAttackAir:true, fire:3);
-                var crusader    = MakeCard("성기사",   hp:100, dmg:15, speed:1.4f, range:1.5f, rate:1f,   sight:5f,  heal:3f, fire:1, iron:2, life:1);
-                var stormArcher = MakeCard("폭풍궁수", hp:60,  dmg:12, speed:1.6f, range:6f,   rate:2.5f, sight:10f, canAttackAir:true, fire:2, iron:2);
-                // 신규 4종
-                var giant      = MakeCard("거인",     hp:350, dmg:35, speed:0.7f, range:1.2f, rate:0.55f, sight:3f,  iron:3);
-                var dragon     = MakeCard("용",       hp:200, dmg:45, speed:2.2f, range:3.5f, rate:0.5f,  sight:9f,  canAttackAir:true, isFlying:true, fire:3, life:1);
-                var skeleton   = MakeCard("스켈레톤", hp:35,  dmg:12, speed:3.2f, range:1.0f, rate:1.8f,  sight:5f,  iron:1, life:1);
-                var dwarf      = MakeCard("드워프",   hp:110, dmg:25, speed:1.0f, range:1.0f, rate:1.1f,  sight:4f,  fire:1, iron:2);
+                // ?좊떅 14醫?
+                var swordsman   = MakeCard("Swordsman",   hp:80,  dmg:15, speed:2f,   range:1.5f, rate:1f,   sight:5f,  iron:1);
+                var archer      = MakeCard("Archer",      hp:50,  dmg:10, speed:1.5f, range:5f,   rate:2f,   sight:8f,  canAttackAir:true, fire:1, iron:1);
+                var knight      = MakeCard("Knight",      hp:120, dmg:20, speed:1.2f, range:1f,   rate:0.8f, sight:4f,  iron:2);
+                var mage        = MakeCard("Mage",        hp:40,  dmg:28, speed:1.8f, range:4.5f, rate:0.6f, sight:8f,  canAttackAir:true, fire:2);
+                var healer      = MakeCard("Healer",      hp:70,  dmg:0,  speed:1.6f, range:2f,   rate:0.8f, sight:6f,  heal:8f, life:2);
+                var luckGen     = MakeCard("Luck Sage",   hp:60,  dmg:0,  speed:0.8f, range:0f,   rate:0f,   sight:0f,  luckPerSec:0.5f, iron:1, life:1);
+                var paladin     = MakeCard("Paladin",     hp:200, dmg:18, speed:0.9f, range:1.2f, rate:0.7f, sight:4f,  iron:2, life:2);
+                var pyromancer  = MakeCard("Pyromancer",  hp:40,  dmg:35, speed:1.7f, range:4f,   rate:0.5f, sight:8f,  canAttackAir:true, fire:3);
+                var crusader    = MakeCard("Crusader",    hp:100, dmg:15, speed:1.4f, range:1.5f, rate:1f,   sight:5f,  heal:3f, fire:1, iron:2, life:1);
+                var stormArcher = MakeCard("Storm Archer", hp:60, dmg:12, speed:1.6f, range:6f,   rate:2.5f, sight:10f, canAttackAir:true, fire:2, iron:2);
+                // ?좉퇋 4醫?
+                var giant      = MakeCard("Giant",       hp:350, dmg:35, speed:0.7f, range:1.2f, rate:0.55f, sight:3f,  iron:3);
+                var dragon     = MakeCard("Dragon",      hp:200, dmg:45, speed:2.2f, range:3.5f, rate:0.5f,  sight:9f,  canAttackAir:true, isFlying:true, fire:3, life:1);
+                var skeleton   = MakeCard("Skeleton",    hp:35,  dmg:12, speed:3.2f, range:1.0f, rate:1.8f,  sight:5f,  iron:1, life:1);
+                var dwarf      = MakeCard("Dwarf",       hp:110, dmg:25, speed:1.0f, range:1.0f, rate:1.1f,  sight:4f,  fire:1, iron:2);
 
-                // 마법 2종
-                var lightning   = MakeSkillCard("번개화살", SkillType.LightningArrow, damage:80f,  radius:2.0f, fire:2);
-                var portalBomb  = MakeSkillCard("포탈폭격", SkillType.PortalBomb,     damage:120f, radius:3.0f, fire:2, iron:1);
+                // 留덈쾿 2醫?
+                var lightning   = MakeSkillCard("Lightning Arrow", SkillType.LightningArrow, damage:80f,  radius:2.0f, fire:2);
+                var portalBomb  = MakeSkillCard("Portal Bomb",     SkillType.PortalBomb,     damage:120f, radius:3.0f, fire:2, iron:1);
 
-                // 건물 — 전투
-                var fireTower   = MakeBuildingCard("화염탑", new BuildingData
+                // 嫄대Ъ ???꾪닾
+                var fireTower   = MakeBuildingCard("Fire Tower", new BuildingData
                     { buildingType = BuildingType.BattleTower, attackDamage = 20f, attackRate = 1f, attackRange = 5f, canAttackAir = true }, fire:2);
-                var sniperTower = MakeBuildingCard("저격탑", new BuildingData
+                var sniperTower = MakeBuildingCard("Sniper Tower", new BuildingData
                     { buildingType = BuildingType.BattleTower, attackDamage = 50f, attackRate = 0.4f, attackRange = 8f, canAttackAir = true }, fire:1, iron:1);
 
-                // 건물 — 에너지 생산
-                var furnace     = MakeBuildingCard("화염로",   new BuildingData
+                // 嫄대Ъ ???먮꼫吏 ?앹궛
+                var furnace     = MakeBuildingCard("Furnace",   new BuildingData
                     { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Fire, energyPerSecond = 1f }, fire:1);
-                var forge       = MakeBuildingCard("제철소",   new BuildingData
+                var forge       = MakeBuildingCard("Forge",   new BuildingData
                     { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Iron, energyPerSecond = 1f }, iron:1);
-                var lifespring  = MakeBuildingCard("생명의샘", new BuildingData
+                var lifespring  = MakeBuildingCard("Life Spring", new BuildingData
                     { buildingType = BuildingType.ProductionEnergy, energyType = ElementType.Life, energyPerSecond = 1f }, life:1);
 
-                // 건물 — 유닛 생산
-                var barracks    = MakeBuildingCard("병영", new BuildingData
+                // 嫄대Ъ ???좊떅 ?앹궛
+                var barracks    = MakeBuildingCard("Barracks", new BuildingData
                     { buildingType = BuildingType.ProductionUnit, unitToSpawn = swordsman, spawnInterval = 10f }, iron:2);
-                var magicCircle = MakeBuildingCard("마법진", new BuildingData
+                var magicCircle = MakeBuildingCard("Magic Circle", new BuildingData
                     { buildingType = BuildingType.ProductionUnit, unitToSpawn = mage, spawnInterval = 15f }, fire:2, life:1);
 
-                // 기본 덱 12장
+                // 湲곕낯 ??12??
                 d.cards = new CardData[]
                 {
                     swordsman, archer, knight, mage,
@@ -110,7 +110,7 @@ namespace SlotDefense
                     giant, dragon, skeleton, dwarf
                 };
 
-                // Inspector 필드 우선, 없으면 Resources/Prefabs/Units/{카드명}.prefab 자동 로드
+                // Inspector ?꾨뱶 ?곗꽑, ?놁쑝硫?Resources/Prefabs/Units/{移대뱶紐?.prefab ?먮룞 濡쒕뱶
                 TrySetUnitPrefab(swordsman,   swordsmanPrefab);
                 TrySetUnitPrefab(archer,      archerPrefab);
                 TrySetUnitPrefab(knight,      knightPrefab);
@@ -122,9 +122,9 @@ namespace SlotDefense
             _buffCfg = Inst<GlobalBuffConfig>(b =>
                 b.possibleBuffs = new BuffEffect[]
                 {
-                    new BuffEffect { displayName = "공격 버프", attackMultiplier = 2.0f, speedMultiplier = 1.0f, duration = 8f  },
-                    new BuffEffect { displayName = "속도 버프", attackMultiplier = 1.0f, speedMultiplier = 1.8f, duration = 12f },
-                    new BuffEffect { displayName = "균형 버프", attackMultiplier = 1.5f, speedMultiplier = 1.2f, duration = 10f }
+                    new BuffEffect { displayName = "怨듦꺽 踰꾪봽", attackMultiplier = 2.0f, speedMultiplier = 1.0f, duration = 8f  },
+                    new BuffEffect { displayName = "?띾룄 踰꾪봽", attackMultiplier = 1.0f, speedMultiplier = 1.8f, duration = 12f },
+                    new BuffEffect { displayName = "洹좏삎 踰꾪봽", attackMultiplier = 1.5f, speedMultiplier = 1.2f, duration = 10f }
                 });
 
             // --- BackgroundConfig (Resources/BackgroundConfig.asset) ---
@@ -177,20 +177,20 @@ namespace SlotDefense
             StretchFull((RectTransform)bgGo.transform);
             bgGo.AddComponent<Image>().color = new Color(0.07f, 0.09f, 0.18f, 1f);
 
-            var titleTxt = MakeText(_startMenuGo.transform, "Title", "슬롯 디펜스", new Vector2(0, 180f), 64);
+            var titleTxt = MakeText(_startMenuGo.transform, "Title", "Lottery Fantasy", new Vector2(0, 180f), 64);
             titleTxt.color = new Color(1f, 0.9f, 0.3f);
 
-            var subTxt = MakeText(_startMenuGo.transform, "Sub", "게임 모드를 선택하세요", new Vector2(0, 90f), 28);
+            var subTxt = MakeText(_startMenuGo.transform, "Sub", "Choose a game mode", new Vector2(0, 90f), 28);
             subTxt.color = new Color(0.7f, 0.78f, 1f);
 
             var battleBtn = MakeButton(_startMenuGo.transform, "BattleBtn",
-                "⚔  전투 모드\n상대 기지를 먼저 파괴하세요",
+                "BATTLE MODE\nDestroy the enemy base",
                 new Vector2(0, -20f), new Vector2(380f, 80f));
             UIArtKit.Apply(battleBtn, UIArtSprite.BlueButton);
             battleBtn.onClick.AddListener(() => Launch(GameMode.Battle));
 
             var survBtn = MakeButton(_startMenuGo.transform, "SurvBtn",
-                "🌊  생존 모드\n웨이브를 최대한 버티세요",
+                "SURVIVAL MODE\nEndure the waves",
                 new Vector2(0, -130f), new Vector2(380f, 80f));
             UIArtKit.Apply(survBtn, UIArtSprite.GoldButton);
             survBtn.onClick.AddListener(() => Launch(GameMode.Survival));
@@ -205,7 +205,7 @@ namespace SlotDefense
             if (_startMenuGo != null) { Destroy(_startMenuGo); _startMenuGo = null; }
             bool isSurvival = mode == GameMode.Survival;
 
-            // --- 모드별 배경 적용 ---
+            // --- 紐⑤뱶蹂?諛곌꼍 ?곸슜 ---
             if (Camera.main != null && _bgCfg != null)
                 Camera.main.backgroundColor = isSurvival ? _bgCfg.survivalSkyColor : _bgCfg.battleSkyColor;
             else if (Camera.main != null)
@@ -233,7 +233,7 @@ namespace SlotDefense
                 GameVisualKit.AttachPortalVisual(portalGo);
             }
 
-            // 비활성화를 AddComponent 전에 해야 Awake()가 실행되지 않음.
+            // 鍮꾪솢?깊솕瑜?AddComponent ?꾩뿉 ?댁빞 Awake()媛 ?ㅽ뻾?섏? ?딆쓬.
             var mTemplate = MakeTemplate("MonsterTemplate", Color.red,  new Vector3(-999, -999, 0));
             mTemplate.SetActive(false);
             mTemplate.AddComponent<MonsterController>();
@@ -251,7 +251,7 @@ namespace SlotDefense
             gm.isSurvivalMode = isSurvival;
             gmGo.SetActive(true);
 
-            // 시작 카드 1장 랜덤 지급
+            // ?쒖옉 移대뱶 1???쒕뜡 吏湲?
             var rng = new System.Random();
             GameManager.Instance.Hand.TryAdd(_deckCfg.cards[rng.Next(_deckCfg.cards.Length)]);
 
@@ -311,7 +311,7 @@ namespace SlotDefense
             scaler.referenceResolution = new Vector2(1920, 1080);
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // ── 상단 바 배경 (sibling 0, 가장 뒤에 렌더) ─────────────────
+            // ?? ?곷떒 諛?諛곌꼍 (sibling 0, 媛???ㅼ뿉 ?뚮뜑) ?????????????????
             {
                 var go = Child(canvasGo.transform, "TopBar");
                 var rt = (RectTransform)go.transform;
@@ -319,16 +319,16 @@ namespace SlotDefense
                 rt.pivot = new Vector2(0.5f, 1f);
                 rt.sizeDelta = new Vector2(0f, 170f); rt.anchoredPosition = Vector2.zero;
                 var img = go.AddComponent<Image>();
-                img.color = UIStyle.PanelDeep; img.raycastTarget = false;
+                img.color = new Color(0f, 0f, 0f, 0f); img.raycastTarget = false;
                 go.transform.SetSiblingIndex(0);
                 var bgo = Child(go.transform, "Border");
                 var brt = (RectTransform)bgo.transform;
                 brt.anchorMin = new Vector2(0f, 0f); brt.anchorMax = new Vector2(1f, 0f);
                 brt.pivot = new Vector2(0.5f, 0f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
-                var bi = bgo.AddComponent<Image>(); bi.color = UIStyle.Stroke; bi.raycastTarget = false;
+                var bi = bgo.AddComponent<Image>(); bi.color = new Color(0f, 0f, 0f, 0f); bi.raycastTarget = false;
             }
 
-            // ── 하단 패널 배경 (sibling 1) ────────────────────────────────
+            // ?? ?섎떒 ?⑤꼸 諛곌꼍 (sibling 1) ????????????????????????????????
             {
                 var go = Child(canvasGo.transform, "BottomPanel");
                 var rt = (RectTransform)go.transform;
@@ -345,32 +345,32 @@ namespace SlotDefense
                 var bi = bgo.AddComponent<Image>(); bi.color = UIStyle.Stroke; bi.raycastTarget = false;
             }
 
-            // ── ArenaHUD ──────────────────────────────────────────────────
+            // ?? ArenaHUD ??????????????????????????????????????????????????
             var hudGo = Child(canvasGo.transform, "ArenaHUD");
             var hud   = hudGo.AddComponent<ArenaHUD>();
-            MakeArt(hudGo.transform, "PlayerHpFrame", UIArtSprite.PlayerHpFrame, new Vector2(-640, 485), new Vector2(390, 80));
-            MakeArt(hudGo.transform, "EnemyHpFrame", UIArtSprite.EnemyHpFrame, new Vector2(350, 485), new Vector2(390, 80));
-            MakeArt(hudGo.transform, "TimerBanner", UIArtSprite.TitleBannerFrame, new Vector2(0, 476), new Vector2(460, 118));
-            LabelText(hudGo.transform, "LabelPlayer", "내 기지 HP",  new Vector2(-640, 508));
-            LabelText(hudGo.transform, "LabelEnemy",  "적 기지 HP",  new Vector2( 350, 508));
-            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-640, 484), UIStyle.Green);
-            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 350, 484), UIStyle.Red);
-            hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 504), 38);
-            hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 465), 24);
-            hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 442), 17);
-            hud.stageText  = MakeText(hudGo.transform, "Stage",  "STAGE 1",              new Vector2(0, 417), 19);
-            // 덱 보기 버튼 — EnergyHUD와 겹치지 않도록 왼쪽에 배치
-            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "덱 보기", new Vector2(610f, 484f), new Vector2(118f, 38f));
+            MakeArt(hudGo.transform, "PlayerHpFrame", UIArtSprite.PlayerHpFrame, new Vector2(-610, 486), new Vector2(390, 80));
+            MakeArt(hudGo.transform, "EnemyHpFrame", UIArtSprite.EnemyHpFrame, new Vector2(610, 486), new Vector2(390, 80));
+            MakeArt(hudGo.transform, "TimerBanner", UIArtSprite.TitleBannerFrame, new Vector2(0, 500), new Vector2(430, 104));
+            LabelText(hudGo.transform, "LabelPlayer", "??湲곗? HP",  new Vector2(-610, 508));
+            LabelText(hudGo.transform, "LabelEnemy",  "??湲곗? HP",  new Vector2( 610, 508));
+            hud.playerHpSlider  = MakeSlider(hudGo.transform, "PlayerHP", new Vector2(-610, 484), UIStyle.Green);
+            hud.enemyHpSlider   = MakeSlider(hudGo.transform, "EnemyHP",  new Vector2( 610, 484), UIStyle.Red);
+            hud.timerText       = MakeText(hudGo.transform, "Timer",  "3:00", new Vector2(0, 516), 36);
+            hud.spinChargesText = MakeText(hudGo.transform, "Spins",  "x0",   new Vector2(0, 486), 21);
+            hud.recordText = MakeText(hudGo.transform, "Record", RecordSystem.Summary(), new Vector2(0, 382), 16);
+            hud.stageText  = MakeText(hudGo.transform, "Stage",  "STAGE 1",              new Vector2(0, 360), 18);
+            // ??蹂닿린 踰꾪듉 ??EnergyHUD? 寃뱀튂吏 ?딅룄濡??쇱そ??諛곗튂
+            var deckBtn = MakeButton(hudGo.transform, "DeckViewBtn", "??蹂닿린", new Vector2(610f, 484f), new Vector2(118f, 38f));
             UIArtKit.Apply(deckBtn, UIArtSprite.BlueTab);
             SetButtonAccent(deckBtn, UIStyle.Cyan);
 
-            // ── 배치 구역 오버레이 (기본 투명 — HandUI가 카드 선택 시에만 표시) ──
+            // ?? 諛곗튂 援ъ뿭 ?ㅻ쾭?덉씠 (湲곕낯 ?щ챸 ??HandUI媛 移대뱶 ?좏깮 ?쒖뿉留??쒖떆) ??
             var zoneGo = Child(canvasGo.transform, "DeployZone");
             var zoneRt = (RectTransform)zoneGo.transform;
             zoneRt.anchorMin = new Vector2(0f, 0f); zoneRt.anchorMax = new Vector2(0.48f, 1f);
             zoneRt.offsetMin = new Vector2(0f, 280f); zoneRt.offsetMax = new Vector2(0f, -170f);
             var zoneImg = zoneGo.AddComponent<Image>();
-            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0f); // 기본 완전 투명
+            zoneImg.color = new Color(0.3f, 0.75f, 1f, 0f); // 湲곕낯 ?꾩쟾 ?щ챸
             zoneImg.raycastTarget = false;
             {
                 var bgo = Child(zoneGo.transform, "Border");
@@ -380,11 +380,11 @@ namespace SlotDefense
                 var bi = bgo.AddComponent<Image>(); bi.color = new Color(0.3f, 0.85f, 1f, 0f); bi.raycastTarget = false;
             }
 
-            // ── SlotMachineUI (하단 오른쪽 절반) ─────────────────────────
+            // ?? SlotMachineUI (?섎떒 ?ㅻⅨ履??덈컲) ?????????????????????????
             var slotGo = Child(canvasGo.transform, "SlotMachineUI");
             var slotUI = slotGo.AddComponent<SlotMachineUI>();
 
-            // 슬롯 내부 패널 — 오른쪽 절반(x=0~960) 전체
+            // ?щ’ ?대? ?⑤꼸 ???ㅻⅨ履??덈컲(x=0~960) ?꾩껜
             {
                 var go = Child(slotGo.transform, "SlotPanel");
                 var rt = (RectTransform)go.transform;
@@ -406,7 +406,7 @@ namespace SlotDefense
             var reelNameTexts = new Text[3];
             var reelIconImages = new Image[3];
             float[] reelX     = { 320f, 480f, 640f };
-            string[] reelLbls = { "릴 1", "릴 2", "릴 3" };
+            string[] reelLbls = { "由?1", "由?2", "由?3" };
             for (int i = 0; i < 3; i++)
             {
                 var reelBox = Child(slotGo.transform, $"Reel{i}");
@@ -431,34 +431,39 @@ namespace SlotDefense
             slotUI.reelLabels = reelNameTexts;
             slotUI.reelIcons  = reelIconImages;
 
-            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -356f), 20);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -408f), new Vector2(175f, 48f));
+            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -392f), 20);
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -428f), new Vector2(175f, 48f));
             UIArtKit.Apply(slotUI.spinButton, UIArtSprite.RedButton);
             SetButtonAccent(slotUI.spinButton, UIStyle.Green);
 
-            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -408f), new Vector2(74f, 48f));
+            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -428f), new Vector2(74f, 48f));
             UIArtKit.Apply(autoBtn, UIArtSprite.DarkSquareButton);
             autoBtn.GetComponentInChildren<Text>().fontSize = 13;
             slotUI.autoButton      = autoBtn;
             slotUI.autoButtonLabel = autoBtn.GetComponentInChildren<Text>();
 
-            // 행운 게이지
+            // ?됱슫 寃뚯씠吏
             {
                 var ggo = Child(slotGo.transform, "LuckGauge");
                 var grt = (RectTransform)ggo.transform;
-                grt.anchoredPosition = new Vector2(480f, -440f); grt.sizeDelta = new Vector2(260f, 12f);
-                var bgImg = ggo.AddComponent<Image>(); bgImg.color = UIStyle.PanelDeep; bgImg.raycastTarget = false;
+                grt.anchoredPosition = new Vector2(480f, -368f); grt.sizeDelta = new Vector2(430f, 30f);
+                var bgImg = ggo.AddComponent<Image>();
+                UIArtKit.Apply(bgImg, UIArtSprite.ResourceCounterFrame);
+                bgImg.color = new Color(0.75f, 0.82f, 1f, 0.95f);
+                bgImg.raycastTarget = false;
                 var fgo = Child(ggo.transform, "Fill");
                 var frt = (RectTransform)fgo.transform;
-                frt.anchorMin = Vector2.zero; frt.anchorMax = new Vector2(0f, 1f);
-                frt.pivot = new Vector2(0f, 0.5f); frt.sizeDelta = Vector2.zero; frt.anchoredPosition = Vector2.zero;
-                var fi = fgo.AddComponent<Image>(); fi.color = UIStyle.Gold; fi.raycastTarget = false;
+                frt.anchorMin = new Vector2(0f, 0.5f); frt.anchorMax = new Vector2(0f, 0.5f);
+                frt.pivot = new Vector2(0f, 0.5f); frt.sizeDelta = new Vector2(410f, 14f); frt.anchoredPosition = new Vector2(10f, -1f);
+                var fi = fgo.AddComponent<Image>(); fi.color = new Color(1f, 0.78f, 0.16f, 0.95f); fi.raycastTarget = false;
+                AddEdgeLine(ggo.transform, "LuckTopGlow", RectEdge.Top, 2f, new Color(1f, 0.88f, 0.22f, 0.85f));
                 slotUI.luckGaugeFillRt = frt;
             }
-            slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -460f), 14);
-            slotUI.luckChargeText.color = new Color(0.9f, 0.8f, 0.4f);
+            slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -367f), 15);
+            slotUI.luckChargeText.color = new Color(1f, 0.90f, 0.36f);
+            slotUI.luckChargeText.fontStyle = FontStyle.Bold;
 
-            // ── HandUI (하단 왼쪽 절반) ───────────────────────────────────
+            // ?? HandUI (?섎떒 ?쇱そ ?덈컲) ???????????????????????????????????
             var handGo = Child(canvasGo.transform, "HandUI");
             var handUI = handGo.AddComponent<HandUI>();
             handUI.arenaSystem       = arena;
@@ -467,17 +472,17 @@ namespace SlotDefense
             handUI.cardIcons   = new Image[4];
             handUI.cardNames   = new Text[4];
 
-            MakeText(handGo.transform, "HandHeader", "[ HAND ]", new Vector2(-480f, -274f), 14)
-                .color = UIStyle.TextMuted;
+            MakeText(handGo.transform, "HandHeader", "", new Vector2(-480f, -274f), 14)
+                .color = new Color(1f, 1f, 1f, 0f);
 
-            // 카드: 왼쪽 절반(-960~0)에 4장, 140px 간격
-            float[] cardXPos = { -675f, -535f, -395f, -255f };
+            // 移대뱶: ?쇱そ ?덈컲(-960~0)??4?? 140px 媛꾧꺽
+            float[] cardXPos = { -735f, -555f, -375f, -195f };
             for (int i = 0; i < 4; i++)
             {
                 var cardGo = Child(handGo.transform, $"CardSlot{i}");
                 var rt     = (RectTransform)cardGo.transform;
-                rt.anchoredPosition = new Vector2(cardXPos[i], -395f);
-                rt.sizeDelta        = new Vector2(122f, 200f);
+                rt.anchoredPosition = new Vector2(cardXPos[i], -400f);
+                rt.sizeDelta        = new Vector2(158f, 232f);
 
                 var bg  = cardGo.AddComponent<Image>();
                 UIArtKit.Apply(bg, i == 0 ? UIArtSprite.CardFrameBronze :
@@ -498,26 +503,27 @@ namespace SlotDefense
                 var iconGo = Child(cardGo.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
                 iconRt.anchoredPosition = new Vector2(0, 58);
-                iconRt.sizeDelta        = new Vector2(82, 82);
+                iconRt.sizeDelta        = new Vector2(108, 108);
                 handUI.cardIcons[i] = iconGo.AddComponent<Image>();
                 iconGo.SetActive(false);
 
-                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, -16), 15);
+                var nameText = MakeText(cardGo.transform, "Name", "---", new Vector2(0, -38), 17);
+                ((RectTransform)nameText.transform).sizeDelta = new Vector2(148f, 112f);
                 nameText.supportRichText = true;
                 nameText.lineSpacing     = 1.2f;
                 handUI.cardNames[i] = nameText;
             }
 
-            // 좌우 구분선 (HAND | SLOT)
+            // 醫뚯슦 援щ텇??(HAND | SLOT)
             {
                 var go = Child(canvasGo.transform, "BtmDivider");
                 var rt = (RectTransform)go.transform;
                 rt.anchorMin = new Vector2(0.5f, 0f); rt.anchorMax = new Vector2(0.5f, 0f);
                 rt.pivot = new Vector2(0.5f, 0f); rt.sizeDelta = new Vector2(2f, 278f); rt.anchoredPosition = new Vector2(0f, 0f);
-                var img = go.AddComponent<Image>(); img.color = UIStyle.StrokeSoft; img.raycastTarget = false;
+                var img = go.AddComponent<Image>(); img.color = new Color(0f, 0f, 0f, 0f); img.raycastTarget = false;
             }
 
-            // ── ResultUI ─────────────────────────────────────────────────
+            // ?? ResultUI ?????????????????????????????????????????????????
             var resultUIGo = Child(canvasGo.transform, "ResultUI");
             StretchFull((RectTransform)resultUIGo.transform);
             var resultUI = resultUIGo.AddComponent<ResultUI>();
@@ -531,7 +537,7 @@ namespace SlotDefense
             UIArtKit.Apply(resultUI.retryButton, UIArtSprite.GoldButton);
             SetButtonAccent(resultUI.retryButton, UIStyle.Gold);
 
-            // ── DeckViewer ────────────────────────────────────────────────
+            // ?? DeckViewer ????????????????????????????????????????????????
             var dvGo = Child(canvasGo.transform, "DeckViewer");
             var dv   = dvGo.AddComponent<DeckViewerUI>();
             var dvPanel   = Child(dvGo.transform, "Panel");
@@ -540,18 +546,18 @@ namespace SlotDefense
             var dvPanelImage = dvPanel.AddComponent<Image>();
             UIArtKit.Apply(dvPanelImage, UIArtSprite.ModalPanelFrame);
             AddEdgeLine(dvPanel.transform, "TopAccent", RectEdge.Top, 4f, UIStyle.Cyan);
-            MakeText(dvPanel.transform, "Title", "슬롯 카드 목록", new Vector2(0, 225f), 26).color = UIStyle.Cyan;
+            MakeText(dvPanel.transform, "Title", "?щ’ 移대뱶 紐⑸줉", new Vector2(0, 225f), 26).color = UIStyle.Cyan;
             var dvContent = MakeText(dvPanel.transform, "Content", "", new Vector2(-20f, -20f), 18);
             dvContent.alignment = TextAnchor.UpperLeft;
             ((RectTransform)dvContent.transform).sizeDelta = new Vector2(900f, 420f);
             dvContent.horizontalOverflow = HorizontalWrapMode.Wrap;
-            MakeButton(dvPanel.transform, "CloseBtn", "닫기", new Vector2(420f, 220f), new Vector2(80f, 38f))
+            MakeButton(dvPanel.transform, "CloseBtn", "?リ린", new Vector2(420f, 220f), new Vector2(80f, 38f))
                 .onClick.AddListener(() => dv.Toggle());
             dv.panel = dvPanel; dv.contentText = dvContent;
             dv.Setup(GameManager.Instance.deckConfig);
             deckBtn.onClick.AddListener(() => dv.Toggle());
 
-            // ── ScreenFlash ───────────────────────────────────────────────
+            // ?? ScreenFlash ???????????????????????????????????????????????
             var flashGo = Child(canvasGo.transform, "ScreenFlash");
             var flashRt = (RectTransform)flashGo.transform;
             flashRt.anchorMin = Vector2.zero; flashRt.anchorMax = Vector2.one; flashRt.sizeDelta = Vector2.zero;
@@ -559,18 +565,18 @@ namespace SlotDefense
             flashImg.color = new Color(1f, 1f, 1f, 0f); flashImg.raycastTarget = false;
             flashGo.AddComponent<ScreenFlash>();
 
-            // ── EnergyHUD (우상단 독립 패널 — 상단 바 위에 렌더) ─────────
+            // ?? EnergyHUD (?곗긽???낅┰ ?⑤꼸 ???곷떒 諛??꾩뿉 ?뚮뜑) ?????????
             var energyGo = Child(canvasGo.transform, "EnergyHUD");
             var energyRt = (RectTransform)energyGo.transform;
-            energyRt.anchorMin        = new Vector2(1f, 1f);
-            energyRt.anchorMax        = new Vector2(1f, 1f);
-            energyRt.pivot            = new Vector2(1f, 1f);
-            energyRt.anchoredPosition = new Vector2(-8f, -8f);
-            energyRt.sizeDelta        = new Vector2(220f, 140f);
+            energyRt.anchorMin        = new Vector2(0.5f, 0.5f);
+            energyRt.anchorMax        = new Vector2(0.5f, 0.5f);
+            energyRt.pivot            = new Vector2(0.5f, 0.5f);
+            energyRt.anchoredPosition = new Vector2(0f, 432f);
+            energyRt.sizeDelta        = new Vector2(360f, 78f);
             var energyBg = energyGo.AddComponent<Image>();
             UIArtKit.Apply(energyBg, UIArtSprite.TooltipFrame);
             energyBg.raycastTarget = false;
-            // 금색 테두리 (상단)
+            // 湲덉깋 ?뚮몢由?(?곷떒)
             {
                 var bgo = Child(energyGo.transform, "TopBorder");
                 var brt = (RectTransform)bgo.transform;
@@ -578,7 +584,7 @@ namespace SlotDefense
                 brt.pivot = new Vector2(0.5f, 1f); brt.sizeDelta = new Vector2(0f, 3f); brt.anchoredPosition = Vector2.zero;
                 var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 1f); bi.raycastTarget = false;
             }
-            // 금색 테두리 (하단)
+            // 湲덉깋 ?뚮몢由?(?섎떒)
             {
                 var bgo = Child(energyGo.transform, "BotBorder");
                 var brt = (RectTransform)bgo.transform;
@@ -586,7 +592,7 @@ namespace SlotDefense
                 brt.pivot = new Vector2(0.5f, 0f); brt.sizeDelta = new Vector2(0f, 2f); brt.anchoredPosition = Vector2.zero;
                 var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 0.7f); bi.raycastTarget = false;
             }
-            // 금색 테두리 (좌측)
+            // 湲덉깋 ?뚮몢由?(醫뚯륫)
             {
                 var bgo = Child(energyGo.transform, "LeftBorder");
                 var brt = (RectTransform)bgo.transform;
@@ -594,15 +600,18 @@ namespace SlotDefense
                 brt.pivot = new Vector2(0f, 0.5f); brt.sizeDelta = new Vector2(2f, 0f); brt.anchoredPosition = Vector2.zero;
                 var bi = bgo.AddComponent<Image>(); bi.color = new Color(1f, 0.72f, 0.08f, 0.7f); bi.raycastTarget = false;
             }
-            // 에너지 헤더 라벨
-            var energyHeader = MakeEnergyLabel(energyGo.transform, "EnergyHeader", new Vector2(110f, 118f));
-            energyHeader.text = "속성 에너지"; energyHeader.fontSize = 15;
+            // ?먮꼫吏 ?ㅻ뜑 ?쇰꺼
+            var energyHeader = MakeEnergyLabel(energyGo.transform, "EnergyHeader", new Vector2(180f, 58f));
+            energyHeader.text = "ELEMENT ENERGY"; energyHeader.fontSize = 14;
             energyHeader.color = new Color(1f, 0.82f, 0.18f);
 
             var energyHud = energyGo.AddComponent<EnergyHUD>();
-            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(110f, 88f), new Color(1f,  0.45f, 0.1f));
-            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(110f, 55f), new Color(0.6f, 0.8f, 1f));
-            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(110f, 22f), new Color(0.2f, 1f,  0.45f));
+            energyHud.fireText = MakeEnergyLabel(energyGo.transform, "FireText", new Vector2(80f, 25f), new Color(1f,  0.45f, 0.1f));
+            energyHud.ironText = MakeEnergyLabel(energyGo.transform, "IronText", new Vector2(180f, 25f), new Color(0.6f, 0.8f, 1f));
+            energyHud.lifeText = MakeEnergyLabel(energyGo.transform, "LifeText", new Vector2(280f, 25f), new Color(0.2f, 1f,  0.45f));
+            ((RectTransform)energyHud.fireText.transform).sizeDelta = new Vector2(96f, 32f);
+            ((RectTransform)energyHud.ironText.transform).sizeDelta = new Vector2(96f, 32f);
+            ((RectTransform)energyHud.lifeText.transform).sizeDelta = new Vector2(96f, 32f);
         }
 
         // ============================================================
@@ -909,3 +918,4 @@ namespace SlotDefense
         }
     }
 }
+
