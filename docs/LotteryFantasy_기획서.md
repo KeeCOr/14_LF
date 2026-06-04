@@ -155,3 +155,42 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 기지 HP | 플레이어 HP와 적 HP 프레임/슬라이더를 좌우 대칭 좌표로 재배치 |
 | 중앙 정보 | 타이머/스핀 수/속성 에너지/스테이지 정보가 겹치지 않도록 세로 간격 재정리 |
 | 텍스트 안정화 | 깨진 일부 시작 메뉴/카드 이름 문자열을 영문 표기로 정리 |
+
+<!-- APPLIED_RESOURCES_START -->
+## 적용 리소스
+
+> 자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.
+
+- 이미지/스프라이트: `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Cloth_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Feathers_Mask_02.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Gems_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Leather_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Metal_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Skin_Eye_Hair_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Base_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Mask_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Textures/PT_Grass_01.png`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Textures/PT_Props_Texture_01.png` 외 28개
+- Unity/프리팹: `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/PT_Skeleton_Male_Modular.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Materials/PT_Armors_Material.mat`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Materials/PT_NPC_Mat.mat`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Demos/Skeleton_Free_Asset/Helpers/Terrain.asset`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Prefabs/Plants/PT_Grass_02.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Materials/PT_Grass_Mat.mat`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_02.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_01.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_02.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_03.prefab`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Materials/PT_Props_mat.mat`, `Assets/Resources/Asset/Polytope Studio/Lowpoly_Village/Prefabs/Modular/Fence/PT_Modular_Fence_Wood_01.prefab` 외 68개
+- 폰트: `Assets/TextMesh Pro/Examples & Extras/Fonts/Anton.ttf`, `Assets/TextMesh Pro/Examples & Extras/Fonts/Bangers.ttf`, `Assets/TextMesh Pro/Examples & Extras/Fonts/Electronic Highway Sign.TTF`, `Assets/TextMesh Pro/Examples & Extras/Fonts/Oswald-Bold.ttf`, `Assets/TextMesh Pro/Examples & Extras/Fonts/Roboto-Bold.ttf`, `Assets/TextMesh Pro/Fonts/LiberationSans.ttf`
+- 데이터/설정: `Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt`, `Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt`
+
+메모:
+- 리소스 후보 171개 중 자동 참조 확인 128개.
+<!-- APPLIED_RESOURCES_END -->
+
+<!-- RESOURCE_PREVIEWS_START -->
+## 공유용 이미지 미리보기
+
+> 자동 갱신: 2026-06-04. 공유 시 문서와 함께 아래 이미지 경로가 포함되어야 합니다.
+
+![14_LT PT_Armors_Base_Texture](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png`
+
+![14_LT PT_Armors_Cloth_Mask_01](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Cloth_Mask_01.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Cloth_Mask_01.png`
+
+![14_LT PT_Armors_Feathers_Mask_02](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Feathers_Mask_02.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Feathers_Mask_02.png`
+
+![14_LT PT_Armors_Gems_Mask_01](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Gems_Mask_01.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Gems_Mask_01.png`
+
+![14_LT PT_Armors_Leather_Mask_01](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Leather_Mask_01.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Leather_Mask_01.png`
+
+![14_LT PT_Armors_Lips_Scars_Mask_01](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png)
+- `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png`
+
+<!-- RESOURCE_PREVIEWS_END -->
