@@ -400,43 +400,43 @@ namespace SlotDefense
                 AddEdgeLine(go.transform, "BottomBorder", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
             }
 
-            var slotHeader = MakeText(slotGo.transform, "SlotHeader", "[ SLOT MACHINE ]", new Vector2(480f, -274f), 14);
+            var slotHeader = MakeText(slotGo.transform, "SlotHeader", "[ SLOT MACHINE ]", new Vector2(480f, -281f), 14);
             slotHeader.color = UIStyle.TextMuted;
 
             var reelNameTexts = new Text[3];
             var reelIconImages = new Image[3];
-            float[] reelX     = { 320f, 480f, 640f };
+            float[] reelX     = { 292f, 480f, 668f };
             string[] reelLbls = { "由?1", "由?2", "由?3" };
             for (int i = 0; i < 3; i++)
             {
                 var reelBox = Child(slotGo.transform, $"Reel{i}");
                 var reelRt  = (RectTransform)reelBox.transform;
-                reelRt.anchoredPosition = new Vector2(reelX[i], -318f);
-                reelRt.sizeDelta        = new Vector2(148f, 82f);
+                reelRt.anchoredPosition = new Vector2(reelX[i], -333f);
+                reelRt.sizeDelta        = new Vector2(172f, 112f);
                 var reelImg = reelBox.AddComponent<Image>();
                 UIArtKit.Apply(reelImg, UIArtSprite.SquareIconFrame);
                 AddEdgeLine(reelBox.transform, "TopAccent", RectEdge.Top, 3f, i == 0 ? new Color(1f, 0.48f, 0.18f, 0.95f) : i == 1 ? new Color(0.55f, 0.80f, 1f, 0.95f) : new Color(0.25f, 1f, 0.50f, 0.95f));
                 AddEdgeLine(reelBox.transform, "BottomShade", RectEdge.Bottom, 2f, UIStyle.StrokeSoft);
-                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 30), 12).color = UIStyle.TextMuted;
+                MakeText(reelBox.transform, "Label", reelLbls[i], new Vector2(0, 43), 11).color = UIStyle.TextMuted;
                 var iconGo = Child(reelBox.transform, "Icon");
                 var iconRt = (RectTransform)iconGo.transform;
-                iconRt.anchoredPosition = new Vector2(0f, -2f);
-                iconRt.sizeDelta = new Vector2(58f, 58f);
+                iconRt.anchoredPosition = new Vector2(0f, -3f);
+                iconRt.sizeDelta = new Vector2(112f, 82f);
                 reelIconImages[i] = iconGo.AddComponent<Image>();
                 reelIconImages[i].sprite = UIArtKit.ElementIcon(i == 0 ? ElementType.Fire : i == 1 ? ElementType.Iron : ElementType.Life);
                 reelIconImages[i].preserveAspect = true;
-                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "", new Vector2(0, -34), 13);
+                reelNameTexts[i] = MakeText(reelBox.transform, "Value", "", new Vector2(0, -48), 13);
                 reelNameTexts[i].fontStyle = FontStyle.Bold;
             }
             slotUI.reelLabels = reelNameTexts;
             slotUI.reelIcons  = reelIconImages;
 
-            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -392f), 20);
-            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -428f), new Vector2(175f, 48f));
+            slotUI.resultText = MakeText(slotGo.transform, "Result", "", new Vector2(480f, -424f), 20);
+            slotUI.spinButton = MakeButton(slotGo.transform, "SpinBtn", "STOP", new Vector2(392f, -462f), new Vector2(175f, 48f));
             UIArtKit.Apply(slotUI.spinButton, UIArtSprite.RedButton);
             SetButtonAccent(slotUI.spinButton, UIStyle.Green);
 
-            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -428f), new Vector2(74f, 48f));
+            var autoBtn = MakeButton(slotGo.transform, "AutoBtn", "AUTO\nOFF", new Vector2(578f, -462f), new Vector2(74f, 48f));
             UIArtKit.Apply(autoBtn, UIArtSprite.DarkSquareButton);
             autoBtn.GetComponentInChildren<Text>().fontSize = 13;
             slotUI.autoButton      = autoBtn;
@@ -446,7 +446,7 @@ namespace SlotDefense
             {
                 var ggo = Child(slotGo.transform, "LuckGauge");
                 var grt = (RectTransform)ggo.transform;
-                grt.anchoredPosition = new Vector2(480f, -368f); grt.sizeDelta = new Vector2(430f, 30f);
+                grt.anchoredPosition = new Vector2(480f, -397f); grt.sizeDelta = new Vector2(430f, 26f);
                 var bgImg = ggo.AddComponent<Image>();
                 UIArtKit.Apply(bgImg, UIArtSprite.ResourceCounterFrame);
                 bgImg.color = new Color(0.75f, 0.82f, 1f, 0.95f);
@@ -459,7 +459,7 @@ namespace SlotDefense
                 AddEdgeLine(ggo.transform, "LuckTopGlow", RectEdge.Top, 2f, new Color(1f, 0.88f, 0.22f, 0.85f));
                 slotUI.luckGaugeFillRt = frt;
             }
-            slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -367f), 15);
+            slotUI.luckChargeText = MakeText(slotGo.transform, "LuckCount", "", new Vector2(480f, -397f), 14);
             slotUI.luckChargeText.color = new Color(1f, 0.90f, 0.36f);
             slotUI.luckChargeText.fontStyle = FontStyle.Bold;
 

@@ -39,11 +39,24 @@ namespace SlotDefense
         private float _autoStopTimer;
         private Image[] _reelBgs;
         private bool[] _reelLanding;
+        private RectTransform[] _reelStrips;
+        private Image[][] _reelStripImages;
+        private float[] _reelScroll;
+
+        private const int StripSymbolCount = 9;
+        private const float StripSymbolSize = 76f;
+        private static readonly Vector2 ReelViewportSize = new Vector2(112f, 82f);
+        private static readonly Vector2 ReelStripSize = new Vector2(108f, StripSymbolCount * StripSymbolSize);
+        private static readonly Vector2 ReelSymbolSize = new Vector2(66f, 66f);
+        private const float ReelSpinSpeed = 760f;
 
         private void Start()
         {
             _reelBgs = new Image[3];
             _reelLanding = new bool[3];
+            _reelStrips = new RectTransform[3];
+            _reelStripImages = new Image[3][];
+            _reelScroll = new float[3];
 
             if (reelIcons == null || reelIcons.Length < 3)
                 reelIcons = new Image[3];
@@ -52,6 +65,7 @@ namespace SlotDefense
             {
                 if (reelLabels != null && reelLabels[i] != null)
                     _reelBgs[i] = reelLabels[i].transform.parent.GetComponent<Image>();
+                BuildReelStrip(i);
             }
 
             spinButton.onClick.AddListener(OnStopClicked);
@@ -157,6 +171,114 @@ namespace SlotDefense
             }
         }
 
+        private void BuildReelStrip(int index)
+        {
+            if (reelIcons == null || index >= reelIcons.Length || reelIcons[index] == null) return;
+
+            var icon = reelIcons[index];
+            var iconRt = icon.rectTransform;
+            icon.enabled = false;
+
+            var viewportGo = new GameObject("ReelViewport", typeof(RectTransform), typeof(Image), typeof(RectMask2D));
+            viewportGo.transform.SetParent(icon.transform.parent, false);
+            var viewportRt = viewportGo.GetComponent<RectTransform>();
+            viewportRt.anchorMin = iconRt.anchorMin;
+            viewportRt.anchorMax = iconRt.anchorMax;
+            viewportRt.pivot = iconRt.pivot;
+            viewportRt.anchoredPosition = iconRt.anchoredPosition;
+            viewportRt.sizeDelta = ReelViewportSize;
+
+            var viewportImage = viewportGo.GetComponent<Image>();
+            viewportImage.color = new Color(0.02f, 0.03f, 0.07f, 0.62f);
+            viewportImage.raycastTarget = false;
+
+            var stripGo = new GameObject("ReelStrip", typeof(RectTransform));
+            stripGo.transform.SetParent(viewportGo.transform, false);
+            var stripRt = stripGo.GetComponent<RectTransform>();
+            stripRt.anchorMin = new Vector2(0.5f, 0.5f);
+            stripRt.anchorMax = new Vector2(0.5f, 0.5f);
+            stripRt.pivot = new Vector2(0.5f, 0.5f);
+            stripRt.sizeDelta = ReelStripSize;
+
+            _reelStrips[index] = stripRt;
+            _reelStripImages[index] = new Image[StripSymbolCount];
+
+            for (int i = 0; i < StripSymbolCount; i++)
+            {
+                var symbol = new GameObject($"Symbol_{i}", typeof(RectTransform), typeof(Image));
+                symbol.transform.SetParent(stripGo.transform, false);
+                var rt = symbol.GetComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = new Vector2(0f, SymbolOffset(i));
+                rt.sizeDelta = ReelSymbolSize;
+
+                var image = symbol.GetComponent<Image>();
+                image.preserveAspect = true;
+                image.raycastTarget = false;
+                _reelStripImages[index][i] = image;
+            }
+
+            FillStripSequence(index, index);
+            SnapStripTo(index, ElementType.Fire, instant: true);
+        }
+
+        private static float SymbolOffset(int stripIndex)
+        {
+            float center = (StripSymbolCount - 1) * 0.5f;
+            return (center - stripIndex) * StripSymbolSize;
+        }
+
+        private ElementType StripElement(int reelIndex, int stripIndex)
+        {
+            return SpinPool[(stripIndex + reelIndex * 2) % SpinPool.Length];
+        }
+
+        private void FillStripSequence(int index, int seedOffset)
+        {
+            if (_reelStripImages == null || index >= _reelStripImages.Length || _reelStripImages[index] == null)
+                return;
+
+            for (int i = 0; i < _reelStripImages[index].Length; i++)
+            {
+                var element = SpinPool[(i + seedOffset) % SpinPool.Length];
+                var image = _reelStripImages[index][i];
+                image.sprite = ReelSprite(element);
+                image.color = ColorOf(element);
+            }
+        }
+
+        private void ScrollReelStrip(int index, float delta)
+        {
+            if (_reelStrips == null || index >= _reelStrips.Length || _reelStrips[index] == null)
+                return;
+
+            _reelScroll[index] = Mathf.Repeat(_reelScroll[index] + delta, StripSymbolSize * SpinPool.Length);
+            int sequenceStep = Mathf.FloorToInt(_reelScroll[index] / StripSymbolSize);
+            FillStripSequence(index, index + sequenceStep);
+            _reelStrips[index].anchoredPosition = new Vector2(0f, _reelScroll[index] % StripSymbolSize);
+        }
+
+        private void SnapStripTo(int index, ElementType element, bool instant)
+        {
+            if (_reelStrips == null || index >= _reelStrips.Length || _reelStrips[index] == null)
+                return;
+
+            FillStripSequence(index, index + Mathf.RoundToInt(Time.time * 10f));
+
+            int center = StripSymbolCount / 2;
+            if (_reelStripImages[index] != null && center < _reelStripImages[index].Length)
+            {
+                _reelStripImages[index][center].sprite = ReelSprite(element);
+                _reelStripImages[index][center].color = ColorOf(element);
+            }
+
+            _reelScroll[index] = 0f;
+            _reelStrips[index].anchoredPosition = Vector2.zero;
+            _reelStrips[index].localScale = instant ? Vector3.one : new Vector3(1f, 1.06f, 1f);
+        }
+
         private void SetReelVisual(int index, ElementType element, bool spinning)
         {
             if (reelLabels != null && reelLabels[index] != null)
@@ -165,25 +287,18 @@ namespace SlotDefense
                 reelLabels[index].color = ColorOf(element);
             }
 
-            if (reelIcons != null && reelIcons[index] != null)
+            if (spinning)
             {
-                reelIcons[index].sprite = ReelSprite(element);
-                reelIcons[index].color = ColorOf(element);
-                reelIcons[index].preserveAspect = true;
-                reelIcons[index].gameObject.SetActive(true);
-
-                if (spinning)
+                ScrollReelStrip(index, (ReelSpinSpeed + index * 90f) * Time.deltaTime);
+                if (_reelStrips != null && _reelStrips[index] != null)
                 {
-                    float angle = (Time.time * 720f + index * 87f) % 360f;
-                    reelIcons[index].transform.localEulerAngles = new Vector3(0f, 0f, angle);
-                    float pulse = 0.86f + Mathf.Sin(Time.time * 12f + index) * 0.08f;
-                    reelIcons[index].transform.localScale = Vector3.one * pulse;
+                    float stretch = 1.04f + Mathf.Sin(Time.time * 17f + index) * 0.025f;
+                    _reelStrips[index].localScale = new Vector3(1f, stretch, 1f);
                 }
-                else
-                {
-                    reelIcons[index].transform.localEulerAngles = Vector3.zero;
-                    reelIcons[index].transform.localScale = Vector3.one;
-                }
+            }
+            else
+            {
+                SnapStripTo(index, element, instant: false);
             }
         }
 
@@ -205,8 +320,12 @@ namespace SlotDefense
                     }
                     if (reelIcons != null && reelIcons[i] != null)
                     {
-                        reelIcons[i].transform.localScale = Vector3.one;
-                        reelIcons[i].transform.localEulerAngles = Vector3.zero;
+                        reelIcons[i].enabled = false;
+                    }
+                    if (_reelStrips != null && _reelStrips[i] != null)
+                    {
+                        FillStripSequence(i, i);
+                        _reelStrips[i].localScale = Vector3.one;
                     }
                     if (_reelBgs[i] != null) _reelBgs[i].color = ReelIdleColor;
                 }
@@ -309,13 +428,16 @@ namespace SlotDefense
             float[] delays = { 0.045f, 0.065f, 0.09f, 0.12f, 0.15f };
             foreach (var delay in delays)
             {
-                SetReelVisual(index, SpinPool[Random.Range(0, SpinPool.Length)], spinning: true);
+                ScrollReelStrip(index, (ReelSpinSpeed * 0.45f) * delay);
+                FillStripSequence(index, Random.Range(0, SpinPool.Length));
                 yield return new WaitForSeconds(delay);
             }
 
             SetReelVisual(index, finalElement, spinning: false);
 
-            if (reelIcons != null && reelIcons[index] != null)
+            if (_reelStrips != null && _reelStrips[index] != null)
+                yield return ScaleBounce(_reelStrips[index], 1.10f);
+            else if (reelIcons != null && reelIcons[index] != null)
                 yield return ScaleBounce(reelIcons[index].transform, 1.28f);
             else if (reelLabels[index] != null)
                 yield return ScaleBounce(reelLabels[index].transform, 1.28f);

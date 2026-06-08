@@ -35,6 +35,7 @@ namespace SlotDefense
     public static class GameVisualKit
     {
         public const string ArenaBackdropName = "ArenaBackdrop";
+        public const string ToonyRtsPrefabRoot = "Asset/ToonyTinyPeople/TT_RTS/TT_RTS_Standard/prefabs";
 
         public static readonly Color PlayerBlue = new Color(0.05f, 0.32f, 0.85f, 1f);
         public static readonly Color EnemyRed = new Color(0.78f, 0.16f, 0.12f, 1f);
@@ -53,16 +54,28 @@ namespace SlotDefense
             "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_01"
         };
 
+        public static readonly string[] ToonyRtsSceneryPaths =
+        {
+            $"{ToonyRtsPrefabRoot}/machines/TT_Ballista_lvl1",
+            $"{ToonyRtsPrefabRoot}/machines/TT_Catapult_lvl1",
+            $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Yellow",
+            $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Orange"
+        };
+
         public static string UnitVisualPath(string unitName)
         {
             if (ContainsAny(unitName, "Archer"))
-                return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/PT_Skeleton_Male_Modular";
+                return $"{ToonyRtsPrefabRoot}/TT_Archer";
             if (ContainsAny(unitName, "Mage", "Pyro"))
-                return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/Separate_Parts/PT_Male_Skeleton_01_upper";
+                return $"{ToonyRtsPrefabRoot}/TT_Mage";
             if (ContainsAny(unitName, "Healer", "Cleric", "Luck"))
-                return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/Separate_Parts/PT_Male_Skeleton_01_head";
+                return $"{ToonyRtsPrefabRoot}/TT_Priest";
+            if (ContainsAny(unitName, "Knight", "Paladin", "Crusader"))
+                return $"{ToonyRtsPrefabRoot}/TT_Paladin";
+            if (ContainsAny(unitName, "Giant", "Golem", "Iron"))
+                return $"{ToonyRtsPrefabRoot}/TT_Heavy_Infantry";
 
-            return "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_Armors/PT_Male_Armors_Skeleton_Modular";
+            return $"{ToonyRtsPrefabRoot}/TT_Swordman";
         }
 
         public static Color FactionColor(VisualFacing facing)
@@ -81,20 +94,33 @@ namespace SlotDefense
         public static string MonsterVisualPath(bool elite)
         {
             return elite
-                ? "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_Armors/Separate_Parts/PT_Male_Armor_Skeleton_01_head"
-                : "Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/Separate_Parts/PT_Male_Skeleton_01_head";
+                ? $"{ToonyRtsPrefabRoot}/TT_King"
+                : $"{ToonyRtsPrefabRoot}/TT_HeavySwordman";
         }
 
         public static string VillageVisualPath(bool isPlayer)
         {
             return isPlayer
-                ? "Asset/SimpleNaturePack/Prefabs/Tree_05"
-                : "Asset/SimpleNaturePack/Prefabs/Tree_04";
+                ? $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Blue_A"
+                : $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Red";
         }
 
         public static string PortalAccentPath()
         {
-            return "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_03";
+            return $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Purple";
+        }
+
+        public static string BuildingVisualPath(CardData card)
+        {
+            var name = card != null ? card.cardName : string.Empty;
+            if (ContainsAny(name, "Sniper", "Tower"))
+                return $"{ToonyRtsPrefabRoot}/machines/TT_Ballista_lvl2";
+            if (ContainsAny(name, "Fire", "Magic"))
+                return $"{ToonyRtsPrefabRoot}/machines/TT_Catapult_lvl2";
+            if (ContainsAny(name, "Barracks"))
+                return $"{ToonyRtsPrefabRoot}/machines/TT_Ram_lvl1";
+
+            return $"{ToonyRtsPrefabRoot}/machines/TT_Catapult_lvl1";
         }
 
         public static GameObject LoadVisualPrefab(string resourcesPath)
@@ -182,16 +208,19 @@ namespace SlotDefense
                 RoyalGold, -22);
 
             AddBaseSilhouette(root.transform, new Vector3(-7.5f, 0f, 0.28f), true);
+            AddToonyBanner(root.transform, new Vector3(-6.75f, 0.30f, 0.16f), VisualFacing.Player);
             CreateGeneratedSprite("PlayerTowerArt", root.transform, UIArtSprite.PlayerTower, new Vector3(-7.5f, -0.10f, 0.20f), 2.65f, -12, LowPolyWindProfile.Banner);
             CreateGeneratedSprite("CenterGroundArt", root.transform, UIArtSprite.GroundPatch, new Vector3(0f, -0.78f, 0.20f), 1.10f, -20);
             if (!survivalMode)
             {
                 AddBaseSilhouette(root.transform, new Vector3(7.5f, 0f, 0.28f), false);
+                AddToonyBanner(root.transform, new Vector3(6.75f, 0.30f, 0.16f), VisualFacing.Enemy);
                 CreateGeneratedSprite("EnemyTowerArt", root.transform, UIArtSprite.EnemyTower, new Vector3(7.5f, -0.10f, 0.20f), 2.65f, -12, LowPolyWindProfile.Banner);
             }
             else
             {
                 AddPortalPedestal(root.transform, new Vector3(7.5f, 0f, 0.28f));
+                AddToonyBanner(root.transform, new Vector3(6.75f, 0.30f, 0.16f), VisualFacing.Neutral);
                 CreateGeneratedSprite("PortalGateArt", root.transform, UIArtSprite.PortalGate, new Vector3(7.5f, -0.05f, 0.20f), 2.25f, -12, LowPolyWindProfile.Portal);
             }
 
@@ -202,10 +231,11 @@ namespace SlotDefense
         {
             var style = UnitRoleStyle(unitName);
             var visual = AttachVisual(root, UnitVisualPath(unitName), "UnitVisual", facing, style.visualOffset, style.visualScale);
+            BoostToonyVisual(visual, 1.55f, 9);
             AttachFactionMarker(root, facing, false);
             AttachRoleAccent(root, style, facing);
             AttachWeapon(root, style, facing);
-            FadeFallbackSprite(root, 0.18f);
+            FadeFallbackSprite(root, visual != null ? 0.035f : 0.18f);
             return visual;
         }
 
@@ -213,8 +243,9 @@ namespace SlotDefense
         {
             var visual = AttachVisual(root, MonsterVisualPath(elite), elite ? "EliteMonsterVisual" : "MonsterVisual",
                 facing, new Vector3(0f, -0.34f, -0.08f), elite ? 0.78f : 0.64f);
+            BoostToonyVisual(visual, elite ? 1.70f : 1.45f, 9);
             AttachFactionMarker(root, VisualFacing.Neutral, elite);
-            FadeFallbackSprite(root, elite ? 0.36f : 0.30f);
+            FadeFallbackSprite(root, visual != null ? 0.06f : elite ? 0.36f : 0.30f);
             return visual;
         }
 
@@ -235,11 +266,9 @@ namespace SlotDefense
 
         public static GameObject AttachBuildingVisual(GameObject root, CardData card)
         {
-            string path = card != null && card.cardName.Contains("Tower")
-                ? "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_02"
-                : "Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_03";
-            var visual = AttachVisual(root, path, "BuildingVisual", VisualFacing.Player, new Vector3(0f, -0.42f, -0.10f), 0.62f);
-            FadeFallbackSprite(root, 0.28f);
+            var visual = AttachVisual(root, BuildingVisualPath(card), "BuildingVisual", VisualFacing.Player, new Vector3(0f, -0.42f, -0.10f), 0.48f);
+            BoostToonyVisual(visual, 1.35f, 8);
+            FadeFallbackSprite(root, visual != null ? 0.06f : 0.28f);
             return visual;
         }
 
@@ -273,6 +302,7 @@ namespace SlotDefense
                 LowPolyWindAnimator.Attach(go, SceneryWindProfile(i), i * 0.73f);
             }
 
+            AddToonyBattlefieldProps(parent, survivalMode);
             AddWindGrass(parent, survivalMode);
         }
 
@@ -367,6 +397,37 @@ namespace SlotDefense
             }
         }
 
+        private static void AddToonyBattlefieldProps(Transform parent, bool survivalMode)
+        {
+            var positions = survivalMode
+                ? new[]
+                {
+                    new Vector3(-6.8f, -1.05f, 0.10f),
+                    new Vector3(-2.8f, 1.12f, 0.10f),
+                    new Vector3(2.8f, 1.12f, 0.10f),
+                    new Vector3(6.8f, -1.05f, 0.10f)
+                }
+                : new[]
+                {
+                    new Vector3(-6.9f, -1.02f, 0.10f),
+                    new Vector3(-3.8f, 1.16f, 0.10f),
+                    new Vector3(3.8f, 1.16f, 0.10f),
+                    new Vector3(6.9f, -1.02f, 0.10f)
+                };
+
+            for (int i = 0; i < positions.Length; i++)
+            {
+                var root = new GameObject($"ToonyBattlefieldProp_{i}");
+                root.transform.SetParent(parent, false);
+                root.transform.localPosition = positions[i];
+                var facing = positions[i].x > 0f ? VisualFacing.Enemy : VisualFacing.Player;
+                var visual = AttachVisual(root, ToonyRtsSceneryPaths[i % ToonyRtsSceneryPaths.Length],
+                    "ToonyPropVisual", facing, Vector3.zero, i < 2 ? 0.42f : 0.48f);
+                if (visual != null && i >= 2)
+                    LowPolyWindAnimator.Attach(visual, LowPolyWindProfile.Banner, positions[i].x);
+            }
+        }
+
         private static void AddBaseSilhouette(Transform parent, Vector3 position, bool isPlayer)
         {
             var side = isPlayer ? PlayerBlue : EnemyRed;
@@ -397,6 +458,30 @@ namespace SlotDefense
             CreateSprite("Rune", root.transform, new Vector3(0f, 0.06f, -0.03f), new Vector2(0.28f, 0.64f), RoyalGold, -15);
         }
 
+        private static void AddToonyBanner(Transform parent, Vector3 position, VisualFacing facing)
+        {
+            string path;
+            switch (facing)
+            {
+                case VisualFacing.Player:
+                    path = $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Blue_A";
+                    break;
+                case VisualFacing.Enemy:
+                    path = $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Red";
+                    break;
+                default:
+                    path = $"{ToonyRtsPrefabRoot}/banners/TT_Banner_Purple";
+                    break;
+            }
+
+            var root = new GameObject(facing == VisualFacing.Neutral ? "ToonyNeutralBanner" : "ToonyFactionBanner");
+            root.transform.SetParent(parent, false);
+            root.transform.localPosition = position;
+            var banner = AttachVisual(root, path, "ToonyBannerVisual", facing, Vector3.zero, 0.62f);
+            if (banner != null)
+                LowPolyWindAnimator.Attach(banner, LowPolyWindProfile.Banner, position.x);
+        }
+
         private static GameObject AttachVisual(GameObject root, string path, string name, VisualFacing facing, Vector3 localPosition, float scale)
         {
             if (root == null) return null;
@@ -412,6 +497,19 @@ namespace SlotDefense
             if (name.Contains("Village") || name.Contains("Portal") || name.Contains("Building"))
                 LowPolyWindAnimator.Attach(visual, name.Contains("Portal") ? LowPolyWindProfile.Portal : LowPolyWindProfile.Banner, root.transform.position.x);
             return visual;
+        }
+
+        private static void BoostToonyVisual(GameObject visual, float scaleMultiplier, int sortingOrder)
+        {
+            if (visual == null) return;
+            visual.SetActive(true);
+            visual.transform.localScale *= scaleMultiplier;
+
+            foreach (var renderer in visual.GetComponentsInChildren<Renderer>(true))
+            {
+                renderer.enabled = true;
+                renderer.sortingOrder = sortingOrder;
+            }
         }
 
         private static void AttachFactionMarker(GameObject root, VisualFacing facing, bool eliteMonster)
