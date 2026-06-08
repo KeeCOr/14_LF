@@ -102,6 +102,8 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 건물/타워 | Tower 계열은 Ballista, Magic/Fire 계열은 Catapult, Barracks는 Ram 프리팹으로 표시 |
 | 기지/포탈 | 플레이어/적/중립 거점에 파랑/빨강/보라 Toony 배너를 추가 |
 | 전장 소품 | 전장 후방과 측면에 Ballista, Catapult, Yellow/Orange Banner 소품을 배치해 RTS 전장 분위기를 강화 |
+| 스폰 경로 | 클릭 배치, 드래그 배치, 생산 건물 자동 스폰, AI 스폰 모두 `GameVisualKit.AttachUnitVisual`을 호출하도록 정리 |
+| 표시 우선순위 | Toony MeshRenderer 정렬 순서와 스케일을 높이고 기존 템플릿 스프라이트 투명도를 낮춰 Toony 모델이 먼저 보이도록 조정 |
 
 ## 카드 비용 아이콘 표시
 
@@ -226,5 +228,9 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 
 ![14_LT PT_Armors_Lips_Scars_Mask_01](../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png)
 - `Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png`
+
+## 릴 프레임 맞춤 크기 조정
+
+2026-06-08 업데이트에서 생성된 슬롯머신 프레임 배경의 안쪽 창에 맞춰 릴 박스를 172x112, 릴 뷰포트를 112x82로 확대했다. 세로 릴 스트립의 심볼 간격은 76px, 심볼 이미지는 66px로 키워 릴이 프레임 안에서 실제로 잘려 돌아가는 느낌을 강화했다.
 
 <!-- RESOURCE_PREVIEWS_END -->

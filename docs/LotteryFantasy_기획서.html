@@ -380,6 +380,8 @@
   <tr><td>嫄대Ъ/???/td><td>Tower 怨꾩뿴? Ballista, Magic/Fire 怨꾩뿴? Catapult, Barracks??Ram ?꾨━?뱀쑝濡??쒖떆.</td></tr>
   <tr><td>湲곗?/?ы깉</td><td>?뚮젅?댁뼱/??以묐┰ 嫄곗젏???뚮옉/鍮④컯/蹂대씪 Toony 諛곕꼫 異붽?.</td></tr>
   <tr><td>?꾩옣 ?뚰뭹</td><td>?꾩옣 ?꾨갑怨?痢〓㈃??Ballista, Catapult, Yellow/Orange Banner ?뚰뭹??諛곗튂??RTS ?꾩옣 遺꾩쐞湲?媛뺥솕.</td></tr>
+  <tr><td>스폰 경로</td><td>클릭 배치, 드래그 배치, 생산 건물 자동 스폰, AI 스폰 모두 <code>GameVisualKit.AttachUnitVisual</code>을 호출하도록 정리.</td></tr>
+  <tr><td>표시 우선순위</td><td>Toony MeshRenderer 정렬 순서와 스케일을 높이고 기존 템플릿 스프라이트 투명도를 낮춰 Toony 모델이 먼저 보이도록 조정.</td></tr>
 </table>
 
 <h2>21. 移대뱶 鍮꾩슜 ?꾩씠肄??쒖떆 <span class="badge">2026-06-08</span></h2>
@@ -463,6 +465,12 @@
   <img src="../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png" alt="14_LT PT_Armors_Lips_Scars_Mask_01" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
   <figcaption style="margin-top:8px;font-size:13px;color:#4b5563;"><code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png</code></figcaption>
 </figure>
+  </div>
+</section>
+<section>
+  <h2>릴 프레임 맞춤 크기 조정 <span class="badge">2026-06-08</span></h2>
+  <div class="card highlight">
+    <p>생성된 슬롯머신 프레임 배경의 안쪽 창에 맞춰 릴 박스를 172x112, 릴 뷰포트를 112x82로 확대했다. 세로 릴 스트립의 심볼 간격은 76px, 심볼 이미지는 66px로 키워 릴이 프레임 안에서 실제로 잘려 돌아가는 느낌을 강화한다.</p>
   </div>
 </section>
 <!-- RESOURCE_PREVIEWS_END -->
