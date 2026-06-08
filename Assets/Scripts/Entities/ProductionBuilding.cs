@@ -43,6 +43,7 @@ namespace SlotDefense
                 : _arena.unitPrefab;
             var go = Instantiate(prefab, transform.position + Vector3.left * 0.5f, Quaternion.identity);
             go.GetComponent<UnitController>().Init(_data.unitToSpawn.unitStats, isPlayerUnit: true, portal: _arena.portal);
+            GameVisualKit.AttachUnitVisual(go, _data.unitToSpawn.cardName, VisualFacing.Player);
             go.SetActive(true);
         }
     }

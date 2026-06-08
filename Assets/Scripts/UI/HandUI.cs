@@ -15,6 +15,7 @@ namespace SlotDefense
 
         private Vector2[] _basePos;
         private float[] _liftY;
+        private CostBadge[][] _costBadges;
 
         private static readonly Color ColorEnhanced = new Color(1f, 0.85f, 0.1f, 0.9f);
 
@@ -29,6 +30,7 @@ namespace SlotDefense
             for (int i = 0; i < cardButtons.Length; i++)
             {
                 _basePos[i] = ((RectTransform)cardButtons[i].transform).anchoredPosition;
+                CreateCostBadges(i);
                 int index = i;
                 cardButtons[i].onClick.AddListener(() => SelectSlot(index));
             }
@@ -51,6 +53,7 @@ namespace SlotDefense
                 cardIcons[i].sprite = card != null ? card.icon ?? UIArtKit.CardIcon(card) : null;
                 cardIcons[i].preserveAspect = true;
                 cardIcons[i].gameObject.SetActive(card != null);
+                UpdateCostBadges(i, card, GameManager.Instance.ElementalEnergy);
 
                 bool canUse = false;
                 Color bgColor;
@@ -85,12 +88,11 @@ namespace SlotDefense
                     bool canAfford = energy.CanAfford(ec);
                     canUse = canAfford;
 
-                    string costStr = CostText(ec, energy);
                     string action = isSelected ? "\n<color=#88FFCC>> DEPLOY</color>" : "";
                     string typeLabel = card.cardType == CardType.Building
                         ? "<color=#D8E8FF><b>BUILD</b></color>"
                         : "<color=#6BD5FF><b>UNIT</b></color>";
-                    cardNames[i].text = $"{typeLabel}\n<b>{card.cardName}</b>\n{costStr}{action}";
+                    cardNames[i].text = $"{typeLabel}\n<b>{card.cardName}</b>{action}";
                     bgColor = UIStyle.CardBackground(card.cardType, canAfford, isSelected);
                 }
 
@@ -125,25 +127,137 @@ namespace SlotDefense
             }
         }
 
-        private static string CostText(ElementalCost ec, ElementalEnergySystem energy)
+        private void CreateCostBadges(int index)
         {
-            var costParts = new List<string>();
-            if (ec.fire > 0)
+            if (_costBadges == null)
+                _costBadges = new CostBadge[cardButtons.Length][];
+
+            _costBadges[index] = new CostBadge[3];
+
+            var row = new GameObject("EnergyCostIcons", typeof(RectTransform));
+            row.transform.SetParent(cardButtons[index].transform, false);
+            var rowRt = row.GetComponent<RectTransform>();
+            rowRt.anchorMin = new Vector2(0.5f, 0f);
+            rowRt.anchorMax = new Vector2(0.5f, 0f);
+            rowRt.pivot = new Vector2(0.5f, 0f);
+            rowRt.anchoredPosition = new Vector2(0f, 18f);
+            rowRt.sizeDelta = new Vector2(136f, 28f);
+
+            _costBadges[index][0] = CreateCostBadge(row.transform, 0, ElementType.Fire, -46f);
+            _costBadges[index][1] = CreateCostBadge(row.transform, 1, ElementType.Iron, 0f);
+            _costBadges[index][2] = CreateCostBadge(row.transform, 2, ElementType.Life, 46f);
+        }
+
+        private static CostBadge CreateCostBadge(Transform parent, int index, ElementType element, float x)
+        {
+            var root = new GameObject(element + "Cost", typeof(RectTransform), typeof(Image));
+            root.transform.SetParent(parent, false);
+            var rt = root.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = new Vector2(x, 0f);
+            rt.sizeDelta = new Vector2(40f, 24f);
+
+            var bg = root.GetComponent<Image>();
+            bg.sprite = UIArtKit.Sprite(UIArtSprite.ResourceCounterFrame);
+            bg.type = Image.Type.Sliced;
+            bg.color = new Color(0.04f, 0.06f, 0.10f, 0.78f);
+            bg.raycastTarget = false;
+
+            var icon = new GameObject("Icon", typeof(RectTransform), typeof(Image));
+            icon.transform.SetParent(root.transform, false);
+            var iconRt = icon.GetComponent<RectTransform>();
+            iconRt.anchorMin = new Vector2(0f, 0.5f);
+            iconRt.anchorMax = new Vector2(0f, 0.5f);
+            iconRt.pivot = new Vector2(0f, 0.5f);
+            iconRt.anchoredPosition = new Vector2(4f, 0f);
+            iconRt.sizeDelta = new Vector2(18f, 18f);
+            var iconImage = icon.GetComponent<Image>();
+            iconImage.sprite = UIArtKit.ElementIcon(element);
+            iconImage.preserveAspect = true;
+            iconImage.raycastTarget = false;
+
+            var value = new GameObject("Value", typeof(RectTransform), typeof(Text));
+            value.transform.SetParent(root.transform, false);
+            var valueRt = value.GetComponent<RectTransform>();
+            valueRt.anchorMin = new Vector2(1f, 0.5f);
+            valueRt.anchorMax = new Vector2(1f, 0.5f);
+            valueRt.pivot = new Vector2(1f, 0.5f);
+            valueRt.anchoredPosition = new Vector2(-4f, 0f);
+            valueRt.sizeDelta = new Vector2(17f, 20f);
+            var valueText = value.GetComponent<Text>();
+            valueText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            valueText.fontSize = 14;
+            valueText.fontStyle = FontStyle.Bold;
+            valueText.alignment = TextAnchor.MiddleRight;
+            valueText.raycastTarget = false;
+
+            return new CostBadge(root, iconImage, valueText, element);
+        }
+
+        private void UpdateCostBadges(int index, CardData card, ElementalEnergySystem energy)
+        {
+            if (_costBadges == null || index < 0 || index >= _costBadges.Length || _costBadges[index] == null)
+                return;
+
+            if (card == null || card.cardType == CardType.Buff || energy == null)
             {
-                string col = energy.Fire < ec.fire ? "#FF4444" : "#FF8833";
-                costParts.Add($"<color={col}><b>F{ec.fire}</b></color>");
+                SetCostBadge(_costBadges[index][0], 0, 0, true);
+                SetCostBadge(_costBadges[index][1], 0, 0, true);
+                SetCostBadge(_costBadges[index][2], 0, 0, true);
+                return;
             }
-            if (ec.iron > 0)
+
+            var ec = card.ElementalCost;
+            SetCostBadge(_costBadges[index][0], ec.fire, energy.Fire, false);
+            SetCostBadge(_costBadges[index][1], ec.iron, energy.Iron, false);
+            SetCostBadge(_costBadges[index][2], ec.life, energy.Life, false);
+        }
+
+        private static void SetCostBadge(CostBadge badge, int cost, int current, bool forceHidden)
+        {
+            if (badge == null || badge.root == null) return;
+
+            bool visible = !forceHidden && cost > 0;
+            badge.root.SetActive(visible);
+            if (!visible) return;
+
+            bool affordable = current >= cost;
+            badge.value.text = cost.ToString();
+            badge.value.color = affordable ? CostTextColor(badge.element) : new Color(1f, 0.25f, 0.22f, 1f);
+            badge.icon.color = affordable ? Color.white : new Color(1f, 0.38f, 0.34f, 0.72f);
+        }
+
+        private static Color CostTextColor(ElementType element)
+        {
+            switch (element)
             {
-                string col = energy.Iron < ec.iron ? "#FF4444" : "#99CCFF";
-                costParts.Add($"<color={col}><b>I{ec.iron}</b></color>");
+                case ElementType.Fire:
+                    return new Color(1f, 0.58f, 0.24f, 1f);
+                case ElementType.Iron:
+                    return new Color(0.62f, 0.82f, 1f, 1f);
+                case ElementType.Life:
+                    return new Color(0.32f, 1f, 0.52f, 1f);
+                default:
+                    return Color.white;
             }
-            if (ec.life > 0)
+        }
+
+        private sealed class CostBadge
+        {
+            public readonly GameObject root;
+            public readonly Image icon;
+            public readonly Text value;
+            public readonly ElementType element;
+
+            public CostBadge(GameObject root, Image icon, Text value, ElementType element)
             {
-                string col = energy.Life < ec.life ? "#FF4444" : "#33FF77";
-                costParts.Add($"<color={col}><b>L{ec.life}</b></color>");
+                this.root = root;
+                this.icon = icon;
+                this.value = value;
+                this.element = element;
             }
-            return costParts.Count > 0 ? string.Join("  ", costParts) : "<color=#AAAAAA>FREE</color>";
         }
 
         private void SelectSlot(int index)

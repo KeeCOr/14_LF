@@ -7,8 +7,8 @@ public class GameVisualKitTests
     [Test]
     public void UnitVisualPath_MapsKnownRolesToIncludedAssets()
     {
-        Assert.That(GameVisualKit.UnitVisualPath("Swordsman"), Does.Contain("Polytope Studio"));
-        Assert.That(GameVisualKit.UnitVisualPath("Archer"), Does.Contain("Polytope Studio"));
+        Assert.That(GameVisualKit.UnitVisualPath("Swordsman"), Does.Contain("ToonyTinyPeople"));
+        Assert.That(GameVisualKit.UnitVisualPath("Archer"), Does.Contain("TT_Archer"));
         Assert.AreNotEqual(GameVisualKit.UnitVisualPath("Swordsman"), GameVisualKit.UnitVisualPath("Archer"));
     }
 
@@ -78,18 +78,45 @@ public class GameVisualKitTests
     [Test]
     public void MonsterVisualPath_SeparatesNormalAndElite()
     {
-        Assert.That(GameVisualKit.MonsterVisualPath(elite: false), Does.Contain("Polytope Studio"));
-        Assert.That(GameVisualKit.MonsterVisualPath(elite: true), Does.Contain("Polytope Studio"));
+        Assert.That(GameVisualKit.MonsterVisualPath(elite: false), Does.Contain("TT_HeavySwordman"));
+        Assert.That(GameVisualKit.MonsterVisualPath(elite: true), Does.Contain("TT_King"));
         Assert.AreNotEqual(GameVisualKit.MonsterVisualPath(false), GameVisualKit.MonsterVisualPath(true));
     }
 
     [Test]
-    public void StructureAndSceneryPaths_UseIncludedNatureAndProps()
+    public void StructureAndSceneryPaths_UseIncludedNatureAndToonyProps()
     {
-        Assert.That(GameVisualKit.VillageVisualPath(isPlayer: true), Does.Contain("SimpleNaturePack"));
-        Assert.That(GameVisualKit.PortalAccentPath(), Does.Contain("Polytope Studio"));
+        Assert.That(GameVisualKit.VillageVisualPath(isPlayer: true), Does.Contain("TT_Banner_Blue_A"));
+        Assert.That(GameVisualKit.VillageVisualPath(isPlayer: false), Does.Contain("TT_Banner_Red"));
+        Assert.That(GameVisualKit.PortalAccentPath(), Does.Contain("TT_Banner_Purple"));
         Assert.That(GameVisualKit.SceneryPaths, Has.Length.GreaterThanOrEqualTo(4));
         Assert.That(GameVisualKit.SceneryPaths[0], Does.Contain("SimpleNaturePack"));
+        Assert.That(GameVisualKit.ToonyRtsSceneryPaths, Has.Length.GreaterThanOrEqualTo(4));
+        Assert.That(GameVisualKit.ToonyRtsSceneryPaths[0], Does.Contain("TT_Ballista"));
+    }
+
+    [Test]
+    public void BuildingVisualPath_UsesToonySiegeMachines()
+    {
+        var tower = ScriptableObject.CreateInstance<CardData>();
+        var magic = ScriptableObject.CreateInstance<CardData>();
+        var barracks = ScriptableObject.CreateInstance<CardData>();
+        try
+        {
+            tower.cardName = "Sniper Tower";
+            magic.cardName = "Magic Circle";
+            barracks.cardName = "Barracks";
+
+            Assert.That(GameVisualKit.BuildingVisualPath(tower), Does.Contain("TT_Ballista"));
+            Assert.That(GameVisualKit.BuildingVisualPath(magic), Does.Contain("TT_Catapult"));
+            Assert.That(GameVisualKit.BuildingVisualPath(barracks), Does.Contain("TT_Ram"));
+        }
+        finally
+        {
+            Object.DestroyImmediate(tower);
+            Object.DestroyImmediate(magic);
+            Object.DestroyImmediate(barracks);
+        }
     }
 
     [Test]
