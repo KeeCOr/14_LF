@@ -369,7 +369,20 @@
   <tr><td>엘리트 몬스터</td><td>중립 몬스터 표식 폭과 경고 장식을 키워 일반 몬스터보다 위협적으로 표시.</td></tr>
 </table>
 
-<h2>20. 빌드 & 배포</h2>
+<h2>20. Toony RTS 리소스 적용 <span class="badge">2026-06-08</span></h2>
+<div class="card highlight">
+  <p>새로 추가된 <code>ToonyTinyPeople/TT_RTS</code> 에셋을 런타임 리소스로 선별 적용했다. 빌드에서도 <code>Resources.Load</code>가 가능하도록 주요 유닛, 배너, 공성기 프리팹을 <code>Assets/Resources/Asset/ToonyTinyPeople/TT_RTS/TT_RTS_Standard/prefabs</code> 아래에 복사하고, <code>GameVisualKit</code>의 시각 매핑을 Toony RTS 우선으로 변경했다.</p>
+</div>
+<table>
+  <tr><th>영역</th><th>적용 내용</th></tr>
+  <tr><td>아군/적 유닛</td><td>Swordsman, Archer, Mage, Priest, Paladin, Heavy Infantry 등 역할별 Toony 캐릭터 프리팹 사용.</td></tr>
+  <tr><td>중립 몬스터</td><td>일반 몬스터는 <code>TT_HeavySwordman</code>, 엘리트 몬스터는 <code>TT_King</code>으로 교체해 유닛보다 강한 실루엣으로 표시.</td></tr>
+  <tr><td>건물/타워</td><td>Tower 계열은 Ballista, Magic/Fire 계열은 Catapult, Barracks는 Ram 프리팹으로 표시.</td></tr>
+  <tr><td>기지/포탈</td><td>플레이어/적/중립 거점에 파랑/빨강/보라 Toony 배너 추가.</td></tr>
+  <tr><td>전장 소품</td><td>전장 후방과 측면에 Ballista, Catapult, Yellow/Orange Banner 소품을 배치해 RTS 전장 분위기 강화.</td></tr>
+</table>
+
+<h2>21. 빌드 & 배포</h2>
 <div class="card">
   <ul>
     <li>플랫폼: Windows 64bit</li>

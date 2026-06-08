@@ -91,6 +91,18 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 중립 몬스터 | 공격 방향과 무관하게 주황/보라 `NeutralMonsterMarker`를 사용해 유닛 진영과 분리 |
 | 엘리트 몬스터 | 중립 몬스터 표식 폭과 경고 장식을 키워 일반 몬스터보다 위협적으로 표시 |
 
+## Toony RTS 리소스 적용
+
+2026-06-08 업데이트에서 새로 추가된 `ToonyTinyPeople/TT_RTS` 에셋을 런타임 리소스로 선별 적용했다. 빌드에서도 `Resources.Load`가 가능하도록 주요 유닛, 배너, 공성기 프리팹을 `Assets/Resources/Asset/ToonyTinyPeople/TT_RTS/TT_RTS_Standard/prefabs` 아래에 복사하고, `GameVisualKit`의 시각 매핑을 Toony RTS 우선으로 변경했다.
+
+| 영역 | 적용 내용 |
+|---|---|
+| 아군/적 유닛 | Swordsman, Archer, Mage, Priest, Paladin, Heavy Infantry 등 역할별 Toony 캐릭터 프리팹 사용 |
+| 중립 몬스터 | 일반 몬스터는 `TT_HeavySwordman`, 엘리트 몬스터는 `TT_King`으로 교체해 유닛보다 강한 실루엣으로 표시 |
+| 건물/타워 | Tower 계열은 Ballista, Magic/Fire 계열은 Catapult, Barracks는 Ram 프리팹으로 표시 |
+| 기지/포탈 | 플레이어/적/중립 거점에 파랑/빨강/보라 Toony 배너를 추가 |
+| 전장 소품 | 전장 후방과 측면에 Ballista, Catapult, Yellow/Orange Banner 소품을 배치해 RTS 전장 분위기를 강화 |
+
 ## 빌드 및 배포
 
 - Unity 프로젝트 경로: `C:/Development/14_LT/LotteryFantasy`
