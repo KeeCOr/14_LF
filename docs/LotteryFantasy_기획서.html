@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lottery Fantasy — 기획서</title>
+<title>Lottery Fantasy ??湲고쉷??/title>
 <style>
   :root {
     --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
@@ -14,7 +14,7 @@
   body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.7; padding: 40px 20px; }
   .container { max-width: 860px; margin: 0 auto; }
   header { background: linear-gradient(135deg, #1f1408 0%, #120f0a 100%); border: 1px solid var(--accent); border-radius: 12px; padding: 36px 40px; margin-bottom: 36px; position: relative; overflow: hidden; }
-  header::before { content: '🎰'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 70px; opacity: 0.15; }
+  header::before { content: '?렟'; position: absolute; right: 40px; top: 50%; transform: translateY(-50%); font-size: 70px; opacity: 0.15; }
   header h1 { font-size: 2rem; color: #fff; margin-bottom: 8px; }
   header .meta { color: var(--text-muted); font-size: 13px; display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
   .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; background: var(--accent); color: #111; margin-left: 8px; }
@@ -59,361 +59,385 @@
 
 <header>
   <h1>Lottery Fantasy <span class="badge">MVP</span></h1>
-  <p style="color:var(--text-muted);margin-top:6px;">슬롯머신 × 타워 디펜스 — 릴을 돌려 카드를 뽑고 유닛을 배치하라</p>
+  <p style="color:var(--text-muted);margin-top:6px;">?щ’癒몄떊 횞 ????뷀렂????由댁쓣 ?뚮젮 移대뱶瑜?戮묎퀬 ?좊떅??諛곗튂?섎씪</p>
   <div class="meta">
-    <span>엔진: Unity</span>
-    <span>어셈블리: SlotDefense</span>
-    <span>장르: 전략 / 디펜스</span>
+    <span>?붿쭊: Unity</span>
+    <span>?댁뀍釉붾━: SlotDefense</span>
+    <span>?λⅤ: ?꾨왂 / ?뷀렂??/span>
   </div>
 </header>
 
-<h2>1. 게임 개요</h2>
+<h2>1. 寃뚯엫 媛쒖슂</h2>
 <div class="card highlight">
-  <p>3개 릴(릴당 원소 1개: 화·철·생명)을 돌려 슬롯 결과에 따라 카드를 드로우하고, 드로운 카드로 유닛·스킬·건물을 배치해 적의 공격으로부터 마을(HP 1000)을 지키는 전략 게임.</p>
+  <p>3媛?由?由대떦 ?먯냼 1媛? ?붋룹쿋쨌?앸챸)???뚮젮 ?щ’ 寃곌낵???곕씪 移대뱶瑜??쒕줈?고븯怨? ?쒕줈??移대뱶濡??좊떅쨌?ㅽ궗쨌嫄대Ъ??諛곗튂???곸쓽 怨듦꺽?쇰줈遺??留덉쓣(HP 1000)??吏?ㅻ뒗 ?꾨왂 寃뚯엫.</p>
 </div>
 
 <div class="grid grid-3">
   <div class="card">
-    <p style="color:var(--text-muted);font-size:12px">마을 HP</p>
+    <p style="color:var(--text-muted);font-size:12px">留덉쓣 HP</p>
     <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">1000</p>
   </div>
   <div class="card">
-    <p style="color:var(--text-muted);font-size:12px">배틀 시간</p>
-    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">180초</p>
-    <p style="font-size:12px;color:var(--text-muted)">서바이벌: 무제한</p>
+    <p style="color:var(--text-muted);font-size:12px">諛고? ?쒓컙</p>
+    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">180珥?/p>
+    <p style="font-size:12px;color:var(--text-muted)">?쒕컮?대쾶: 臾댁젣??/p>
   </div>
   <div class="card">
-    <p style="color:var(--text-muted);font-size:12px">핸드 크기</p>
-    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">4장</p>
+    <p style="color:var(--text-muted);font-size:12px">?몃뱶 ?ш린</p>
+    <p style="font-size:1.8rem;font-weight:700;color:var(--accent)">4??/p>
   </div>
 </div>
 
-<h2>2. 게임 모드</h2>
+<h2>2. 寃뚯엫 紐⑤뱶</h2>
 <div class="grid grid-2">
   <div class="card">
-    <h3 style="margin-top:0">배틀 모드 (Battle)</h3>
+    <h3 style="margin-top:0">諛고? 紐⑤뱶 (Battle)</h3>
     <ul>
-      <li>제한 시간: 180초</li>
-      <li>시간 종료 시 HP 비교로 승패 결정</li>
-      <li>플레이어 HP 선점 시 승리</li>
+      <li>?쒗븳 ?쒓컙: 180珥?/li>
+      <li>?쒓컙 醫낅즺 ??HP 鍮꾧탳濡??뱁뙣 寃곗젙</li>
+      <li>?뚮젅?댁뼱 HP ?좎젏 ???밸━</li>
     </ul>
   </div>
   <div class="card">
-    <h3 style="margin-top:0">서바이벌 모드 (Survival)</h3>
+    <h3 style="margin-top:0">?쒕컮?대쾶 紐⑤뱶 (Survival)</h3>
     <ul>
-      <li>제한 시간 없음 (99999초)</li>
-      <li>마을 HP 0 될 때까지 지속</li>
-      <li>최대한 오래 버티는 것이 목표</li>
+      <li>?쒗븳 ?쒓컙 ?놁쓬 (99999珥?</li>
+      <li>留덉쓣 HP 0 ???뚭퉴吏 吏??/li>
+      <li>理쒕????ㅻ옒 踰꾪떚??寃껋씠 紐⑺몴</li>
     </ul>
   </div>
 </div>
 
-<h2>3. 슬롯머신 시스템</h2>
+<h2>3. ?щ’癒몄떊 ?쒖뒪??/h2>
 
-<h3>릴 (Reel)</h3>
-<p>3개의 릴이 있으며 각 릴은 화/철/생명 원소 중 하나를 뽑는다.</p>
+<h3>由?(Reel)</h3>
+<p>3媛쒖쓽 由댁씠 ?덉쑝硫?媛?由댁? ??泥??앸챸 ?먯냼 以??섎굹瑜?戮묐뒗??</p>
 <div style="display:flex;gap:8px;padding:12px 0;flex-wrap:wrap;">
-  <div class="reel fire">火</div>
-  <div class="reel iron">鐵</div>
-  <div class="reel life">生</div>
+  <div class="reel fire">??/div>
+  <div class="reel iron">??/div>
+  <div class="reel life">??/div>
 </div>
 <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">
-  <span class="el-tag el-fire">화 (Fire)</span>
-  <span class="el-tag el-iron">철 (Iron)</span>
-  <span class="el-tag el-life">생명 (Life)</span>
+  <span class="el-tag el-fire">??(Fire)</span>
+  <span class="el-tag el-iron">泥?(Iron)</span>
+  <span class="el-tag el-life">?앸챸 (Life)</span>
 </div>
 
-<h3>슬롯 결과</h3>
+<h3>?щ’ 寃곌낵</h3>
 <table>
-  <tr><th>결과</th><th>조건</th><th>효과</th></tr>
-  <tr><td><strong>Triple</strong></td><td>3개 릴 모두 같은 원소</td><td>강화 카드 드로우 기회</td></tr>
-  <tr><td><strong>Double</strong></td><td>2개 릴이 같은 원소</td><td>일반 카드 드로우</td></tr>
-  <tr><td><strong>AllDifferent</strong></td><td>3개 모두 다른 원소</td><td>선택 드로우 또는 패널티</td></tr>
+  <tr><th>寃곌낵</th><th>議곌굔</th><th>?④낵</th></tr>
+  <tr><td><strong>Triple</strong></td><td>3媛?由?紐⑤몢 媛숈? ?먯냼</td><td>媛뺥솕 移대뱶 ?쒕줈??湲고쉶</td></tr>
+  <tr><td><strong>Double</strong></td><td>2媛?由댁씠 媛숈? ?먯냼</td><td>?쇰컲 移대뱶 ?쒕줈??/td></tr>
+  <tr><td><strong>AllDifferent</strong></td><td>3媛?紐⑤몢 ?ㅻⅨ ?먯냼</td><td>?좏깮 ?쒕줈???먮뒗 ?⑤꼸??/td></tr>
 </table>
 
-<h3>스핀 충전</h3>
+<h3>?ㅽ? 異⑹쟾</h3>
 <table>
-  <tr><th>항목</th><th>값</th></tr>
-  <tr><td>충전 간격</td><td>6초마다 스핀 1회 충전</td></tr>
-  <tr><td>최대 충전량</td><td>10회</td></tr>
-  <tr><td>시작 충전량</td><td>3회</td></tr>
+  <tr><th>??ぉ</th><th>媛?/th></tr>
+  <tr><td>異⑹쟾 媛꾧꺽</td><td>6珥덈쭏???ㅽ? 1??異⑹쟾</td></tr>
+  <tr><td>理쒕? 異⑹쟾??/td><td>10??/td></tr>
+  <tr><td>?쒖옉 異⑹쟾??/td><td>3??/td></tr>
 </table>
 
-<h2>4. 원소 에너지 시스템</h2>
-<p>릴 결과로 원소 에너지(화·철·생명)가 적립되며, 카드 시전에 사용된다.</p>
+<h2>4. ?먯냼 ?먮꼫吏 ?쒖뒪??/h2>
+<p>由?寃곌낵濡??먯냼 ?먮꼫吏(?붋룹쿋쨌?앸챸)媛 ?곷┰?섎ŉ, 移대뱶 ?쒖쟾???ъ슜?쒕떎.</p>
 <table>
-  <tr><th>원소</th><th>용도</th></tr>
-  <tr><td><span class="el-tag el-fire">화 (Fire)</span></td><td>공격형 유닛 및 스킬 비용</td></tr>
-  <tr><td><span class="el-tag el-iron">철 (Iron)</span></td><td>방어·건물 비용</td></tr>
-  <tr><td><span class="el-tag el-life">생명 (Life)</span></td><td>회복·버프 비용</td></tr>
+  <tr><th>?먯냼</th><th>?⑸룄</th></tr>
+  <tr><td><span class="el-tag el-fire">??(Fire)</span></td><td>怨듦꺽???좊떅 諛??ㅽ궗 鍮꾩슜</td></tr>
+  <tr><td><span class="el-tag el-iron">泥?(Iron)</span></td><td>諛⑹뼱쨌嫄대Ъ 鍮꾩슜</td></tr>
+  <tr><td><span class="el-tag el-life">?앸챸 (Life)</span></td><td>?뚮났쨌踰꾪봽 鍮꾩슜</td></tr>
 </table>
 
-<h2>5. 카드 시스템</h2>
+<h2>5. 移대뱶 ?쒖뒪??/h2>
 
-<h3>카드 타입</h3>
+<h3>移대뱶 ???/h3>
 <div class="grid grid-2">
   <div class="card">
     <span class="card-type ct-unit">Unit</span>
-    <p style="margin-top:8px;font-size:14px">전투 유닛 소환. HP·공격력·이동속도·사거리·공격속도·시야 스탯 보유. 공중 유닛 공격 및 비행 여부 포함.</p>
+    <p style="margin-top:8px;font-size:14px">?꾪닾 ?좊떅 ?뚰솚. HP쨌怨듦꺽?Β룹씠?숈냽?꽷룹궗嫄곕━쨌怨듦꺽?띾룄쨌?쒖빞 ?ㅽ꺈 蹂댁쑀. 怨듭쨷 ?좊떅 怨듦꺽 諛?鍮꾪뻾 ?щ? ?ы븿.</p>
   </div>
   <div class="card">
     <span class="card-type ct-skill">Skill</span>
-    <p style="margin-top:8px;font-size:14px">즉발 스킬 효과. 범위 공격, 속도 증가, 자원 획득 등 다양한 스킬 이펙트.</p>
+    <p style="margin-top:8px;font-size:14px">利됰컻 ?ㅽ궗 ?④낵. 踰붿쐞 怨듦꺽, ?띾룄 利앷?, ?먯썝 ?띾뱷 ???ㅼ뼇???ㅽ궗 ?댄럺??</p>
   </div>
   <div class="card">
     <span class="card-type ct-buff">Buff</span>
-    <p style="margin-top:8px;font-size:14px">글로벌 버프 적용. 전체 유닛 강화, 마을 회복, 에너지 생산 등.</p>
+    <p style="margin-top:8px;font-size:14px">湲濡쒕쾶 踰꾪봽 ?곸슜. ?꾩껜 ?좊떅 媛뺥솕, 留덉쓣 ?뚮났, ?먮꼫吏 ?앹궛 ??</p>
   </div>
   <div class="card">
     <span class="card-type ct-building">Building</span>
-    <p style="margin-top:8px;font-size:14px">건물 배치. 생산 건물(자원 생성) 또는 전투 건물(타워 등).</p>
+    <p style="margin-top:8px;font-size:14px">嫄대Ъ 諛곗튂. ?앹궛 嫄대Ъ(?먯썝 ?앹꽦) ?먮뒗 ?꾪닾 嫄대Ъ(?????.</p>
   </div>
 </div>
 
-<h3>카드 티어</h3>
+<h3>移대뱶 ?곗뼱</h3>
 <div class="grid grid-2">
   <div class="card">
-    <p style="font-size:1rem;font-weight:700">Normal <span style="color:var(--text-muted);font-size:13px;">일반</span></p>
-    <p style="font-size:13px;margin-top:4px;">기본 스탯의 카드. 덱에서 주로 드로우.</p>
+    <p style="font-size:1rem;font-weight:700">Normal <span style="color:var(--text-muted);font-size:13px;">?쇰컲</span></p>
+    <p style="font-size:13px;margin-top:4px;">湲곕낯 ?ㅽ꺈??移대뱶. ?깆뿉??二쇰줈 ?쒕줈??</p>
   </div>
   <div class="card" style="border-color:var(--accent)">
-    <p style="font-size:1rem;font-weight:700">Enhanced <span style="color:var(--accent);font-size:13px;">★ 강화</span></p>
-    <p style="font-size:13px;margin-top:4px;">Triple 슬롯 결과 시 드로우 가능한 강화 버전.</p>
+    <p style="font-size:1rem;font-weight:700">Enhanced <span style="color:var(--accent);font-size:13px;">??媛뺥솕</span></p>
+    <p style="font-size:13px;margin-top:4px;">Triple ?щ’ 寃곌낵 ???쒕줈??媛?ν븳 媛뺥솕 踰꾩쟾.</p>
   </div>
 </div>
 
-<h3>핸드 & 덱</h3>
+<h3>?몃뱶 & ??/h3>
 <div class="card">
   <ul>
-    <li>핸드: 최대 4장 유지 (빈 슬롯 생기면 덱에서 즉시 보충)</li>
-    <li>덱: FixedDeckConfig로 사전 정의된 카드 풀에서 순서대로 드로우</li>
-    <li>유닛 소환 시 해당 원소 비용 차감</li>
+    <li>?몃뱶: 理쒕? 4???좎? (鍮??щ’ ?앷린硫??깆뿉??利됱떆 蹂댁땐)</li>
+    <li>?? FixedDeckConfig濡??ъ쟾 ?뺤쓽??移대뱶 ??먯꽌 ?쒖꽌?濡??쒕줈??/li>
+    <li>?좊떅 ?뚰솚 ???대떦 ?먯냼 鍮꾩슜 李④컧</li>
   </ul>
 </div>
 
-<h2>6. 전투 시스템</h2>
+<h2>6. ?꾪닾 ?쒖뒪??/h2>
 
-<h3>엔티티</h3>
+<h3>?뷀떚??/h3>
 <table>
-  <tr><th>엔티티</th><th>설명</th></tr>
-  <tr><td>UnitController</td><td>전투 유닛. 이동·공격·시야 처리.</td></tr>
-  <tr><td>Village</td><td>플레이어 / 적 마을. HP 1000, 피격 시 GameEvents 발행.</td></tr>
-  <tr><td>Portal</td><td>적 유닛 스폰 포탈.</td></tr>
-  <tr><td>BuildingController</td><td>배치된 건물 (전투/생산).</td></tr>
-  <tr><td>BattleBuilding</td><td>공격 기능 건물.</td></tr>
-  <tr><td>ProductionBuilding</td><td>에너지/자원 생산 건물.</td></tr>
+  <tr><th>?뷀떚??/th><th>?ㅻ챸</th></tr>
+  <tr><td>UnitController</td><td>?꾪닾 ?좊떅. ?대룞쨌怨듦꺽쨌?쒖빞 泥섎━.</td></tr>
+  <tr><td>Village</td><td>?뚮젅?댁뼱 / ??留덉쓣. HP 1000, ?쇨꺽 ??GameEvents 諛쒗뻾.</td></tr>
+  <tr><td>Portal</td><td>???좊떅 ?ㅽ룿 ?ы깉.</td></tr>
+  <tr><td>BuildingController</td><td>諛곗튂??嫄대Ъ (?꾪닾/?앹궛).</td></tr>
+  <tr><td>BattleBuilding</td><td>怨듦꺽 湲곕뒫 嫄대Ъ.</td></tr>
+  <tr><td>ProductionBuilding</td><td>?먮꼫吏/?먯썝 ?앹궛 嫄대Ъ.</td></tr>
 </table>
 
-<h3>승패 조건</h3>
+<h3>?뱁뙣 議곌굔</h3>
 <table>
-  <tr><th>결과</th><th>조건</th></tr>
-  <tr><td style="color:var(--success)">PlayerWin</td><td>적 마을 HP = 0</td></tr>
-  <tr><td style="color:#f07070">PlayerLose</td><td>플레이어 마을 HP = 0</td></tr>
-  <tr><td style="color:var(--accent)">PlayerWin (시간)</td><td>시간 종료 + 플레이어 HP > 적 HP</td></tr>
-  <tr><td style="color:#f07070">PlayerLose (시간)</td><td>시간 종료 + 적 HP > 플레이어 HP</td></tr>
-  <tr><td style="color:var(--text-muted)">Draw</td><td>시간 종료 + HP 동일</td></tr>
+  <tr><th>寃곌낵</th><th>議곌굔</th></tr>
+  <tr><td style="color:var(--success)">PlayerWin</td><td>??留덉쓣 HP = 0</td></tr>
+  <tr><td style="color:#f07070">PlayerLose</td><td>?뚮젅?댁뼱 留덉쓣 HP = 0</td></tr>
+  <tr><td style="color:var(--accent)">PlayerWin (?쒓컙)</td><td>?쒓컙 醫낅즺 + ?뚮젅?댁뼱 HP > ??HP</td></tr>
+  <tr><td style="color:#f07070">PlayerLose (?쒓컙)</td><td>?쒓컙 醫낅즺 + ??HP > ?뚮젅?댁뼱 HP</td></tr>
+  <tr><td style="color:var(--text-muted)">Draw</td><td>?쒓컙 醫낅즺 + HP ?숈씪</td></tr>
 </table>
 
-<h2>7. 기타 시스템</h2>
+<h2>7. 湲고? ?쒖뒪??/h2>
 <table>
-  <tr><th>시스템</th><th>설명</th></tr>
-  <tr><td>ArenaSystem</td><td>전투 공간 관리</td></tr>
-  <tr><td>RecordSystem</td><td>전적 기록</td></tr>
-  <tr><td>TransferSystem</td><td>엔티티 이동 처리</td></tr>
+  <tr><th>?쒖뒪??/th><th>?ㅻ챸</th></tr>
+  <tr><td>ArenaSystem</td><td>?꾪닾 怨듦컙 愿由?/td></tr>
+  <tr><td>RecordSystem</td><td>?꾩쟻 湲곕줉</td></tr>
+  <tr><td>TransferSystem</td><td>?뷀떚???대룞 泥섎━</td></tr>
 </table>
 
-<h2>8. UI 비주얼 퀄리티업 <span class="badge">2026-05-15</span></h2>
+<h2>8. UI 鍮꾩＜???꾨━?곗뾽 <span class="badge">2026-05-15</span></h2>
 <div class="card highlight">
-  <p>런타임 생성 UI 구조는 유지하면서 공통 스타일 유틸을 추가해 HUD, 카드, 슬롯머신, 버튼, 모달의 색상과 상태 표현을 통일했다.</p>
+  <p>?고????앹꽦 UI 援ъ“???좎??섎㈃??怨듯넻 ?ㅽ????좏떥??異붽???HUD, 移대뱶, ?щ’癒몄떊, 踰꾪듉, 紐⑤떖???됱긽怨??곹깭 ?쒗쁽???듭씪?덈떎.</p>
 </div>
 <table>
-  <tr><th>영역</th><th>변경 방향</th></tr>
-  <tr><td>상단 HUD</td><td>짙은 정보 바, HP 색상 강화, 덱 버튼 청색 accent 적용.</td></tr>
-  <tr><td>하단 패널</td><td>카드 영역과 슬롯 영역을 분리하고 파란 테두리로 전투 UI 톤을 통일.</td></tr>
-  <tr><td>카드</td><td>선택/사용 가능/부족/스킬/버프 상태별 배경색을 공통 팔레트로 정리하고 금색 상단 라인을 추가.</td></tr>
-  <tr><td>슬롯머신</td><td>릴 박스 크기를 키우고 속성별 accent, STOP/AUTO 버튼 상태색, 행운 게이지 색을 강화.</td></tr>
-  <tr><td>모달</td><td>결과와 덱 뷰어는 어두운 오버레이와 금색/청색 강조색으로 마감.</td></tr>
+  <tr><th>?곸뿭</th><th>蹂寃?諛⑺뼢</th></tr>
+  <tr><td>?곷떒 HUD</td><td>吏숈? ?뺣낫 諛? HP ?됱긽 媛뺥솕, ??踰꾪듉 泥?깋 accent ?곸슜.</td></tr>
+  <tr><td>?섎떒 ?⑤꼸</td><td>移대뱶 ?곸뿭怨??щ’ ?곸뿭??遺꾨━?섍퀬 ?뚮? ?뚮몢由щ줈 ?꾪닾 UI ?ㅼ쓣 ?듭씪.</td></tr>
+  <tr><td>移대뱶</td><td>?좏깮/?ъ슜 媛??遺議??ㅽ궗/踰꾪봽 ?곹깭蹂?諛곌꼍?됱쓣 怨듯넻 ?붾젅?몃줈 ?뺣━?섍퀬 湲덉깋 ?곷떒 ?쇱씤??異붽?.</td></tr>
+  <tr><td>?щ’癒몄떊</td><td>由?諛뺤뒪 ?ш린瑜??ㅼ슦怨??띿꽦蹂?accent, STOP/AUTO 踰꾪듉 ?곹깭?? ?됱슫 寃뚯씠吏 ?됱쓣 媛뺥솕.</td></tr>
+  <tr><td>紐⑤떖</td><td>寃곌낵? ??酉곗뼱???대몢???ㅻ쾭?덉씠? 湲덉깋/泥?깋 媛뺤“?됱쑝濡?留덇컧.</td></tr>
 </table>
 
-<h2>9. 오브젝트 및 캐릭터 에셋 <span class="badge">2026-05-18</span></h2>
+<h2>9. ?ㅻ툕?앺듃 諛?罹먮┃???먯뀑 <span class="badge">2026-05-18</span></h2>
 <div class="card highlight">
-  <p>새 외부 다운로드보다 프로젝트에 이미 포함된 무료/샘플 에셋을 우선 사용한다. gameplay root의 Rigidbody2D, Collider2D, HpBar, 컨트롤러는 유지하고 로우폴리 모델과 자연 소품은 자식 장식 오브젝트로 붙인다.</p>
+  <p>???몃? ?ㅼ슫濡쒕뱶蹂대떎 ?꾨줈?앺듃???대? ?ы븿??臾대즺/?섑뵆 ?먯뀑???곗꽑 ?ъ슜?쒕떎. gameplay root??Rigidbody2D, Collider2D, HpBar, 而⑦듃濡ㅻ윭???좎??섍퀬 濡쒖슦?대━ 紐⑤뜽怨??먯뿰 ?뚰뭹? ?먯떇 ?μ떇 ?ㅻ툕?앺듃濡?遺숈씤??</p>
 </div>
 <table>
-  <tr><th>영역</th><th>사용 에셋</th></tr>
-  <tr><td>유닛</td><td><code>Polytope Studio</code> 로우폴리 캐릭터/장비 프리팹.</td></tr>
-  <tr><td>몬스터</td><td><code>Polytope Studio</code> 캐릭터 파츠를 일반/엘리트 구분 장식으로 사용.</td></tr>
-  <tr><td>기지</td><td><code>SimpleNaturePack</code> 자연 프리팹으로 마을 실루엣 강화.</td></tr>
-  <tr><td>포털</td><td><code>Polytope Studio</code> 목재/소품 프리팹을 relic 장식으로 사용.</td></tr>
-  <tr><td>전장</td><td><code>SimpleNaturePack</code> 나무, 바위, 덤불, 꽃과 울타리로 주변부 장식.</td></tr>
+  <tr><th>?곸뿭</th><th>?ъ슜 ?먯뀑</th></tr>
+  <tr><td>?좊떅</td><td><code>Polytope Studio</code> 濡쒖슦?대━ 罹먮┃???λ퉬 ?꾨━??</td></tr>
+  <tr><td>紐ъ뒪??/td><td><code>Polytope Studio</code> 罹먮┃???뚯툩瑜??쇰컲/?섎━??援щ텇 ?μ떇?쇰줈 ?ъ슜.</td></tr>
+  <tr><td>湲곗?</td><td><code>SimpleNaturePack</code> ?먯뿰 ?꾨━?뱀쑝濡?留덉쓣 ?ㅻ（??媛뺥솕.</td></tr>
+  <tr><td>?ы꽭</td><td><code>Polytope Studio</code> 紐⑹옱/?뚰뭹 ?꾨━?뱀쓣 relic ?μ떇?쇰줈 ?ъ슜.</td></tr>
+  <tr><td>?꾩옣</td><td><code>SimpleNaturePack</code> ?섎Т, 諛붿쐞, ?ㅻ텋, 苑껉낵 ?명?由щ줈 二쇰?遺 ?μ떇.</td></tr>
 </table>
 
-<h2>10. 예시 이미지 기반 전장 연출 <span class="badge">2026-05-22</span></h2>
+<h2>10. ?덉떆 ?대?吏 湲곕컲 ?꾩옣 ?곗텧 <span class="badge">2026-05-22</span></h2>
 <div class="card highlight">
-  <p><code>docs/LotteryFantasy_gameplay_preview.png</code>의 밝은 캐주얼 판타지 방향을 기준으로 런타임 전장 장식을 보강했다. UI와 게임플레이 구조는 유지하고, 게임 시작 시 전장 바닥, 중앙 흙길, 석재 테라스, 진영 실루엣, 깃발과 금색 문장을 생성한다.</p>
+  <p><code>docs/LotteryFantasy_gameplay_preview.png</code>??諛앹? 罹먯＜???먰?吏 諛⑺뼢??湲곗??쇰줈 ?고????꾩옣 ?μ떇??蹂닿컯?덈떎. UI? 寃뚯엫?뚮젅??援ъ“???좎??섍퀬, 寃뚯엫 ?쒖옉 ???꾩옣 諛붾떏, 以묒븰 ?숆만, ?앹옱 ?뚮씪?? 吏꾩쁺 ?ㅻ（?? 源껊컻怨?湲덉깋 臾몄옣???앹꽦?쒕떎.</p>
 </div>
 <table>
-  <tr><th>영역</th><th>변경 방향</th></tr>
-  <tr><td>전장 배경</td><td>밝은 녹색 전장, 먼 언덕, 중앙 흙길을 추가해 공간 깊이를 만든다.</td></tr>
-  <tr><td>플레이어/적 기지</td><td>파랑/빨강 배너와 금색 문장을 배치해 진영 구분을 강화한다.</td></tr>
-  <tr><td>생존 모드</td><td>적 기지 대신 보라색 포털 받침대 실루엣을 배치해 모드 목적을 명확히 한다.</td></tr>
-  <tr><td>구현 방식</td><td>외부 다운로드 없이 코드 생성 SpriteRenderer와 기존 포함 에셋만 사용한다.</td></tr>
+  <tr><th>?곸뿭</th><th>蹂寃?諛⑺뼢</th></tr>
+  <tr><td>?꾩옣 諛곌꼍</td><td>諛앹? ?뱀깋 ?꾩옣, 癒??몃뜒, 以묒븰 ?숆만??異붽???怨듦컙 源딆씠瑜?留뚮뱺??</td></tr>
+  <tr><td>?뚮젅?댁뼱/??湲곗?</td><td>?뚮옉/鍮④컯 諛곕꼫? 湲덉깋 臾몄옣??諛곗튂??吏꾩쁺 援щ텇??媛뺥솕?쒕떎.</td></tr>
+  <tr><td>?앹〈 紐⑤뱶</td><td>??湲곗? ???蹂대씪???ы꽭 諛쏆묠? ?ㅻ（?ｌ쓣 諛곗튂??紐⑤뱶 紐⑹쟻??紐낇솗???쒕떎.</td></tr>
+  <tr><td>援ы쁽 諛⑹떇</td><td>?몃? ?ㅼ슫濡쒕뱶 ?놁씠 肄붾뱶 ?앹꽦 SpriteRenderer? 湲곗〈 ?ы븿 ?먯뀑留??ъ슜?쒕떎.</td></tr>
 </table>
 
-<h2>11. 룰렛 밸런스 및 유닛 식별성 <span class="badge">2026-05-27</span></h2>
+<h2>11. 猷곕젢 諛몃윴??諛??좊떅 ?앸퀎??<span class="badge">2026-05-27</span></h2>
 <div class="card highlight">
-  <p>룰렛을 덜 자주 돌리도록 행운 충전 밸런스를 낮추고, 예시 이미지처럼 유닛 역할이 한눈에 갈라지도록 런타임 장식을 강화했다.</p>
+  <p>猷곕젢?????먯＜ ?뚮━?꾨줉 ?됱슫 異⑹쟾 諛몃윴?ㅻ? ??텛怨? ?덉떆 ?대?吏泥섎읆 ?좊떅 ??븷???쒕늿??媛덈씪吏?꾨줉 ?고????μ떇??媛뺥솕?덈떎.</p>
 </div>
 <table>
-  <tr><th>영역</th><th>변경 방향</th></tr>
-  <tr><td>룰렛 충전</td><td>기본 최대 충전량을 10개에서 6개로 낮춘다.</td></tr>
-  <tr><td>시작 충전</td><td>플레이어와 AI 모두 시작 충전을 3개에서 1개로 줄인다.</td></tr>
-  <tr><td>충전 간격</td><td>플레이어 자동 충전은 6초에서 10초, AI 충전은 3초에서 6초로 늘린다.</td></tr>
-  <tr><td>AI 사용 빈도</td><td>AI 슬롯 사용 간격을 4초에서 7초로 늘려 초반 압박을 완화한다.</td></tr>
-  <tr><td>유닛 식별성</td><td>검사/기사/궁수/마법/힐러/거인 계열에 서로 다른 accent 색, 스케일, 무기 위치를 적용한다.</td></tr>
+  <tr><th>?곸뿭</th><th>蹂寃?諛⑺뼢</th></tr>
+  <tr><td>猷곕젢 異⑹쟾</td><td>湲곕낯 理쒕? 異⑹쟾?됱쓣 10媛쒖뿉??6媛쒕줈 ??텣??</td></tr>
+  <tr><td>?쒖옉 異⑹쟾</td><td>?뚮젅?댁뼱? AI 紐⑤몢 ?쒖옉 異⑹쟾??3媛쒖뿉??1媛쒕줈 以꾩씤??</td></tr>
+  <tr><td>異⑹쟾 媛꾧꺽</td><td>?뚮젅?댁뼱 ?먮룞 異⑹쟾? 6珥덉뿉??10珥? AI 異⑹쟾? 3珥덉뿉??6珥덈줈 ?섎┛??</td></tr>
+  <tr><td>AI ?ъ슜 鍮덈룄</td><td>AI ?щ’ ?ъ슜 媛꾧꺽??4珥덉뿉??7珥덈줈 ?섎젮 珥덈컲 ?뺣컯???꾪솕?쒕떎.</td></tr>
+  <tr><td>?좊떅 ?앸퀎??/td><td>寃??湲곗궗/沅곸닔/留덈쾿/?먮윭/嫄곗씤 怨꾩뿴???쒕줈 ?ㅻⅨ accent ?? ?ㅼ??? 臾닿린 ?꾩튂瑜??곸슜?쒕떎.</td></tr>
 </table>
 
-<h2>12. 생성형 이미지/UI 리소스 <span class="badge">2026-05-28</span></h2>
+<h2>12. ?앹꽦???대?吏/UI 由ъ냼??<span class="badge">2026-05-28</span></h2>
 <div class="card highlight">
-  <p>예시 이미지의 밝은 캐주얼 판타지 톤을 기준으로 카드/유닛 아이콘, UI 아틀라스, 전장 오브젝트 시트를 생성했다. 실제 사용 목록과 슬라이스 가이드는 <code>docs/LotteryFantasy_이미지_UI_리소스_목록.md</code>에 정리한다.</p>
+  <p>?덉떆 ?대?吏??諛앹? 罹먯＜???먰?吏 ?ㅼ쓣 湲곗??쇰줈 移대뱶/?좊떅 ?꾩씠肄? UI ?꾪??쇱뒪, ?꾩옣 ?ㅻ툕?앺듃 ?쒗듃瑜??앹꽦?덈떎. ?ㅼ젣 ?ъ슜 紐⑸줉怨??щ씪?댁뒪 媛?대뱶??<code>docs/LotteryFantasy_?대?吏_UI_由ъ냼??紐⑸줉.md</code>???뺣━?쒕떎.</p>
 </div>
 <table>
-  <tr><th>파일</th><th>용도</th></tr>
-  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png</code></td><td>카드 초상화와 유닛 아이콘 후보</td></tr>
-  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png</code></td><td>HUD, 슬롯머신, 버튼, 속성 심볼, 배지 후보</td></tr>
-  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-battlefield-props-sheet.png</code></td><td>기지, 포털, 전장 장식 후보</td></tr>
-  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-buttons-sheet.png</code></td><td>STOP, Draw, 확인, 보상, 비활성, 탭, 토글 버튼 후보</td></tr>
-  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png</code></td><td>HUD, 슬롯머신, 카드, 모달, 툴팁 프레임 후보</td></tr>
+  <tr><th>?뚯씪</th><th>?⑸룄</th></tr>
+  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png</code></td><td>移대뱶 珥덉긽?붿? ?좊떅 ?꾩씠肄??꾨낫</td></tr>
+  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png</code></td><td>HUD, ?щ’癒몄떊, 踰꾪듉, ?띿꽦 ?щ낵, 諛곗? ?꾨낫</td></tr>
+  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-battlefield-props-sheet.png</code></td><td>湲곗?, ?ы꽭, ?꾩옣 ?μ떇 ?꾨낫</td></tr>
+  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-buttons-sheet.png</code></td><td>STOP, Draw, ?뺤씤, 蹂댁긽, 鍮꾪솢?? ?? ?좉? 踰꾪듉 ?꾨낫</td></tr>
+  <tr><td><code>LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png</code></td><td>HUD, ?щ’癒몄떊, 移대뱶, 紐⑤떖, ?댄똻 ?꾨젅???꾨낫</td></tr>
 </table>
 
-<h2>13. 생성 리소스 런타임 적용 <span class="badge">2026-05-29</span></h2>
+<h2>13. ?앹꽦 由ъ냼???고????곸슜 <span class="badge">2026-05-29</span></h2>
 <div class="card highlight">
-  <p>생성된 버튼, 프레임, 카드 아이콘, 전장 오브젝트 시트를 <code>Resources/GeneratedArt</code>에서 런타임 로드해 실제 UI와 전장에 적용했다. <code>UIArtKit</code>이 시트별 스프라이트 좌표와 9-slice border를 관리한다.</p>
+  <p>?앹꽦??踰꾪듉, ?꾨젅?? 移대뱶 ?꾩씠肄? ?꾩옣 ?ㅻ툕?앺듃 ?쒗듃瑜?<code>Resources/GeneratedArt</code>?먯꽌 ?고???濡쒕뱶???ㅼ젣 UI? ?꾩옣???곸슜?덈떎. <code>UIArtKit</code>???쒗듃蹂??ㅽ봽?쇱씠??醫뚰몴? 9-slice border瑜?愿由ы븳??</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>移대뱶</td><td>移대뱶 ?꾩씠肄??쒗듃瑜?<code>CardData.icon</code>怨?<code>HandUI</code> fallback ?꾩씠肄섏뿉 ?곌껐?섍퀬 ?먰뙣 移대뱶 ?꾨젅?꾩쓣 ?곸슜.</td></tr>
+  <tr><td>猷곕젢/踰꾪듉</td><td>STOP, AUTO, ??蹂닿린, ?쒖옉 硫붾돱, ?ъ떆??踰꾪듉???앹꽦 踰꾪듉/?꾨젅??由ъ냼???곸슜.</td></tr>
+  <tr><td>HUD/?⑤꼸</td><td>HP ?꾨젅?? ??대㉧ 諛곕꼫, ?먮꼫吏 ?⑤꼸, ??蹂닿린 紐⑤떖, 寃곌낵 紐⑤떖???앹꽦 ?꾨젅???곸슜.</td></tr>
+  <tr><td>?꾩옣</td><td>?뚮젅?댁뼱/???? ?앹〈 ?ы깉, 以묒븰 湲??⑥튂, ?섎Т/?명?由?諛붿쐞/?껊텋/?깅꼍 ?μ떇??SpriteRenderer濡?異붽?.</td></tr>
+</table>
+
+<h2>14. Asset Store ?泥?濡쒖슦?대━ 諛붾엺 ?곗텧 <span class="badge">2026-05-29</span></h2>
+<div class="card highlight">
+  <p><code>Low Poly Wind</code> ?⑦궎吏瑜?吏곸젒 ?ㅼ슫濡쒕뱶?섏? 紐삵븯???곹솴???鍮꾪빐 ?꾨줈?앺듃 ???고???諛붾엺 ?곗텧??異붽??덈떎. <code>LowPolyWindAnimator</code>??Tree, Grass, Banner, Torch, Portal ?꾨줈?꾨퀎濡??꾩튂, ?뚯쟾, ?ㅼ??쇱쓣 誘몄꽭?섍쾶 ?붾뱾??留듭쓽 ?뺤쟻???먮굦??以꾩씤??</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>?꾩옣 ?</td><td>?ы븿??<code>PT_Grass_02</code> ?꾨━?뱀쓣 ?꾩옣 ?섎떒??異붽??섍퀬 Grass ?꾨줈?꾩쓽 鍮좊Ⅸ ?붾뱾由??곸슜.</td></tr>
+  <tr><td>?섎Т/?ㅻ텋/?명?由?/td><td>湲곗〈 ?먯뿰 ?꾨━?밴낵 ?앹꽦 ?ㅻ툕?앺듃??Tree/Banner/Grass ?꾨줈?꾩쓣 ?곌껐.</td></tr>
+  <tr><td>???ы깉 ?μ떇</td><td>?앹꽦 ?? ?ы깉, 嫄대Ъ ?μ떇??Banner/Portal ?꾨줈?꾩쓣 ?곸슜??源껊컻怨?留덈쾿 ?μ떇???洹쇳엳 ?吏곸씠?꾨줉 援ъ꽦.</td></tr>
+  <tr><td>寃利?/td><td><code>LowPolyWindAnimatorTests</code>? <code>GameVisualKitTests</code>???꾨줈???꾩옣 ?곌껐 ?뺤씤 ?뚯뒪??異붽?.</td></tr>
+</table>
+
+<h2>15. 移대뱶/留덈쾿 援щ텇 諛?由??대?吏 ?곸슜 <span class="badge">2026-05-29</span></h2>
+<div class="card highlight">
+  <p>留덈쾿 移대뱶? ?좊떅 移대뱶???쒓컖 援щ텇??媛뺥솕?섍퀬, 由?UI???띿뒪??????앹꽦??Fire/Iron/Life ?대?吏 ?щ낵???곸슜?덈떎. 由댁? ?뚯쟾 以??대?吏媛 鍮좊Ⅴ寃?援먯껜?섍퀬 ?뚯쟾/?꾩뒪 ?좊땲硫붿씠?섏쓣 蹂댁뿬二쇰ŉ, 李⑹? ??理쒖쥌 ?띿꽦 ?대?吏媛 諛붿슫?ㅽ븳??</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>留덈쾿 移대뱶</td><td><code>MAGIC</code> ?쇰꺼, 蹂대씪???꾨젅?? ?띿꽦 ?щ낵 ?꾩씠肄섏쑝濡??좊떅 移대뱶? 遺꾨━.</td></tr>
+  <tr><td>?좊떅/嫄대Ъ 移대뱶</td><td><code>UNIT</code>/<code>BUILD</code> ?쇰꺼怨???낅퀎 ?꾨젅?꾩쓣 ?곸슜??移대뱶 ??븷 援щ텇 媛뺥솕.</td></tr>
+  <tr><td>由?UI</td><td>Fire/Iron/Life ?대?吏 ?꾩씠肄섏쓣 由??대???諛곗튂?섍퀬, ?뚯쟾 以??대?吏 援먯껜/?뚯쟾/?ㅼ????꾩뒪 ?곸슜.</td></tr>
+  <tr><td>?뚯뒪??/td><td>移대뱶 ??낅퀎 ?꾩씠肄??꾨젅??遺꾨━? 由??щ낵 ?ㅽ봽?쇱씠??濡쒕뵫 寃利?異붽?.</td></tr>
+</table>
+
+<h2>16. ?됱슫 寃뚯씠吏 由?洹쇱쿂 ?щ같移?<span class="badge">2026-06-02</span></h2>
+<div class="card highlight">
+  <p>?됱슫 異⑹쟾 ?곹깭媛 由?議곗옉怨???吏곸젒?곸쑝濡??곌껐?섏뼱 蹂댁씠?꾨줉 <code>LUCK GAUGE</code>瑜?由?諛붾줈 ?꾨옒濡??대룞?덈떎. 寃뚯씠吏???앹꽦 ?꾨젅??由ъ냼?ㅻ? 諛곌꼍?쇰줈 ?ъ슜?섍퀬, 異⑹쟾 鍮꾩쑉???곕씪 ?ㅼ젣 諛???씠 ?섏뼱?섎뒗 諛⑹떇?쇰줈 ?쒖떆?쒕떎.</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>由?二쇰? ?쒖씤??/td><td>由?3媛?諛붾줈 ?꾨옒??湲??됱슫 寃뚯씠吏瑜?諛곗튂???뚯쟾/?뺤? ?먮떒 以묒뿉??異⑹쟾 ?곹깭瑜??뺤씤 媛??</td></tr>
+  <tr><td>寃뚯씠吏 ?쒗쁽</td><td>?묒? ?섎떒 諛?????꾨젅?꾩씠 ?덈뒗 430px湲?寃뚯씠吏濡??뺣?.</td></tr>
+  <tr><td>異⑹쟾 ?숈옉</td><td><code>SlotMachineUI</code>?먯꽌 <code>ChargeRatio</code>瑜??ㅼ젣 fill width濡?諛섏쁺??異⑹쟾?됱씠 紐낇솗?섍쾶 李⑥삤瑜대룄濡?蹂寃?</td></tr>
+</table>
+
+<h2>17. ?먰뙣 媛?낆꽦 ?뺣? 諛?諛곌꼍 ?뺣━ <span class="badge">2026-06-02</span></h2>
+<div class="card highlight">
+  <p>?먰뙣 移대뱶???ш린? ?꾩씠肄섏쓣 ?ㅼ슦怨? ?먰뙣 ?ㅼ쓽 ?섎떒 諛곌꼍/?ㅻ뜑/援щ텇?좎쓣 ?щ챸 泥섎━??移대뱶 ?먯껜媛 ????蹂댁씠?꾨줉 ?뺣━?덈떎.</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>移대뱶 ?ш린</td><td>?먰뙣 移대뱶 ?щ’??122x200?먯꽌 158x232濡??뺣?.</td></tr>
+  <tr><td>移대뱶 ?꾩씠肄?/td><td>移대뱶 ?대? ?꾩씠肄섏쓣 82x82?먯꽌 108x108濡??뺣?.</td></tr>
+  <tr><td>移대뱶 ?띿뒪??/td><td>移대뱶紐????鍮꾩슜 ?띿뒪???곸뿭怨??고듃 ?ш린 ?뺣?.</td></tr>
+  <tr><td>諛곌꼍 ?뺣━</td><td>?섎떒 諛곌꼍, HAND ?ㅻ뜑, ?먰뙣/?щ’ 援щ텇?좎쓣 ?щ챸 泥섎━??遺덊븘?뷀븳 ?곸뿭媛먯쓣 ?쒓굅.</td></tr>
+</table>
+
+<h2>18. ?곷떒 HUD 洹좏삎 ?щ같移?<span class="badge">2026-06-02</span></h2>
+<div class="card highlight">
+  <p>?띿꽦 ?먮꼫吏 HUD瑜??붾㈃ 以묒븰?쇰줈 ?대룞?섍퀬, ?뚮젅?댁뼱/??湲곗? HP瑜?醫뚯슦 ?移??꾩튂濡??щ같移섑뻽?? 以묒븰 ?뺣낫????대㉧? ?띿꽦 ?먮꼫吏瑜?臾띠뼱 ?꾪닾 ?먮떒??以묒떖異뺤쑝濡?留뚮뱾怨? ?묒そ HP??媛숈? 嫄곕━? ?ш린濡?留욎톬??</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>?띿꽦 ?먮꼫吏</td><td>?곗긽???⑤꼸?먯꽌 ?붾㈃ 以묒븰 ?⑤꼸濡??대룞, Fire/Iron/Life瑜???以꾨줈 ?쒖떆.</td></tr>
+  <tr><td>湲곗? HP</td><td>?뚮젅?댁뼱 HP? ??HP ?꾨젅???щ씪?대뜑瑜?醫뚯슦 ?移?醫뚰몴濡??щ같移?</td></tr>
+  <tr><td>以묒븰 ?뺣낫</td><td>??대㉧/?ㅽ? ???띿꽦 ?먮꼫吏/?ㅽ뀒?댁? ?뺣낫媛 寃뱀튂吏 ?딅룄濡??몃줈 媛꾧꺽 ?ъ젙由?</td></tr>
+  <tr><td>?띿뒪???덉젙??/td><td>源⑥쭊 ?쇰? ?쒖옉 硫붾돱/移대뱶 ?대쫫 臾몄옄?댁쓣 ?곷Ц ?쒓린濡??뺣━.</td></tr>
+</table>
+
+<h2>19. 吏꾩쁺 ?앸퀎 ?쒖떇 媛뺥솕 <span class="badge">2026-06-02</span></h2>
+<div class="card highlight">
+  <p>?꾪닾 以??꾧뎔 ?좊떅, ???좊떅, 以묐┰ 紐ъ뒪?곌? ??鍮⑤━ 援щ텇?섎룄濡?<code>GameVisualKit</code>???고????μ떇??媛뺥솕?덈떎. 吏곸뾽蹂?accent ?됱? ?좎??섍퀬, 吏꾩쁺 ?먮룆??諛붾떏 ?쒖떇怨?痢〓㈃ 諛곗?瑜?蹂꾨룄 ?덉씠?대줈 異붽??쒕떎.</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>?꾧뎔 ?좊떅</td><td>?뚮? 諛붾떏 湲濡쒖슦, ?뚮? 吏硫??ㅽ듃?쇱씠?? ?곗륫 吏꾩쁺 諛곗?濡??쒖떆.</td></tr>
+  <tr><td>???좊떅</td><td>鍮④컙 諛붾떏 湲濡쒖슦, 鍮④컙 吏硫??ㅽ듃?쇱씠?? 醫뚯륫 吏꾩쁺 諛곗?濡??쒖떆.</td></tr>
+  <tr><td>以묐┰ 紐ъ뒪??/td><td>怨듦꺽 諛⑺뼢怨?臾닿??섍쾶 二쇳솴/蹂대씪 <code>NeutralMonsterMarker</code>瑜??ъ슜???좊떅 吏꾩쁺怨?遺꾨━.</td></tr>
+  <tr><td>?섎━??紐ъ뒪??/td><td>以묐┰ 紐ъ뒪???쒖떇 ??낵 寃쎄퀬 ?μ떇???ㅼ썙 ?쇰컲 紐ъ뒪?곕낫???꾪삊?곸쑝濡??쒖떆.</td></tr>
+</table>
+
+<h2>20. Toony RTS 由ъ냼???곸슜 <span class="badge">2026-06-08</span></h2>
+<div class="card highlight">
+  <p>?덈줈 異붽???<code>ToonyTinyPeople/TT_RTS</code> ?먯뀑???고???由ъ냼?ㅻ줈 ?좊퀎 ?곸슜?덈떎. 鍮뚮뱶?먯꽌??<code>Resources.Load</code>媛 媛?ν븯?꾨줉 二쇱슂 ?좊떅, 諛곕꼫, 怨듭꽦湲??꾨━?뱀쓣 <code>Assets/Resources/Asset/ToonyTinyPeople/TT_RTS/TT_RTS_Standard/prefabs</code> ?꾨옒??蹂듭궗?섍퀬, <code>GameVisualKit</code>???쒓컖 留ㅽ븨??Toony RTS ?곗꽑?쇰줈 蹂寃쏀뻽??</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>?꾧뎔/???좊떅</td><td>Swordsman, Archer, Mage, Priest, Paladin, Heavy Infantry ????븷蹂?Toony 罹먮┃???꾨━???ъ슜.</td></tr>
+  <tr><td>以묐┰ 紐ъ뒪??/td><td>?쇰컲 紐ъ뒪?곕뒗 <code>TT_HeavySwordman</code>, ?섎━??紐ъ뒪?곕뒗 <code>TT_King</code>?쇰줈 援먯껜???좊떅蹂대떎 媛뺥븳 ?ㅻ（?ｌ쑝濡??쒖떆.</td></tr>
+  <tr><td>嫄대Ъ/???/td><td>Tower 怨꾩뿴? Ballista, Magic/Fire 怨꾩뿴? Catapult, Barracks??Ram ?꾨━?뱀쑝濡??쒖떆.</td></tr>
+  <tr><td>湲곗?/?ы깉</td><td>?뚮젅?댁뼱/??以묐┰ 嫄곗젏???뚮옉/鍮④컯/蹂대씪 Toony 諛곕꼫 異붽?.</td></tr>
+  <tr><td>?꾩옣 ?뚰뭹</td><td>?꾩옣 ?꾨갑怨?痢〓㈃??Ballista, Catapult, Yellow/Orange Banner ?뚰뭹??諛곗튂??RTS ?꾩옣 遺꾩쐞湲?媛뺥솕.</td></tr>
+</table>
+
+<h2>21. 移대뱶 鍮꾩슜 ?꾩씠肄??쒖떆 <span class="badge">2026-06-08</span></h2>
+<div class="card highlight">
+  <p>?먰뙣 移대뱶???꾩슂 ?띿꽦 ?먮꼫吏瑜??띿뒪???쎌뼱 ???Fire/Iron/Life ?꾩씠肄?諛곗?濡??쒖떆?섎룄濡?蹂寃쏀뻽?? 移대뱶 ?섎떒???띿꽦 ?꾩씠肄섍낵 鍮꾩슜 ?レ옄瑜?遺꾨━ 諛곗튂???좊떅, 嫄대Ъ, 留덈쾿 移대뱶???붽뎄 ?먮꼫吏瑜???鍮좊Ⅴ寃??쎌쓣 ???덇쾶 ?쒕떎.</p>
+</div>
+<table>
+  <tr><th>?곸뿭</th><th>?곸슜 ?댁슜</th></tr>
+  <tr><td>鍮꾩슜 ?쒖떆</td><td><code>F2 I1</code> ?띿뒪?????遺?泥??앸챸 ?꾩씠肄섍낵 ?レ옄 諛곗?瑜?移대뱶 ?섎떒???쒖떆.</td></tr>
+  <tr><td>遺議??쒖떆</td><td>蹂댁쑀 ?먮꼫吏媛 遺議깊븳 ?띿꽦? ?レ옄? ?꾩씠肄섏쓣 遺됯쾶 ??떠 利됱떆 援щ텇.</td></tr>
+  <tr><td>移대뱶 媛?낆꽦</td><td>移대뱶 ?대쫫 ?곸뿭?먯꽌 鍮꾩슜 ?띿뒪?몃? ?쒓굅???대쫫, ??? ?됰룞 ?곹깭媛 ???ш쾶 蹂댁씠?꾨줉 ?뺣━.</td></tr>
+  <tr><td>?곸슜 ???/td><td>?좊떅, 嫄대Ъ, 留덈쾿 移대뱶???곸슜?섍퀬 利됱떆 諛쒕룞 踰꾪봽 移대뱶??鍮꾩슜 諛곗?瑜??④?.</td></tr>
+</table>
+
+<h2>22. 릴 스트립 회전 연출 <span class="badge">2026-06-08</span></h2>
+<div class="card highlight">
+  <p>슬롯 릴을 단일 아이콘 회전 방식에서 마스크된 세로 릴 스트립 방식으로 변경했다. 각 릴 박스 안에 <code>ReelViewport</code>와 <code>ReelStrip</code>을 생성하고 Fire/Iron/Life 심볼을 세로로 배치해, 실제 릴이 잘려 보이는 창 안에서 지나가다가 최종 심볼에 맞춰 멈추는 느낌을 강화한다.</p>
 </div>
 <table>
   <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>카드</td><td>카드 아이콘 시트를 <code>CardData.icon</code>과 <code>HandUI</code> fallback 아이콘에 연결하고 손패 카드 프레임을 적용.</td></tr>
-  <tr><td>룰렛/버튼</td><td>STOP, AUTO, 덱 보기, 시작 메뉴, 재시도 버튼에 생성 버튼/프레임 리소스 적용.</td></tr>
-  <tr><td>HUD/패널</td><td>HP 프레임, 타이머 배너, 에너지 패널, 덱 보기 모달, 결과 모달에 생성 프레임 적용.</td></tr>
-  <tr><td>전장</td><td>플레이어/적 성, 생존 포탈, 중앙 길 패치, 나무/울타리/바위/횃불/성벽 장식을 SpriteRenderer로 추가.</td></tr>
+  <tr><td>릴 구조</td><td>기존 아이콘 이미지는 숨기고, 동일 위치에 마스크된 릴 뷰포트와 세로 심볼 스트립 생성.</td></tr>
+  <tr><td>회전감</td><td>스트립 위치를 계속 이동시키고 한 칸 이동할 때마다 심볼 배열을 갱신해 긴 릴이 도는 듯 표현.</td></tr>
+  <tr><td>착지 연출</td><td>STOP 결과에 맞는 Fire/Iron/Life 심볼을 중앙 칸에 스냅하고 짧은 바운스 적용.</td></tr>
+  <tr><td>리소스</td><td>기존 속성 아이콘 리소스를 잘라 쓰는 방식으로 사용해 별도 이미지 파일 없이 빌드 안정성 유지.</td></tr>
 </table>
 
-<h2>14. Asset Store 대체 로우폴리 바람 연출 <span class="badge">2026-05-29</span></h2>
-<div class="card highlight">
-  <p><code>Low Poly Wind</code> 패키지를 직접 다운로드하지 못하는 상황을 대비해 프로젝트 내 런타임 바람 연출을 추가했다. <code>LowPolyWindAnimator</code>는 Tree, Grass, Banner, Torch, Portal 프로필별로 위치, 회전, 스케일을 미세하게 흔들어 맵의 정적인 느낌을 줄인다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>전장 풀</td><td>포함된 <code>PT_Grass_02</code> 프리팹을 전장 하단에 추가하고 Grass 프로필의 빠른 흔들림 적용.</td></tr>
-  <tr><td>나무/덤불/울타리</td><td>기존 자연 프리팹과 생성 오브젝트에 Tree/Banner/Grass 프로필을 연결.</td></tr>
-  <tr><td>성/포탈 장식</td><td>생성 성, 포탈, 건물 장식에 Banner/Portal 프로필을 적용해 깃발과 마법 장식이 은근히 움직이도록 구성.</td></tr>
-  <tr><td>검증</td><td><code>LowPolyWindAnimatorTests</code>와 <code>GameVisualKitTests</code>에 프로필/전장 연결 확인 테스트 추가.</td></tr>
-</table>
-
-<h2>15. 카드/마법 구분 및 릴 이미지 적용 <span class="badge">2026-05-29</span></h2>
-<div class="card highlight">
-  <p>마법 카드와 유닛 카드의 시각 구분을 강화하고, 릴 UI에 텍스트 대신 생성된 Fire/Iron/Life 이미지 심볼을 적용했다. 릴은 회전 중 이미지가 빠르게 교체되고 회전/펄스 애니메이션을 보여주며, 착지 시 최종 속성 이미지가 바운스한다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>마법 카드</td><td><code>MAGIC</code> 라벨, 보라색 프레임, 속성 심볼 아이콘으로 유닛 카드와 분리.</td></tr>
-  <tr><td>유닛/건물 카드</td><td><code>UNIT</code>/<code>BUILD</code> 라벨과 타입별 프레임을 적용해 카드 역할 구분 강화.</td></tr>
-  <tr><td>릴 UI</td><td>Fire/Iron/Life 이미지 아이콘을 릴 내부에 배치하고, 회전 중 이미지 교체/회전/스케일 펄스 적용.</td></tr>
-  <tr><td>테스트</td><td>카드 타입별 아이콘/프레임 분리와 릴 심볼 스프라이트 로딩 검증 추가.</td></tr>
-</table>
-
-<h2>16. 행운 게이지 릴 근처 재배치 <span class="badge">2026-06-02</span></h2>
-<div class="card highlight">
-  <p>행운 충전 상태가 릴 조작과 더 직접적으로 연결되어 보이도록 <code>LUCK GAUGE</code>를 릴 바로 아래로 이동했다. 게이지는 생성 프레임 리소스를 배경으로 사용하고, 충전 비율에 따라 실제 바 폭이 늘어나는 방식으로 표시한다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>릴 주변 시인성</td><td>릴 3개 바로 아래에 긴 행운 게이지를 배치해 회전/정지 판단 중에도 충전 상태를 확인 가능.</td></tr>
-  <tr><td>게이지 표현</td><td>작은 하단 바 대신 프레임이 있는 430px급 게이지로 확대.</td></tr>
-  <tr><td>충전 동작</td><td><code>SlotMachineUI</code>에서 <code>ChargeRatio</code>를 실제 fill width로 반영해 충전량이 명확하게 차오르도록 변경.</td></tr>
-</table>
-
-<h2>17. 손패 가독성 확대 및 배경 정리 <span class="badge">2026-06-02</span></h2>
-<div class="card highlight">
-  <p>손패 카드의 크기와 아이콘을 키우고, 손패 뒤의 하단 배경/헤더/구분선을 투명 처리해 카드 자체가 더 잘 보이도록 정리했다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>카드 크기</td><td>손패 카드 슬롯을 122x200에서 158x232로 확대.</td></tr>
-  <tr><td>카드 아이콘</td><td>카드 내부 아이콘을 82x82에서 108x108로 확대.</td></tr>
-  <tr><td>카드 텍스트</td><td>카드명/타입/비용 텍스트 영역과 폰트 크기 확대.</td></tr>
-  <tr><td>배경 정리</td><td>하단 배경, HAND 헤더, 손패/슬롯 구분선을 투명 처리해 불필요한 영역감을 제거.</td></tr>
-</table>
-
-<h2>18. 상단 HUD 균형 재배치 <span class="badge">2026-06-02</span></h2>
-<div class="card highlight">
-  <p>속성 에너지 HUD를 화면 중앙으로 이동하고, 플레이어/적 기지 HP를 좌우 대칭 위치로 재배치했다. 중앙 정보는 타이머와 속성 에너지를 묶어 전투 판단의 중심축으로 만들고, 양쪽 HP는 같은 거리와 크기로 맞췄다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>속성 에너지</td><td>우상단 패널에서 화면 중앙 패널로 이동, Fire/Iron/Life를 한 줄로 표시.</td></tr>
-  <tr><td>기지 HP</td><td>플레이어 HP와 적 HP 프레임/슬라이더를 좌우 대칭 좌표로 재배치.</td></tr>
-  <tr><td>중앙 정보</td><td>타이머/스핀 수/속성 에너지/스테이지 정보가 겹치지 않도록 세로 간격 재정리.</td></tr>
-  <tr><td>텍스트 안정화</td><td>깨진 일부 시작 메뉴/카드 이름 문자열을 영문 표기로 정리.</td></tr>
-</table>
-
-<h2>19. 진영 식별 표식 강화 <span class="badge">2026-06-02</span></h2>
-<div class="card highlight">
-  <p>전투 중 아군 유닛, 적 유닛, 중립 몬스터가 더 빨리 구분되도록 <code>GameVisualKit</code>의 런타임 장식을 강화했다. 직업별 accent 색은 유지하고, 진영 판독용 바닥 표식과 측면 배지를 별도 레이어로 추가한다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>아군 유닛</td><td>파란 바닥 글로우, 파란 지면 스트라이프, 우측 진영 배지로 표시.</td></tr>
-  <tr><td>적 유닛</td><td>빨간 바닥 글로우, 빨간 지면 스트라이프, 좌측 진영 배지로 표시.</td></tr>
-  <tr><td>중립 몬스터</td><td>공격 방향과 무관하게 주황/보라 <code>NeutralMonsterMarker</code>를 사용해 유닛 진영과 분리.</td></tr>
-  <tr><td>엘리트 몬스터</td><td>중립 몬스터 표식 폭과 경고 장식을 키워 일반 몬스터보다 위협적으로 표시.</td></tr>
-</table>
-
-<h2>20. Toony RTS 리소스 적용 <span class="badge">2026-06-08</span></h2>
-<div class="card highlight">
-  <p>새로 추가된 <code>ToonyTinyPeople/TT_RTS</code> 에셋을 런타임 리소스로 선별 적용했다. 빌드에서도 <code>Resources.Load</code>가 가능하도록 주요 유닛, 배너, 공성기 프리팹을 <code>Assets/Resources/Asset/ToonyTinyPeople/TT_RTS/TT_RTS_Standard/prefabs</code> 아래에 복사하고, <code>GameVisualKit</code>의 시각 매핑을 Toony RTS 우선으로 변경했다.</p>
-</div>
-<table>
-  <tr><th>영역</th><th>적용 내용</th></tr>
-  <tr><td>아군/적 유닛</td><td>Swordsman, Archer, Mage, Priest, Paladin, Heavy Infantry 등 역할별 Toony 캐릭터 프리팹 사용.</td></tr>
-  <tr><td>중립 몬스터</td><td>일반 몬스터는 <code>TT_HeavySwordman</code>, 엘리트 몬스터는 <code>TT_King</code>으로 교체해 유닛보다 강한 실루엣으로 표시.</td></tr>
-  <tr><td>건물/타워</td><td>Tower 계열은 Ballista, Magic/Fire 계열은 Catapult, Barracks는 Ram 프리팹으로 표시.</td></tr>
-  <tr><td>기지/포탈</td><td>플레이어/적/중립 거점에 파랑/빨강/보라 Toony 배너 추가.</td></tr>
-  <tr><td>전장 소품</td><td>전장 후방과 측면에 Ballista, Catapult, Yellow/Orange Banner 소품을 배치해 RTS 전장 분위기 강화.</td></tr>
-</table>
-
-<h2>21. 빌드 & 배포</h2>
+<h2>23. 鍮뚮뱶 & 諛고룷</h2>
 <div class="card">
   <ul>
-    <li>플랫폼: Windows 64bit</li>
-    <li>빌드: Unity CLI 또는 Editor에서 직접 빌드</li>
-    <li>출력: <code>release/LotteryFantasy.exe</code></li>
-    <li>루트 배치: <code>LotteryFantasy_v{버전}_portable.exe</code></li>
+    <li>?뚮옯?? Windows 64bit</li>
+    <li>鍮뚮뱶: Unity CLI ?먮뒗 Editor?먯꽌 吏곸젒 鍮뚮뱶</li>
+    <li>異쒕젰: <code>release/LotteryFantasy.exe</code></li>
+    <li>猷⑦듃 諛곗튂: <code>LotteryFantasy_v{踰꾩쟾}_portable.exe</code></li>
   </ul>
 </div>
 
 <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:12px;text-align:center;">
-  Lottery Fantasy 기획서 · 2026-05-12
+  Lottery Fantasy 湲고쉷??쨌 2026-05-12
 </div>
 </div>
 <!-- APPLIED_RESOURCES_START -->
 <section class="applied-resources">
-  <h2>적용 리소스</h2>
-  <p>자동 갱신: 2026-06-04. 코드, 씬, 프리팹, 설정 파일에서 참조가 확인된 리소스 기준입니다.</p>
+  <h2>?곸슜 由ъ냼??/h2>
+  <p>?먮룞 媛깆떊: 2026-06-04. 肄붾뱶, ?? ?꾨━?? ?ㅼ젙 ?뚯씪?먯꽌 李몄“媛 ?뺤씤??由ъ냼??湲곗??낅땲??</p>
   <ul>
-    <li><strong>이미지/스프라이트</strong>: <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Cloth_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Feathers_Mask_02.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Gems_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Leather_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Metal_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Skin_Eye_Hair_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Base_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Textures/PT_Grass_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Textures/PT_Props_Texture_01.png</code> 외 28개</li>
-    <li><strong>Unity/프리팹</strong>: <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/PT_Skeleton_Male_Modular.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Materials/PT_Armors_Material.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Materials/PT_NPC_Mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Demos/Skeleton_Free_Asset/Helpers/Terrain.asset</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Prefabs/Plants/PT_Grass_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Materials/PT_Grass_Mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_01.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_03.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Materials/PT_Props_mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Village/Prefabs/Modular/Fence/PT_Modular_Fence_Wood_01.prefab</code> 외 68개</li>
-    <li><strong>폰트</strong>: <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Anton.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Bangers.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Electronic Highway Sign.TTF</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Oswald-Bold.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Roboto-Bold.ttf</code>, <code>Assets/TextMesh Pro/Fonts/LiberationSans.ttf</code></li>
-    <li><strong>데이터/설정</strong>: <code>Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt</code>, <code>Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt</code></li>
+    <li><strong>?대?吏/?ㅽ봽?쇱씠??/strong>: <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Cloth_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Feathers_Mask_02.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Gems_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Leather_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Lips_Scars_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Metal_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Skin_Eye_Hair_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Base_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Textures/PT_Modular_NPC_Texture_Mask_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Textures/PT_Grass_01.png</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Textures/PT_Props_Texture_01.png</code> ??28媛?/li>
+    <li><strong>Unity/?꾨━??/strong>: <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Prefabs/Modular_NPC/Skeleton/PT_Skeleton_Male_Modular.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Materials/PT_Armors_Material.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_NPC/Materials/PT_NPC_Mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Demos/Skeleton_Free_Asset/Helpers/Terrain.asset</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Prefabs/Plants/PT_Grass_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Environments/Sources/Materials/PT_Grass_Mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Village_Fence_Small_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_01.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_02.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Prefabs/PT_Wooden_Cross_03.prefab</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Props/Sources/Materials/PT_Props_mat.mat</code>, <code>Assets/Resources/Asset/Polytope Studio/Lowpoly_Village/Prefabs/Modular/Fence/PT_Modular_Fence_Wood_01.prefab</code> ??68媛?/li>
+    <li><strong>?고듃</strong>: <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Anton.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Bangers.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Electronic Highway Sign.TTF</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Oswald-Bold.ttf</code>, <code>Assets/TextMesh Pro/Examples &amp; Extras/Fonts/Roboto-Bold.ttf</code>, <code>Assets/TextMesh Pro/Fonts/LiberationSans.ttf</code></li>
+    <li><strong>?곗씠???ㅼ젙</strong>: <code>Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt</code>, <code>Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt</code></li>
   </ul>
-  <p><strong>메모:</strong></p><ul><li>리소스 후보 171개 중 자동 참조 확인 128개.</li></ul>
+  <p><strong>硫붾え:</strong></p><ul><li>由ъ냼???꾨낫 171媛?以??먮룞 李몄“ ?뺤씤 128媛?</li></ul>
 </section>
 <!-- APPLIED_RESOURCES_END -->
 
 <!-- RESOURCE_PREVIEWS_START -->
 <section class="resource-previews">
-  <h2>공유용 이미지 미리보기</h2>
-  <p>자동 갱신: 2026-06-04. 공유 시 문서와 함께 아래 이미지 경로가 포함되어야 합니다.</p>
+  <h2>怨듭쑀???대?吏 誘몃━蹂닿린</h2>
+  <p>?먮룞 媛깆떊: 2026-06-04. 怨듭쑀 ??臾몄꽌? ?④퍡 ?꾨옒 ?대?吏 寃쎈줈媛 ?ы븿?섏뼱???⑸땲??</p>
   <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;">
 <figure style="margin:12px 0;padding:12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
   <img src="../Assets/Resources/Asset/Polytope Studio/Lowpoly_Characters/Sources/Modular_Armors/Textures/PT_Armors_Base_Texture.png" alt="14_LT PT_Armors_Base_Texture" style="max-width:220px;max-height:160px;width:auto;height:auto;object-fit:contain;display:block;" />
