@@ -471,8 +471,17 @@
   <h2>릴 프레임 맞춤 크기 조정 <span class="badge">2026-06-08</span></h2>
   <div class="card highlight">
     <p>생성된 슬롯머신 프레임 배경의 안쪽 창에 맞춰 릴 박스를 172x112, 릴 뷰포트를 112x82로 확대했다. 세로 릴 스트립의 심볼 간격은 76px, 심볼 이미지는 66px로 키워 릴이 프레임 안에서 실제로 잘려 돌아가는 느낌을 강화한다.</p>
-  </div>
+  
+<h2>부족 에너지 피드백 강화</h2>
+<table>
+  <tr><th>영역</th><th>적용 내용</th></tr>
+  <tr><td>손패 카드</td><td>에너지가 부족한 유닛/건물/마법 카드에 부족한 Fire/Iron/Life 수량만 <code>NEED F/I/L</code> 형식으로 표시한다.</td></tr>
+  <tr><td>클릭/드래그 배치</td><td>클릭 배치와 드래그 배치 모두 비용 부족 시 에너지 HUD 점멸 피드백을 사용한다.</td></tr>
+  <tr><td>계산 로직</td><td><code>ElementalEnergySystem.MissingCost</code>로 부족 자원 계산을 단일화하고 EditMode 테스트 3개를 추가했다.</td></tr>
+  <tr><td>버전</td><td>기능 추가 업데이트로 Windows portable 버전을 <code>v0.2.0</code>으로 갱신한다.</td></tr>
+</table></div>
 </section>
 <!-- RESOURCE_PREVIEWS_END -->
 </body>
 </html>
+
