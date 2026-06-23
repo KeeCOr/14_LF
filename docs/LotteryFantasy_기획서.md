@@ -1,6 +1,6 @@
 ﻿# Lottery Fantasy 기획서
 
-> 최신 업데이트: 2026-06-22, 부족 에너지 피드백 강화 및 v0.2.0 준비
+> 최신 업데이트: 2026-06-23, 부족 에너지 피드백 테스트 검증 경로 확보
 
 ## 게임 개요
 
@@ -125,6 +125,8 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 | 손패 카드 | 에너지가 부족한 유닛/건물/마법 카드에 부족한 Fire/Iron/Life 수량만 짧게 표시 |
 | 클릭/드래그 배치 | 클릭 배치와 드래그 배치 모두 비용 부족 시 에너지 HUD 점멸 피드백 사용 |
 | 계산 로직 | `ElementalEnergySystem.MissingCost`로 부족 자원 계산을 단일화하고 EditMode 테스트 3개 추가 |
+| 검증 경로 | 기본 `-runTests`가 결과 XML을 생성하지 않아 Editor 전용 동기 실행기 `LotteryFantasyEditModeTestRunner`를 추가 |
+| 검증 결과 | `TestResults-EnergyFeedback.xml` 기준 `ElementalEnergySystemTests` 9개 통과, 실패 0개. 이 중 부족 에너지 테스트 3개 모두 통과 |
 | 버전 | 기능 추가 업데이트로 Windows portable 버전을 `v0.2.0`으로 갱신 |
 ## 릴 스트립 회전 연출
 
@@ -244,4 +246,6 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 2026-06-08 업데이트에서 생성된 슬롯머신 프레임 배경의 안쪽 창에 맞춰 릴 박스를 172x112, 릴 뷰포트를 112x82로 확대했다. 세로 릴 스트립의 심볼 간격은 76px, 심볼 이미지는 66px로 키워 릴이 프레임 안에서 실제로 잘려 돌아가는 느낌을 강화했다.
 
 <!-- RESOURCE_PREVIEWS_END -->
+
+
 
