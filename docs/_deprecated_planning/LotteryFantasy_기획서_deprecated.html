@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LotteryFantasy 기획서</title>
+  <style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;max-width:1040px;margin:0 auto;padding:40px 24px;color:#20242a;background:#fafafa}h1{font-size:34px;margin:0 0 20px}h2{font-size:24px;margin-top:34px;border-bottom:1px solid #ddd;padding-bottom:6px}h3{font-size:18px;margin-top:24px;color:#32435f}p,li,td,th{font-size:15px}li{margin:5px 0}code{background:#fff;border:1px solid #ddd;border-radius:4px;padding:1px 4px}pre{white-space:pre-wrap;background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 12px;overflow:auto}pre code{border:0;padding:0;background:transparent}table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0}td,th{border:1px solid #ddd;padding:8px;text-align:left;vertical-align:top}figure{margin:18px 0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px}img{max-width:100%;height:auto;display:block;border-radius:6px}figcaption{font-size:13px;color:#626b76;margin-top:8px}</style>
+</head>
+<body>
+<h1>LotteryFantasy 기획서</h1>
+<p>문제 정의: 확률형 보상은 좋아하지만 허무한 뽑기만으로 끝나는 경험에 지친 플레이어가 결과를 성장 전략으로 활용하고 싶어 한다.</p>
+<h2>게임 소개</h2>
+<p>추첨, 확률, 보상 기대감을 판타지 성장으로 연결한 게임.</p>
+<p>LotteryFantasy의 핵심 매력은 한 번의 선택이 다음 장면의 위험도, 보상, 성장 방향으로 이어지는 구조다. 이 문서는 처음 보는 사람에게 게임의 재미와 현재 방향을 빠르게 소개하기 위한 단일 기획서이며, 세부 변경 이력은 별도 업데이트 내역서에서 관리한다.</p>
+<h2>한 줄 소개</h2>
+<p>추첨, 확률, 보상 기대감을 판타지 성장으로 연결한 게임.</p>
+<h2>핵심 루프</h2>
+<p>유저가 현재 전장의 정보를 읽고 선택을 하면 전투/운영 결과가 갱신되고, 그 보상과 손실 때문에 다시 다음 선택을 준비한다.</p>
+<h2>게임 플레이 예시</h2>
+<ul>
+<li>1단계: 플레이어가 LotteryFantasy의 현재 목표, 보유 자원, 즉시 대응해야 할 위험을 확인한다.</li>
+<li>2단계: 카드, 유닛, 배치, 명령, 이동 중 현재 상황에 맞는 핵심 행동을 선택한다.</li>
+<li>3단계: 선택 결과가 전투, 운영, 보상, 손실로 즉시 갱신되고 다음 판단의 근거가 된다.</li>
+<li>4단계: 획득한 보상이나 변화한 상태를 바탕으로 다음 선택을 준비하며 핵심 루프를 반복한다.</li>
+<li>플레이 감각: 짧은 세션 안에서 상황 파악, 의미 있는 선택, 즉각적인 피드백, 다음 목표 제시가 끊기지 않는 흐름을 지향한다.</li>
+</ul>
+<h2>핵심 재미</h2>
+<ul>
+<li>읽기 쉬운 상황 판단: 지금 위험한 요소와 얻을 수 있는 보상이 한눈에 들어온다.</li>
+<li>직접적인 선택 피드백: 선택 직후 전투, 점수, 자원, 성장 상태가 변해 손맛을 만든다.</li>
+<li>누적되는 성장감: 반복 플레이가 단순 재시작이 아니라 다음 전략의 재료로 이어진다.</li>
+</ul>
+<h2>주요 시스템</h2>
+<ul>
+<li>핵심 선택 시스템: 현재 국면에서 가능한 행동을 5개 이하의 명확한 선택지로 제시한다.</li>
+<li>위험/보상 피드백: 행동 전후의 이득, 손실, 위협 변화를 빠르게 보여준다.</li>
+<li>성장과 해금: 세션 결과가 능력, 카드, 유닛, 건물, 장비, 스테이지 등 다음 플레이의 선택지를 넓힌다.</li>
+<li>상태별 UX: 로딩, 빈 상태, 오류, 많은 데이터, 긴 텍스트 상황에서도 레이아웃이 무너지지 않도록 관리한다.</li>
+<li>실행 안정성: 테스트와 빌드 산출물을 기준으로 현재 플레이 가능한 범위를 계속 확인한다.</li>
+</ul>
+<h2>게임 구성과 규칙 (GDD 통합)</h2>
+<ul>
+<li>통합 기준 문서: <code>GDD.md</code>, <code>../LotteryFantasy/docs/GDD.md</code>, <code>superpowers/specs/2026-04-24-slot-defense-design.md</code></li>
+<li>작성 기준: 16_PokerStrike_GDD처럼 화면 구조, 핵심 시스템, 진행/승패 규칙, UI/HUD, 미결 항목을 한 문서에서 바로 읽을 수 있게 정리한다.</li>
+</ul>
+<h3>화면/플레이 구조</h3>
+<ul>
+<li><strong>1. 게임 개요</strong> (GDD.md)</li>
+</ul>
+<table>
+<tr><th>항목</th><th>내용</th></tr>
+<tr><td>장르</td><td>룰렛 × 타워 디펜스 × 카드 게임</td></tr>
+<tr><td>플랫폼</td><td>PC / 모바일 (Unity 2022 URP 2D)</td></tr>
+<tr><td>인원</td><td>1인 vs AI / 생존 모드 (싱글)</td></tr>
+<tr><td>한 판 시간</td><td>전투: 3분 / 생존: 무제한</td></tr>
+<tr><td>수익화</td><td>F2P + IAP (캐릭터 획득·성장 중심)</td></tr>
+</table>
+<ul>
+<li><strong>핵심 루프</strong> (GDD.md)</li>
+</ul>
+<p>  - → 행운 소모 (릴 1개 정지당 1회)</p>
+<p>  - → 3릴 모두 정지 → 속성 에너지(불/철/생) 획득</p>
+<p>  - → 에너지 소모 → 카드 배치 (유닛 / 건물)</p>
+<p>  - → 유닛이 몬스터 격퇴 → 기지 방어</p>
+<p>  - → 적 기지 파괴 → 승리</p>
+<ul>
+<li><strong>2. 게임 모드</strong> (GDD.md)</li>
+</ul>
+<table>
+<tr><th>모드</th><th>설명</th></tr>
+<tr><td><strong>전투 모드</strong></td><td>3분 제한 시간 내 AI 기지 파괴. STAGE 시스템으로 난이도 상승</td></tr>
+<tr><td><strong>생존 모드</strong></td><td>무한 웨이브를 최대한 버팀. 웨이브마다 몬스터 수·엘리트 비율 증가</td></tr>
+</table>
+<p>  - 게임 시작 시 덱에서 <strong>랜덤 카드 1장</strong> 손패에 지급</p>
+<p>  - 승패 확정 시 <code>Time.timeScale = 0</code>으로 즉시 게임 정지</p>
+<p>  - 결과 화면에서 재시작 버튼 → timeScale 복원 후 씬 리로드</p>
+<h3>핵심 시스템</h3>
+<ul>
+<li><strong>4. 속성 에너지 시스템</strong> (GDD.md)</li>
+</ul>
+<p>  - 룰렛 결과로 획득되는 자원. 카드 배치 시 소모된다.</p>
+<table>
+<tr><th>속성</th><th>아이콘</th><th>UI 색상</th></tr>
+<tr><td>불(Fire)</td><td>🔥</td><td>#FF8833</td></tr>
+<tr><td>철(Iron)</td><td>⚔</td><td>#99CCFF</td></tr>
+<tr><td>생(Life)</td><td>💚</td><td>#33FF77</td></tr>
+</table>
+<p>  - HUD <strong>우상단</strong>에 아이콘 + 숫자 표시. 0일 때 회색으로 흐려짐</p>
+<p>  - 배치 실패(에너지 부족) 시 부족한 속성 레이블 빨간색 점멸(4회)</p>
+<p>  - 손패 카드 비용: 속성 색상으로 표시, 부족한 속성은 빨간색 강조</p>
+<ul>
+<li><strong>5.1 행운(Luck) 충전</strong> (GDD.md)</li>
+</ul>
+<table>
+<tr><th>항목</th><th>수치</th></tr>
+<tr><td>행운 자동 충전 주기</td><td>2초마다 +1</td></tr>
+<tr><td>시작 시 지급</td><td>행운 3회</td></tr>
+<tr><td>릴 1개 정지 비용</td><td>행운 1회</td></tr>
+</table>
+<ul>
+<li><strong>5.2 릴 동작 방식</strong> (GDD.md)</li>
+</ul>
+<p>  - 룰렛은 <strong>항상 자동으로 회전</strong> (게임 내내 멈추지 않음)</p>
+<p>  - 버튼 클릭마다 <strong>행운 1 소모</strong> → 릴 하나 정지</p>
+<p>  - 3개 모두 정지 → 에너지 계산 후 자동으로 다음 스핀 시작</p>
+<ul>
+<li><strong>6. 카드 &amp; 손패</strong> (GDD.md)</li>
+</ul>
+<p>  - 손패 슬롯 4개. <strong>항상 가득 찬 상태</strong> 유지 — 카드 사용 즉시 덱에서 보충</p>
+<p>  - 카드 종류: 유닛 / 건물 / 스킬 / 버프</p>
+<h3>진행/승패 규칙</h3>
+<ul>
+<li><strong>16. 생존 모드 웨이브</strong> (GDD.md)</li>
+</ul>
+<table>
+<tr><th>항목</th><th>공식</th></tr>
+<tr><td>웨이브당 몬스터 수</td><td>min(1 + (웨이브-1)/3, 5마리)</td></tr>
+<tr><td>엘리트 출현 확률</td><td>min((웨이브-1) × 7%, 60%)</td></tr>
+<tr><td>웨이브 간격</td><td>max(2초, 6초 - 웨이브 × 0.18초)</td></tr>
+</table>
+<ul>
+<li><strong>20. 승패 조건</strong> (GDD.md)</li>
+</ul>
+<table>
+<tr><th>조건</th><th>결과</th></tr>
+<tr><td>내 기지 HP = 0</td><td>패배</td></tr>
+<tr><td>적 기지 HP = 0</td><td>승리</td></tr>
+<tr><td>3분 타임오버</td><td>기지 HP 높은 쪽 승리 (동률=무승부)</td></tr>
+</table>
+<p>  - 결과 확정 시 <code>Time.timeScale = 0</code> 즉시 정지.</p>
+<ul>
+<li><strong>16. 생존 모드 웨이브</strong> (../LotteryFantasy/docs/GDD.md)</li>
+</ul>
+<table>
+<tr><th>항목</th><th>공식</th></tr>
+<tr><td>웨이브당 몬스터 수</td><td>min(1 + (웨이브-1)/3, 5마리)</td></tr>
+<tr><td>엘리트 출현 확률</td><td>min((웨이브-1) × 7%, 60%)</td></tr>
+<tr><td>웨이브 간격</td><td>max(2초, 6초 - 웨이브 × 0.18초)</td></tr>
+</table>
+<h3>UI/HUD/피드백</h3>
+<ul>
+<li><strong>UX 원칙</strong> (기획서)</li>
+</ul>
+<p>  - 주요 버튼은 44px 이상, 한 화면의 강조 CTA는 하나로 유지한다.</p>
+<p>  - HUD 같은 레이어 요소는 겹치지 않게 배치하고, 결과 피드백은 400ms 이내에 전달한다.</p>
+<h3>구현 메모/미결</h3>
+<ul>
+<li><strong>LotteryFantasy — 게임 기획서</strong> (GDD.md)</li>
+</ul>
+<p>  - &gt; 최종 업데이트: 2026-05-06 (구현 현황 반영)</p>
+<ul>
+<li><strong>23. 향후 과제</strong> (GDD.md)</li>
+</ul>
+<p>  - &gt; ✅ = 구현 완료 / ⚠️ = 부분 구현 / ❌ = 미구현</p>
+<ul>
+<li><strong>기술</strong> (GDD.md)</li>
+</ul>
+<p>  - ❌ 사운드 효과 및 BGM</p>
+<p>  - ❌ 저장/불러오기</p>
+<p>  - ❌ 네트워크 PvP</p>
+<h2>MVP 가설</h2>
+<table>
+<tr><th>기능</th><th>검증할 가설</th><th>검증 방법</th></tr>
+<tr><td>핵심 전투/운영 루프</td><td>플레이어는 한 판 안에서 선택 결과를 이해하면 다음 판을 자발적으로 시작한다.</td><td>1회 플레이 후 재시작률 60% 이상</td></tr>
+<tr><td>위험/보상 표시</td><td>위험과 보상이 동시에 보이면 선택 시간이 줄고 납득도가 오른다.</td><td>주요 선택 평균 8초 이내, 결과 불만 피드백 20% 이하</td></tr>
+<tr><td>성장 보상</td><td>보상이 다음 전략을 바꾸면 반복 플레이 피로가 낮아진다.</td><td>3판 내 서로 다른 빌드 선택률 50% 이상</td></tr>
+</table>
+<h2>레퍼런스 분석</h2>
+<ul>
+<li>장르 기준 레퍼런스는 한 판 시작까지 3단계 이내, 첫 의미 있는 선택까지 30초 이내가 목표다.</li>
+<li>적용 교훈: 규칙 설명보다 먼저 선택 가능한 상황을 보여주고, 결과 화면에서 다음 판의 개선 포인트를 바로 제안한다.</li>
+</ul>
+<h2>현재 개발 상태 예상 수치</h2>
+<ul>
+<li>완성 목표 대비 구현 체감도: 약 57%</li>
+<li>첫 세션에서 핵심 루프가 전달될 가능성: 약 63%</li>
+<li>UI/리소스 일관성 체감: 약 53%</li>
+<li>콘텐츠와 반복 플레이 분량 충족도: 약 53%</li>
+<li>빌드/실행 안정성 기대치: 약 67%</li>
+<li>해석 기준: 현재 문서, 최근 산출물 기록, 연결된 예시 이미지 유무를 기준으로 한 사전 추정치이며 실제 플레이 테스트 후 ±15%p 정도 보정이 필요하다.</li>
+</ul>
+<ul>
+<li>첫 세션 평균 플레이 시간 8분 이상</li>
+<li>첫 세션 내 2회차 진입률 55% 이상</li>
+<li>핵심 선택 화면에서 무응답/이탈률 15% 이하</li>
+</ul>
+<h2>현재 구현 상태</h2>
+<ul>
+<li>이 문서는 2026-06-24 기준으로 현재 플레이 방향과 구현 체감 상태를 요약한다.</li>
+<li>핵심 루프, 조작 원칙, 리소스 적용 현황, 빌드 기준은 프로젝트별 실제 구현과 산출물 기록을 기준으로 계속 보정한다.</li>
+<li>세부 변경 이력은 별도 업데이트 내역서에서 관리하고, 본 기획서는 처음 보는 사람이 현재 방향을 빠르게 이해하는 공유 문서로 유지한다.</li>
+<li>새 기능, 밸런스 변경, 리소스 교체, UX 개선이 들어가면 본문과 HTML 문서를 함께 갱신한다.</li>
+</ul>
+<h2>조작과 UX 원칙</h2>
+<ul>
+<li>주요 버튼은 44px 이상으로 유지하고, 화면당 CTA 강조색은 하나만 사용한다.</li>
+<li>버튼/선택지는 한 번에 5개 이하로 노출해 판단 부담을 줄인다.</li>
+<li>로딩, 빈 상태, 에러, 많은 데이터, 긴 텍스트 상태를 각각 별도 화면/컴포넌트로 확인한다.</li>
+<li>HUD 동일 레이어 요소는 겹치지 않게 배치하고, 겹침이 필요한 효과는 별도 depth/z-order를 쓴다.</li>
+</ul>
+<h2>적용 리소스</h2>
+<ul>
+<li>런타임에 쓰이는 대표 이미지와 UI 리소스는 프로젝트별 asset/public/Resources 경로를 기준으로 관리한다.</li>
+<li>새 이미지가 필요할 때는 프로젝트 접두어를 포함한 lowercase kebab-case 파일명을 사용한다.</li>
+<li>최종 런타임 비주얼은 PNG/WebP 등 비트맵 자산을 우선 사용하고, SVG 또는 코드 드로잉은 문서/임시 참조로만 남긴다.</li>
+</ul>
+<h2>공유용 이미지 미리보기</h2>
+<figure><img src="LotteryFantasy_01_플레이예시.png" alt="LotteryFantasy 공유용 예시 1"><figcaption>LotteryFantasy 공유용 예시 1</figcaption></figure>
+<figure><img src="../LotteryFantasy/docs/LotteryFantasy_01_플레이예시.png" alt="LotteryFantasy 공유용 예시 2"><figcaption>LotteryFantasy 공유용 예시 2</figcaption></figure>
+<figure><img src="LotteryFantasy_레퍼런스_플레이예시_구버전.png" alt="LotteryFantasy 공유용 예시 3"><figcaption>LotteryFantasy 공유용 예시 3</figcaption></figure>
+<ul>
+<li>Assets/Resources/GeneratedArt/lotteryfantasy-buttons-sheet.png</li>
+<li>Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png</li>
+<li>Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png</li>
+</ul>
+<h2>빌드, 테스트, 릴리스</h2>
+<ul>
+<li>프로젝트별 엔진/에디터 빌드 절차를 따른다.</li>
+<li>문서 전용 갱신에서는 실행 파일을 새로 생성하지 않았다.</li>
+</ul>
+<h2>남은 리스크와 다음 우선순위</h2>
+<ul>
+<li>첫 화면에서 게임의 목표와 다음 행동이 5초 안에 보이는지 확인한다.</li>
+<li>주요 선택의 결과 예측과 실제 결과가 어긋나는 지점을 플레이 테스트로 수집한다.</li>
+<li>기획서에 남아 있던 변경 이력성 내용은 업데이트 내역서로 계속 이동해 소개 문서의 밀도를 유지한다.</li>
+</ul>
+</body>
+</html>

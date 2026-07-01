@@ -1,0 +1,617 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-PC-54 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 41260)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PC-54" at "2026-07-01T07:02:45.0358278Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 41260, path: "C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.16.2+bdef8f5
+  Session Id:              0ddc5ff4397c4b6e9e8f9be53cb4a969
+  Correlation Id:          41e2e60491dae73e6432d9756ab08a91
+  External correlation Id: 6221472821264736729
+  Machine Id:              6z7xG4lA7tnd6/+sdSgd0G/nB8I=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-PC-54" (connect: 0.85s, validation: 0.06s, handshake: 0.07s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PC-54-notifications" at "2026-07-01T07:02:45.1621248Z"
+[Licensing::Module] Connected to LicensingClient (PId: 41260, launch time: 0.01, total connection time: 0.98s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully updated license
+Built from '2022.3/respin/2022.3.62f2-4af31df585-v2' branch; Version is '2022.3.62f3 (96770f904ca7) revision 9860879'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) 64bit Professional' Language: 'ko' Physical Memory: 32405 MB
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "14569687781412-stoic-program-UnityPrXXXX"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+[Licensing::Client] Successfully resolved entitlement details
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+C:\Development\14_LT\LotteryFantasy
+-buildTarget
+StandaloneWindows64
+-buildWindows64Player
+C:\Development\14_LT\release\LotteryFantasy_v0.3.2_portable.exe
+-logFile
+C:\Development\14_LT\unity-build-v032-buildtarget.log
+Successfully changed project path to: C:\Development\14_LT\LotteryFantasy
+C:/Development/14_LT/LotteryFantasy
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [33980]  Target information:
+
+Player connection [33980]  * "[IP] 192.168.0.55 [Port] 55504 [Flags] 2 [Guid] 240778335 [EditorId] 240778335 [Version] 1048832 [Id] WindowsEditor(7,S2309-PC-54) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [33980] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [33980] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[PhysX] Initialized MultithreadedTaskDispatcher with 12 workers.
+[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-14264" after 0.3 seconds.
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 59 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.12.4 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.collab-proxy@2.12.4)
+    com.unity.ide.rider@3.0.36 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.ide.rider@3.0.36)
+    com.unity.ide.visualstudio@2.0.22 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.ide.visualstudio@2.0.22)
+    com.unity.test-framework@1.1.33 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.test-framework@1.1.33)
+    com.unity.textmeshpro@3.0.7 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.textmeshpro@3.0.7)
+    com.unity.timeline@1.7.7 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.timeline@1.7.7)
+    com.unity.visualscripting@1.9.4 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.visualscripting@1.9.4)
+    com.unity.ext.nunit@1.0.6 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.ext.nunit@1.0.6)
+    com.unity.mathematics@1.2.6 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.mathematics@1.2.6)
+    com.unity.burst@1.8.21 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.burst@1.8.21)
+    com.unity.2d.animation@9.2.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.animation@9.2.0)
+    com.unity.2d.pixel-perfect@5.1.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.pixel-perfect@5.1.0)
+    com.unity.2d.psdimporter@8.1.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.psdimporter@8.1.0)
+    com.unity.2d.spriteshape@9.1.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.spriteshape@9.1.0)
+    com.unity.2d.tilemap.extras@3.1.3 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.tilemap.extras@3.1.3)
+    com.unity.2d.aseprite@1.1.9 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.aseprite@1.1.9)
+    com.unity.searcher@4.9.2 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.searcher@4.9.2)
+    com.unity.2d.common@8.1.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.common@8.1.0)
+    com.unity.collections@1.2.4 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.collections@1.2.4)
+  Built-in packages:
+    com.unity.feature.2d@2.0.1 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.feature.2d@2.0.1)
+    com.unity.render-pipelines.universal@14.0.12 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.render-pipelines.universal@14.0.12)
+    com.unity.ugui@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.ugui@1.0.0)
+    com.unity.modules.ai@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.ai@1.0.0)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.androidjni@1.0.0)
+    com.unity.modules.animation@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.animation@1.0.0)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.assetbundle@1.0.0)
+    com.unity.modules.audio@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.audio@1.0.0)
+    com.unity.modules.cloth@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.cloth@1.0.0)
+    com.unity.modules.director@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.director@1.0.0)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.imageconversion@1.0.0)
+    com.unity.modules.imgui@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.imgui@1.0.0)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.jsonserialize@1.0.0)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.particlesystem@1.0.0)
+    com.unity.modules.physics@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.physics@1.0.0)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.physics2d@1.0.0)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.screencapture@1.0.0)
+    com.unity.modules.terrain@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.terrain@1.0.0)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.terrainphysics@1.0.0)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.tilemap@1.0.0)
+    com.unity.modules.ui@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.ui@1.0.0)
+    com.unity.modules.uielements@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.uielements@1.0.0)
+    com.unity.modules.umbra@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.umbra@1.0.0)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unityanalytics@1.0.0)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.vehicles@1.0.0)
+    com.unity.modules.video@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.video@1.0.0)
+    com.unity.modules.vr@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.vr@1.0.0)
+    com.unity.modules.wind@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.wind@1.0.0)
+    com.unity.modules.xr@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.xr@1.0.0)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.modules.subsystems@1.0.0)
+    com.unity.render-pipelines.core@14.0.12 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.render-pipelines.core@14.0.12)
+    com.unity.shadergraph@14.0.12 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.shadergraph@14.0.12)
+    com.unity.render-pipelines.universal-config@14.0.10 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.render-pipelines.universal-config@14.0.10)
+    com.unity.2d.sprite@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.sprite@1.0.0)
+    com.unity.2d.tilemap@1.0.0 (location: C:\Development\14_LT\LotteryFantasy\Library\PackageCache\com.unity.2d.tilemap@1.0.0)
+[Subsystems] No new subsystems found in resolved package list.
+Package Manager log level set to [2]
+[Package Manager] Done registering packages in 0.10 seconds
+Targeting platform: StandaloneWindows64
+Refreshing native plugins compatible for Editor in 42.82 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.62f3 (96770f904ca7)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Development/14_LT/LotteryFantasy/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4060 Ti (ID=0x2803)
+    Vendor:   NVIDIA
+    VRAM:     7949 MB
+    Driver:   32.0.15.8180
+[Licensing::Client] Successfully resolved entitlement details
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56264
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+[Licensing::Client] Successfully resolved entitlement details
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.62f3/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.033007 seconds.
+- Loaded All Assemblies, in  0.381 seconds
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 3082 ms
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.313 seconds
+Domain Reload Profiling: 3684ms
+	BeginReloadAssembly (112ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (95ms)
+	LoadAllAssembliesAndSetupDomain (124ms)
+		LoadAssemblies (102ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (120ms)
+			TypeCache.Refresh (119ms)
+				TypeCache.ScanAssembly (107ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (3313ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (3280ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (3151ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (2ms)
+			ProcessInitializeOnLoadAttributes (86ms)
+			ProcessInitializeOnLoadMethodAttributes (39ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Development\14_LT\LotteryFantasy\
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 30.7145ms
+Starting: C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Development/14_LT/LotteryFantasy
+DisplayProgressbar: Compiling Scripts
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@1.8.21\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 71.8052ms
+ExitCode: 0 Duration: 0s498ms
+[291/834    0s] WriteResponseFile Library/Bee/artifacts/rsp/4747638433968585886.rsp
+[644/834    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.45 seconds), 2 items updated, 834 evaluated
+AssetDatabase: script compilation time: 0.993391s
+Begin MonoManager ReloadAssembly
+Total cache size 266438615
+Total cache size after purge 266438615
+- Loaded All Assemblies, in  0.824 seconds
+Refreshing native plugins compatible for Editor in 23.20 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Refreshing native plugins compatible for Editor in 26.09 ms, found 5 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.663 seconds
+Domain Reload Profiling: 3463ms
+	BeginReloadAssembly (135ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (24ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (54ms)
+	LoadAllAssembliesAndSetupDomain (580ms)
+		LoadAssemblies (456ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (197ms)
+			TypeCache.Refresh (161ms)
+				TypeCache.ScanAssembly (147ms)
+			ScanForSourceGeneratedMonoScriptInfo (26ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (2664ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2477ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (20ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (88ms)
+			ProcessInitializeOnLoadAttributes (2204ms)
+			ProcessInitializeOnLoadMethodAttributes (134ms)
+			AfterProcessingInitializeOnLoad (26ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (22ms)
+Asset Pipeline Refresh (id=2871e84b415bac74387811ee22fba8c9): Total: 7.894 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=3149 ms
+		Asset DB Callback time: managed=41 ms, native=2 ms
+		Scripting: domain reloads=1, domain reload time=3640 ms, compile time=996 ms, other=64 ms
+		Project Asset Count: scripts=7394, non-scripts=3301
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeBeforeRefreshCallbacks: 2.114ms
+	ApplyChangesToAssetFolders: 0.047ms
+	Scan: 103.002ms
+	OnSourceAssetsModified: 0.002ms
+	GetAllGuidsForCategorization: 1.725ms
+	CategorizeAssets: 179.897ms
+	ImportOutOfDateAssets: 2768.505ms (1735.733ms without children)
+		CompileScripts: 995.640ms
+		ReloadNativeAssets: 0.019ms
+		UnloadImportedAssets: 33.700ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 2.304ms
+		InitializingProgressBar: 0.002ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 1.108ms
+	PostProcessAllAssets: 41.376ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.000ms
+	UnloadStreamsBegin: 1.125ms
+	PersistCurrentRevisions: 0.223ms
+	UnloadStreamsEnd: 0.045ms
+	GenerateScriptTypeHashes: 2.488ms
+	Untracked: 4795.700ms
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Scanning for USB devices : 12.309ms
+Initializing Unity extensions:
+[Licensing::Client] Successfully resolved entitlement details
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-LotteryFantasy
+[PhysX] Initialized MultithreadedTaskDispatcher with 12 workers.
+ProgressiveSceneManager::Cancel()
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 111 unused Assets / (0.8 MB). Loaded Objects now: 6660.
+Memory consumption went from 168.1 MB to 167.3 MB.
+Total: 4.529300 ms (FindLiveObjects: 0.405400 ms CreateObjectMapping: 0.096000 ms MarkObjects: 3.663400 ms  DeleteObjects: 0.364100 ms)
+
+building x86_64 windows player!
+Start importing Assets/Settings/UniversalRP.asset using Guid(681886c5eb7344803b6206f758bf0b1c) Importer(-1,00000000000000000000000000000000) [PhysX] Initialized MultithreadedTaskDispatcher with 12 workers.
+ -> (artifact id: '1d9db4ffcf6b368a7917054788ec01c6') in 0.011820 seconds
+Refreshing native plugins compatible for Editor in 24.89 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=728345987bc6aa9438462da026c4906f): Total: 0.110 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.4586ms
+Starting: C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aESkipCompile.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
+WorkingDir: C:/Development/14_LT/LotteryFantasy
+ExitCode: 0 Duration: 0s100ms
+*** Tundra build success (0.06 seconds), 0 items updated, 3 evaluated
+Asset Pipeline Refresh (id=494d58c0aadeaf04c82ccacd938fdeb9): Total: 0.011 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+[ScriptCompilation] Requested script compilation because: Recompiling scripts for player build.
+BuildPlayer: start building target 19
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.1865ms
+Starting: C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aP.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssembliesAndTypeDB
+WorkingDir: C:/Development/14_LT/LotteryFantasy
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@1.8.21\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 56.7289ms
+ExitCode: 0 Duration: 0s452ms
+[309/509    0s] WriteResponseFile Library/Bee/artifacts/rsp/4747638433968585886.rsp
+[393/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.TestRunner.pdb
+[407/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.TestRunner.dll
+[428/509    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[455/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Common.Runtime.dll
+[456/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.IK.Runtime.dll
+[457/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Timeline.dll
+[458/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/SlotDefense.dll
+[459/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Internal.dll
+[460/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.PixelPerfect.dll
+[461/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll
+[462/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll
+[463/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.dll
+[464/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll
+[465/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.dll
+[466/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.UI.dll
+[467/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Core.dll
+[468/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Animation.Runtime.dll
+[469/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.SpriteShape.Runtime.dll
+[470/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.State.dll
+[471/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.dll
+[472/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+[473/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll
+[474/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Assembly-CSharp.dll
+[475/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Tilemap.Extras.dll
+[476/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.dll
+[477/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll
+[478/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Flow.dll
+[479/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.dll
+[480/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Core.pdb
+[481/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Mathematics.pdb
+[482/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.State.pdb
+[483/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll
+[484/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Config.Runtime.pdb
+[485/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Assembly-CSharp.pdb
+[486/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Tilemap.Extras.pdb
+[487/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.InternalAPIEngineBridge.001.pdb
+[488/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.PixelPerfect.pdb
+[489/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.pdb
+[490/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.IK.Runtime.pdb
+[491/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.pdb
+[492/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Common.Runtime.pdb
+[493/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.TextMeshPro.pdb
+[494/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Collections.pdb
+[495/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.VisualScripting.Flow.pdb
+[496/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.Animation.Runtime.pdb
+[497/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/UnityEngine.UI.pdb
+[498/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.pdb
+[499/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.Runtime.pdb
+[500/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.pdb
+[501/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Burst.pdb
+[502/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.2D.SpriteShape.Runtime.pdb
+[503/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.Timeline.pdb
+[504/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipelines.Universal.2D.Internal.pdb
+[505/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/SlotDefense.pdb
+[506/509    0s] CopyFiles Library/Bee/PlayerScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.pdb
+*** Tundra build success (0.41 seconds), 56 items updated, 509 evaluated
+Total cache size 266438615
+Total cache size after purge 266438615
+Total cache size 266438615
+Total cache size after purge 266438615
+Not rebuilding Data files -- no changes
+Asset Pipeline Refresh (id=e6a027b852602ee48bb7a961ff3bc050): Total: 0.055 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+
+
+Mono dependencies included in the build
+Dependency assembly - Mono.Security.dll
+Dependency assembly - Unity.Collections.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Shaders.dll
+Dependency assembly - Unity.2D.SpriteShape.Runtime.dll
+Dependency assembly - System.Configuration.dll
+Dependency assembly - System.EnterpriseServices.dll
+Dependency assembly - Unity.RenderPipelines.Core.Runtime.dll
+Dependency assembly - Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+Dependency assembly - Unity.Mathematics.dll
+Dependency assembly - System.Net.Http.dll
+Dependency assembly - System.Numerics.dll
+Dependency assembly - System.ComponentModel.Composition.dll
+Dependency assembly - Assembly-CSharp.dll
+Dependency assembly - Unity.InternalAPIEngineBridge.001.dll
+Dependency assembly - netstandard.dll
+Dependency assembly - Unity.2D.IK.Runtime.dll
+Dependency assembly - Unity.Burst.dll
+Dependency assembly - Unity.VisualScripting.State.dll
+Dependency assembly - Unity.Burst.Unsafe.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Config.Runtime.dll
+Dependency assembly - Unity.RenderPipelines.Core.ShaderLibrary.dll
+Dependency assembly - Unity.VisualScripting.Core.dll
+Dependency assembly - Unity.RenderPipeline.Universal.ShaderLibrary.dll
+Dependency assembly - Unity.Timeline.dll
+Dependency assembly - System.dll
+Dependency assembly - Unity.2D.Animation.Runtime.dll
+Dependency assembly - System.Runtime.Serialization.dll
+Dependency assembly - System.Xml.dll
+Dependency assembly - mscorlib.dll
+Dependency assembly - System.Runtime.dll
+Dependency assembly - Unity.TextMeshPro.dll
+Dependency assembly - System.ServiceModel.Internals.dll
+Dependency assembly - SlotDefense.dll
+Dependency assembly - System.Transactions.dll
+Dependency assembly - System.Xml.Linq.dll
+Dependency assembly - Unity.RenderPipelines.Universal.2D.Internal.dll
+Dependency assembly - Unity.2D.PixelPerfect.dll
+Dependency assembly - System.Data.DataSetExtensions.dll
+Dependency assembly - System.Drawing.dll
+Dependency assembly - Unity.Collections.LowLevel.ILSupport.dll
+Dependency assembly - Unity.2D.Common.Runtime.dll
+Dependency assembly - Unity.VisualScripting.Antlr3.Runtime.dll
+Dependency assembly - System.IO.Compression.dll
+Dependency assembly - System.IO.Compression.FileSystem.dll
+Dependency assembly - Unity.2D.Tilemap.Extras.dll
+Dependency assembly - UnityEngine.UI.dll
+Dependency assembly - Unity.RenderPipelines.Universal.Runtime.dll
+Dependency assembly - System.Core.dll
+Dependency assembly - System.Data.dll
+Dependency assembly - Unity.VisualScripting.Flow.dll
+Dependency assembly - System.Security.dll
+
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 0.3451ms
+Starting: C:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\bee_backend.exe --ipc --dagfile="Library/Bee/Player45e7f2b6.dag" --profile="Library/Bee/backend1.traceevents" Player
+WorkingDir: C:/Development/14_LT/LotteryFantasy
+[W] Failed to delete "Library\Bee\artifacts\WinPlayerBuildProgram\AsyncPluginsFromLinkerSymbols" (recursively), will retry: 액세스가 거부되었습니다.
+[W] Failed to delete "Library\Bee\artifacts\WinPlayerBuildProgram\AsyncPluginsFromLinkerSymbols" (recursively): 액세스가 거부되었습니다.
+[ 93/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UnityTestProtocolModule.dll
+[ 94/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll
+[ 95/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UnityConnectModule.dll
+[ 96/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UnityAnalyticsModule.dll
+[ 97/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UnityCurlModule.dll
+[ 98/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll
+[ 99/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UmbraModule.dll
+[100/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TerrainPhysicsModule.dll
+[101/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll
+[102/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UIModule.dll
+[103/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TLSModule.dll
+[104/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TerrainModule.dll
+[105/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.SubsystemsModule.dll
+[106/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.SubstanceModule.dll
+[107/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TilemapModule.dll
+[108/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.StreamingModule.dll
+[109/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.TextRenderingModule.dll
+[110/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.SpriteShapeModule.dll
+[111/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.UIElementsModule.dll
+[112/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.SpriteMaskModule.dll
+[113/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.SharedInternalsModule.dll
+[114/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ScreenCaptureModule.dll
+[115/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.PropertiesModule.dll
+[116/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll
+[117/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.PhysicsModule.dll
+[118/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ProfilerModule.dll
+[119/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.Physics2DModule.dll
+[120/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ParticleSystemModule.dll
+[121/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.PerformanceReportingModule.dll
+[122/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.LocalizationModule.dll
+[123/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.JSONSerializeModule.dll
+[124/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.InputModule.dll
+[125/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.NVIDIAModule.dll
+[126/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.InputLegacyModule.dll
+[127/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ImageConversionModule.dll
+[128/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.GridModule.dll
+[129/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.IMGUIModule.dll
+[130/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.DirectorModule.dll
+[131/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.GameCenterModule.dll
+[132/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.GIModule.dll
+[133/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.HotReloadModule.dll
+[134/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.DSPGraphModule.dll
+[135/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.CrashReportingModule.dll
+[136/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.CoreModule.dll
+[137/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ContentLoadModule.dll
+[138/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ClusterRendererModule.dll
+[139/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ClusterInputModule.dll
+[140/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AssetBundleModule.dll
+[142/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AnimationModule.dll
+[143/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AudioModule.dll
+[144/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AndroidJNIModule.dll
+[145/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ClothModule.dll
+[146/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AccessibilityModule.dll
+[147/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Plugins/x86_64/libonigwrap.dll
+[148/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.ARModule.dll
+[149/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Managed/UnityEngine.AIModule.dll
+[150/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/ScriptingAssemblies.json
+[151/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/Resources/unity_builtin_extra
+[152/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/RuntimeInitializeOnLoads.json
+[153/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/sharedassets0.assets
+[154/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/sharedassets0.assets.resS
+[155/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/level0
+[156/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/globalgamemanagers
+[157/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/globalgamemanagers.assets
+[158/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/globalgamemanagers.assets.resS
+[159/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/resources.assets.resS
+[160/163    0s] CopyFiles C:/Development/14_LT/release/LotteryFantasy_v0.3.2_portable_Data/resources.assets
+[161/163    0s] GenerateNativePluginsForAssemblies Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker
+Failed to remove directory Library\Bee\artifacts\WinPlayerBuildProgram\AsyncPluginsFromLinkerSymbols as part of preparing to actually running this node
+*** Tundra build failed (0.06 seconds), 67 items updated, 159 evaluated
+DisplayProgressbar: Incremental Player Build
+ExitCode: 3 Duration: 0s116ms
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 87 unused Assets / (1.5 MB). Loaded Objects now: 6717.
+Memory consumption went from 172.2 MB to 170.8 MB.
+Total: 7.207000 ms (FindLiveObjects: 0.683300 ms CreateObjectMapping: 0.164200 ms MarkObjects: 5.671100 ms  DeleteObjects: 0.687200 ms)
+
+Build Finished, Result: Failure.
+##utp:{"type":"PlayerBuildInfo","version":2,"phase":"Immediate","time":1782889390985,"processId":14264,"steps":[{"description":"Preprocess Player","duration":78},{"description":"Prepare For Build","duration":4},{"description":"ProducePlayerScriptAssemblies","duration":1097},{"description":"Verify Build setup","duration":2960},{"description":"Prepare assets for target platform","duration":59},{"description":"Prepare splash screen","duration":1},{"description":"Run script only build","duration":4801},{"description":"Postprocess built player","duration":350}],"duration":9350}
+[PhysX] Initialized MultithreadedTaskDispatcher with 12 workers.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Temp/__Backupscenes/0.backup'
+	Deserialize:            0.758 ms
+	Integration:            227.895 ms
+	Integration of assets:  0.001 ms
+	Thread Wait Time:       0.013 ms
+	Total Operation Time:   228.667 ms
+Unloading 0 unused Assets / (0.8 KB). Loaded Objects now: 6715.
+Memory consumption went from 165.9 MB to 165.9 MB.
+Total: 5.456100 ms (FindLiveObjects: 0.450800 ms CreateObjectMapping: 0.098400 ms MarkObjects: 4.898100 ms  DeleteObjects: 0.007800 ms)
+
+Building Player failed
+Failed to build player.
+Exiting without the bug reporter. Application will terminate with return code 1Total cache size 266438615
+Total cache size after purge 266438615

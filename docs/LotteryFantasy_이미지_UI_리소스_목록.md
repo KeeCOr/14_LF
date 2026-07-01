@@ -8,7 +8,7 @@
 | 구분 | 파일 | 용도 | 구성 |
 |---|---|---|---|
 | 카드/유닛 아이콘 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-card-unit-icons-sheet.png` | 카드 초상화, 유닛 선택 UI, 덱 보기 | Fire Knight, Iron Golem, Life Cleric, Forest Ranger, Bombardier, Arcane Mage |
-| UI 아틀라스 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png` | HUD, 슬롯머신, 버튼, 재화/속성 아이콘 | Player/Enemy HP 프레임, 왕관 배지, 릴 프레임, STOP/Draw 버튼 베이스, 행운 오브, Fire/Iron/Life 심볼, 코인, 보물상자, 카드 뒷면, 진영 방패 |
+| UI 아틀라스 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-ui-atlas-sheet.png` | HUD, 슬롯머신, 버튼, 재화/속성 아이콘 | Player/Enemy HP 프레임, 왕관 배지, 릴 프레임, STOP/Draw 버튼 베이스, 행운 오브, Fire/Iron/Life 심볼(2026-06-29 런타임 교체), 코인, 보물상자, 카드 뒷면, 진영 방패 |
 | 전장 오브젝트 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-battlefield-props-sheet.png` | 기지, 포털, 전장 장식, 배경 소품 | 파랑/빨강 타워, 포털, 석벽, 화로, 울타리, 나무, 덤불, 바위, 길 타일, 왕관 명패 |
 | 버튼 시트 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-buttons-sheet.png` | STOP, Draw, 확인, 보상, 비활성, 탭, 토글 등 버튼 교체 후보 | 빨강/파랑/초록/금색/비활성 롱 버튼, 사각 아이콘 버튼, 원형 닫기 버튼, ON/OFF 토글, 탭 버튼 |
 | 프레임 시트 | `LotteryFantasy/Assets/Resources/GeneratedArt/lotteryfantasy-frames-sheet.png` | HUD, 슬롯머신, 카드, 모달, 툴팁 등 프레임 교체 후보 | 슬롯머신 프레임, 카드 트레이, 타이틀 배너, HP 프레임, 카드 등급 프레임, 모달/툴팁/카운터 프레임 |
@@ -41,6 +41,6 @@
 |---|---|---|
 | 높음 | 개별 카드 아이콘 PNG | 런타임에서 카드별 `CardData.icon`에 바로 연결하기 쉬움 |
 | 높음 | 버튼/프레임 개별 PNG | 생성된 시트를 확정 디자인별로 분리하면 코드 연결과 9-slice 설정이 쉬움 |
-| 중간 | 슬롯 릴 개별 심볼 PNG | 릴 회전 중 이모지 대신 실제 심볼 이미지로 표시 가능 |
+| 완료 | 슬롯 릴 속성 심볼 시인성 개선 | `SlotMachineUI`가 참조하는 UI 아틀라스 Fire/Iron/Life 영역을 같은 경로에서 교체해 릴 회전 중 속성 구분을 강화 |
 | 중간 | 스킬 이펙트 시트 | 번개/포털폭격/힐/버프 사용감 강화 |
 | 낮음 | 결과 화면 배너 | 승리/패배 화면 완성도 강화 |
