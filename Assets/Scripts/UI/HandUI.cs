@@ -78,6 +78,8 @@ namespace SlotDefense
                     string skillAction = skillSelected
                         ? "\n<color=#FFD66B>> CAST TARGET</color>"
                         : "\n<color=#B98CFF>[CLICK CAST]</color>";
+                    if (!canAfford)
+                        skillAction = "\n" + MissingCostLine(energy, ec);
                     cardNames[i].text = $"<color=#C377FF><b>MAGIC</b></color>\n<b>{card.cardName}</b>{skillAction}";
                     bgColor = UIStyle.CardBackground(CardType.Skill, canAfford, skillSelected);
                 }
@@ -88,7 +90,9 @@ namespace SlotDefense
                     bool canAfford = energy.CanAfford(ec);
                     canUse = canAfford;
 
-                    string action = isSelected ? "\n<color=#88FFCC>> DEPLOY</color>" : "";
+                    string action = canAfford
+                        ? isSelected ? "\n<color=#88FFCC>> DEPLOY</color>" : ""
+                        : "\n" + MissingCostLine(energy, ec);
                     string typeLabel = card.cardType == CardType.Building
                         ? "<color=#D8E8FF><b>BUILD</b></color>"
                         : "<color=#6BD5FF><b>UNIT</b></color>";
@@ -194,6 +198,18 @@ namespace SlotDefense
             valueText.raycastTarget = false;
 
             return new CostBadge(root, iconImage, valueText, element);
+        }
+
+        private static string MissingCostLine(ElementalEnergySystem energy, ElementalCost cost)
+        {
+            var missing = ElementalEnergySystem.MissingCost(energy, cost);
+            if (missing.IsZero) return "<color=#88FFCC>READY</color>";
+
+            var parts = new List<string>(3);
+            if (missing.fire > 0) parts.Add("F" + missing.fire);
+            if (missing.iron > 0) parts.Add("I" + missing.iron);
+            if (missing.life > 0) parts.Add("L" + missing.life);
+            return "<color=#FF6F66><b>NEED " + string.Join(" ", parts) + "</b></color>";
         }
 
         private void UpdateCostBadges(int index, CardData card, ElementalEnergySystem energy)

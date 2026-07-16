@@ -382,7 +382,9 @@ namespace SlotDefense
                 yield return new WaitUntil(() => !_reelLanding[0] && !_reelLanding[1] && !_reelLanding[2]);
 
                 _showingResult = true;
+                var spinReels = GameManager.Instance.PendingReels;
                 var energy = GameManager.Instance.PendingEnergy;
+                var advice = SpinOutcomeAdvisor.Describe(spinReels, energy);
                 GameManager.Instance.CommitSpin();
 
                 var parts = new List<string>();
@@ -391,17 +393,16 @@ namespace SlotDefense
                 if (energy.life > 0) parts.Add($"LIFE x{energy.life}");
                 if (resultText != null)
                 {
-                    resultText.text = string.Join("  ", parts);
-                    resultText.color = WhiteColor;
-                    resultText.fontSize = 24;
+                    string energyLine = string.Join("  ", parts);
+                    resultText.text = $"{advice.Headline}\n{energyLine}\n{advice.Change}\n{advice.NextDecision}";
+                    resultText.color = advice.Tone == SpinOutcomeTone.Jackpot ? GoldColor : WhiteColor;
+                    resultText.fontSize = advice.Tone == SpinOutcomeTone.Risky ? 21 : 24;
                 }
 
-                bool isTriple = energy.fire >= 6 || energy.iron >= 6 || energy.life >= 6;
-                if (isTriple)
+                if (advice.Tone == SpinOutcomeTone.Jackpot)
                 {
                     if (resultText != null)
                     {
-                        resultText.text = "JACKPOT!\n" + resultText.text;
                         resultText.color = GoldColor;
                         resultText.fontSize = 36;
                     }
@@ -493,3 +494,4 @@ namespace SlotDefense
         }
     }
 }
+

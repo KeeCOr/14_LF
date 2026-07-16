@@ -75,7 +75,11 @@ namespace SlotDefense
 
             if (card.cardType == CardType.Skill)
             {
-                if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost)) return;
+                if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost))
+                {
+                    EnergyHUD.Instance?.FlashInsufficient(card.ElementalCost);
+                    return;
+                }
                 GameManager.Instance.Hand.Use(slotIndex);
                 GameManager.Instance.UseSkill(card.skillEffect, world);
                 return;
@@ -84,7 +88,11 @@ namespace SlotDefense
             if (card.cardType != CardType.Unit) return;
             if (world.x > -0.5f) return;
 
-            if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost)) return;
+            if (!GameManager.Instance.ElementalEnergy.TryConsume(card.ElementalCost))
+            {
+                EnergyHUD.Instance?.FlashInsufficient(card.ElementalCost);
+                return;
+            }
             GameManager.Instance.Hand.Use(slotIndex);
             world.x = Mathf.Min(world.x, -0.5f);
             var prefab = card.unitPrefab != null ? card.unitPrefab : arenaSystem.unitPrefab;

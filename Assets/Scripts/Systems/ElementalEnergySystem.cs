@@ -30,6 +30,20 @@ namespace SlotDefense
         public bool CanAfford(ElementalCost cost) =>
             _fire >= cost.fire && _iron >= cost.iron && _life >= cost.life;
 
+        public ElementalCost MissingCost(ElementalCost cost) => MissingCost(this, cost);
+
+        public static ElementalCost MissingCost(ElementalEnergySystem energy, ElementalCost cost)
+        {
+            int fire = energy != null ? energy.Fire : 0;
+            int iron = energy != null ? energy.Iron : 0;
+            int life = energy != null ? energy.Life : 0;
+
+            return new ElementalCost(
+                Mathf.Max(0, cost.fire - fire),
+                Mathf.Max(0, cost.iron - iron),
+                Mathf.Max(0, cost.life - life));
+        }
+
         public bool TryConsume(ElementalCost cost)
         {
             if (!CanAfford(cost)) return false;
