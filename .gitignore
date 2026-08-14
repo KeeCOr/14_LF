@@ -27,3 +27,7 @@ Thumbs.db
 
 # vsconfig (editor-local)
 .vsconfig
+
+# Local test/build reports
+TestResults*.xml
+unity-*.log
