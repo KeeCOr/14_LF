@@ -29,6 +29,7 @@ namespace SlotDefense
 
             if (GameManager.Instance?.IsSurvivalMode == true)
             {
+                RuntimeAudioDirector.PlayCue(RuntimeAudioDirector.CueResultFailure);
                 RecordSystem.RecordLoss();
                 var arena = FindObjectOfType<ArenaSystem>();
                 int wave  = arena != null ? arena.SurvivalWave : 0;
@@ -38,9 +39,18 @@ namespace SlotDefense
 
             switch (result)
             {
-                case BattleResult.PlayerWin:  RecordSystem.RecordWin();  break;
-                case BattleResult.PlayerLose: RecordSystem.RecordLoss(); break;
-                case BattleResult.Draw:       RecordSystem.RecordDraw(); break;
+                case BattleResult.PlayerWin:
+                    RuntimeAudioDirector.PlayCue(RuntimeAudioDirector.CueResultSuccess);
+                    RecordSystem.RecordWin();
+                    break;
+                case BattleResult.PlayerLose:
+                    RuntimeAudioDirector.PlayCue(RuntimeAudioDirector.CueResultFailure);
+                    RecordSystem.RecordLoss();
+                    break;
+                case BattleResult.Draw:
+                    RuntimeAudioDirector.PlayCue(RuntimeAudioDirector.CueTransition);
+                    RecordSystem.RecordDraw();
+                    break;
             }
             string outcome = result switch
             {

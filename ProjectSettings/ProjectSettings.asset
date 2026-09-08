@@ -141,7 +141,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 0.3.2
   tvOSBundleVersion: 0.3.2
-  bundleVersion: 0.3.2
+  bundleVersion: 0.4.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
