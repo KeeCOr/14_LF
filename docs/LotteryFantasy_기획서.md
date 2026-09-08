@@ -282,3 +282,12 @@ Lottery Fantasy는 3릴 슬롯 결과로 속성 에너지를 얻고, 그 에너�
 1. Triple Jackpot 시각/사운드 보강으로 핵심 보상 순간의 임팩트 강화
 2. PokerStrike와 포지션 차별화 — LotteryFantasy는 '운을 전략으로 전환하는 캐주얼', PokerStrike는 '족보 조합 코어 전략'으로 명확히 분리
 3. WebGL 빌드 추가로 itch.io 무료 배포 → 피드백 수집 후 Steam 유료 전환 검토
+
+## 오디오 시스템 (2026-09-08 업데이트)
+
+- **BGM**: Kenney Music Loops의 CC0 OGG 루프 1곡
+- **SFX**: 자체 제작한 결정론적 CC0 WAV 6종으로 입력·액션·위험·전환·성공·실패 구분
+- **설정**: BGM과 SFX 볼륨 및 음소거 상태를 분리 저장
+- **재생**: 브라우저는 사용자 제스처 이후 시작하며 Unity는 Resources 기반 AudioSource로 로드
+- **권장 믹스**: BGM 0.28, SFX 0.70
+- **라이선스**: 각 오디오 자산 폴더에 CC0 고지 보관
