@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify project structure
+        run: |
+          echo "Unity project structure check"
+          ls -la
+          test -f steam_appid.txt && echo "steam_appid.txt OK" || echo "WARNING: steam_appid.txt missing"
+          test -d steam && echo "steam/ dir OK" || echo "WARNING: steam/ dir missing"
+          test -d docs && echo "docs/ dir OK" || echo "WARNING: docs/ dir missing"
+      # Unity build requires Unity Editor license - use Unity Cloud Build or set up Unity CI separately
+      # - uses: game-ci/unity-builder@v4
+      #   with:
+      #     targetPlatform: StandaloneWindows64
