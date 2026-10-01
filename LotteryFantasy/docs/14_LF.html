@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LotteryFantasy — 게임 기획서 v2.1</title>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --surface2: #1e2631;
+    --border:   #30363d;
+    --text:     #c9d1d9;
+    --muted:    #8b949e;
+    --fire:     #ff8833;
+    --iron:     #99ccff;
+    --life:     #33ff77;
+    --gold:     #ffd700;
+    --accent:   #58a6ff;
+    --green:    #3fb950;
+    --red:      #f85149;
+    --orange:   #d29922;
+    --purple:   #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  a { color: var(--accent); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 24px 48px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; color: #fff; }
+  .hero h1 span { color: var(--gold); }
+  .hero .sub { color: var(--muted); margin-top: 8px; font-size: 1rem; }
+  .hero .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; }
+  .tag-genre  { background: #1c2a3a; color: var(--accent); border: 1px solid #2a4a7a; }
+  .tag-plat   { background: #1a2a1a; color: var(--green);  border: 1px solid #2a5a2a; }
+  .tag-status { background: #2a1a0a; color: var(--fire);   border: 1px solid #5a3a0a; }
+
+  /* TOC */
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px 28px; margin: 32px 0;
+    columns: 2; column-gap: 40px;
+  }
+  .toc h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; column-span: all; }
+  .toc a { color: var(--text); text-decoration: none; display: block; padding: 2px 0; font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '§ '; color: var(--muted); }
+
+  /* Section */
+  section { margin-top: 56px; }
+  section h2 {
+    font-size: 1.5rem; font-weight: 700; color: #fff;
+    padding-bottom: 10px; border-bottom: 2px solid var(--border);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  section h2 .num {
+    background: var(--accent); color: #000;
+    border-radius: 6px; padding: 1px 9px;
+    font-size: 0.85rem; font-weight: 800;
+  }
+  h3 { font-size: 1.1rem; color: var(--accent); margin: 20px 0 10px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  th {
+    background: var(--surface2); color: var(--muted);
+    font-weight: 600; text-transform: uppercase; font-size: 0.78rem;
+    letter-spacing: 0.5px; padding: 8px 12px; text-align: left;
+    border: 1px solid var(--border);
+  }
+  td { padding: 7px 12px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  tr:hover td { background: rgba(88,166,255,0.05); }
+
+  /* Color chips */
+  .fire  { color: var(--fire);   font-weight: 700; }
+  .iron  { color: var(--iron);   font-weight: 700; }
+  .life  { color: var(--life);   font-weight: 700; }
+  .gold  { color: var(--gold);   font-weight: 700; }
+  .muted { color: var(--muted); }
+
+  /* Status badges */
+  .done::before { content: '✅ '; }
+  .part::before { content: '⚠️ '; }
+  .todo::before { content: '❌ '; }
+  .done { color: var(--green); }
+  .part { color: var(--orange); }
+  .todo { color: var(--red); }
+
+  /* Boxes */
+  .loop-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent); border-radius: 8px;
+    padding: 16px 20px; font-family: 'Consolas', monospace;
+    font-size: 0.88rem; line-height: 1.8; margin: 12px 0; white-space: pre-wrap;
+  }
+  .callout {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 4px solid var(--gold); border-radius: 8px;
+    padding: 12px 18px; margin: 12px 0; font-size: 0.9rem;
+  }
+  .callout.green { border-left-color: var(--green); }
+  .callout.red   { border-left-color: var(--red); }
+
+  /* Layout diagram */
+  .layout-row {
+    display: flex; gap: 0; margin: 16px 0;
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  .layout-cell {
+    flex: 1; padding: 14px 8px; text-align: center;
+    font-size: 0.82rem; border-right: 1px solid var(--border);
+  }
+  .layout-cell:last-child { border-right: none; }
+  .layout-cell .lbl { font-weight: 700; font-size: 0.95rem; }
+  .layout-cell .pos { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+  .cell-player  { background: #0d2040; }
+  .cell-portal  { background: #1a0d2a; }
+  .cell-ai      { background: #2a1a00; }
+  .cell-neutral { background: var(--surface); }
+
+  /* Reel visual */
+  .reel-row { display: flex; gap: 12px; margin: 16px 0; }
+  .reel {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; text-align: center; flex: 1;
+  }
+  .reel .symbol { font-size: 2rem; line-height: 1.2; }
+  .reel .label  { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* Progress list */
+  ul.progress { list-style: none; padding: 0; }
+  ul.progress li { padding: 5px 0; font-size: 0.92rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  ul.progress li:last-child { border-bottom: none; }
+
+  ul.plain { padding-left: 20px; line-height: 2.1; }
+
+  /* Footer */
+  footer {
+    text-align: center; color: var(--muted); font-size: 0.82rem;
+    padding: 40px 0 20px; border-top: 1px solid var(--border); margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Lottery<span>Fantasy</span></h1>
+  <p class="sub">게임 기획서 v2.1 &nbsp;·&nbsp; 최종 업데이트 2026-05-07</p>
+  <div class="tags">
+    <span class="tag tag-genre">룰렛 × 타워 디펜스 × 카드게임</span>
+    <span class="tag tag-plat">Unity 2022 URP 2D</span>
+    <span class="tag tag-status">프로토타입 In-Dev</span>
+  </div>
+</div>
+
+<div class="container">
+
+<nav class="toc">
+  <h3>목차</h3>
+  <a href="#overview">1. 게임 개요</a>
+  <a href="#modes">2. 게임 모드</a>
+  <a href="#layout">3. 씬 레이아웃</a>
+  <a href="#energy">4. 속성 에너지</a>
+  <a href="#reel">5. 룰렛 시스템</a>
+  <a href="#hand">6. 카드 &amp; 손패</a>
+  <a href="#units">7. 유닛 카드</a>
+  <a href="#skills">8. 스킬 카드</a>
+  <a href="#buildings">9. 건물 카드</a>
+  <a href="#buffs">10. 버프 카드</a>
+  <a href="#unitai">11. 유닛 AI</a>
+  <a href="#monsters">12. 몬스터</a>
+  <a href="#portal">13. 포탈 시스템</a>
+  <a href="#transfer">14. 증원 시스템</a>
+  <a href="#stage">15. 스테이지</a>
+  <a href="#survival">16. 생존 모드</a>
+  <a href="#ai">17. AI 상대방</a>
+  <a href="#hud">18. HUD 구성</a>
+  <a href="#record">19. 전적 시스템</a>
+  <a href="#winlose">20. 승패 조건</a>
+  <a href="#balance">21. 밸런스 수치</a>
+  <a href="#bm">22. 비즈니스 모델</a>
+  <a href="#todo">23. 향후 과제</a>
+</nav>
+
+<!-- 1 -->
+<section id="overview">
+  <h2><span class="num">1</span> 게임 개요</h2>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>장르</td><td>룰렛 × 타워 디펜스 × 카드 게임</td></tr>
+    <tr><td>플랫폼</td><td>PC / 모바일 (Unity 2022 URP 2D)</td></tr>
+    <tr><td>인원</td><td>1인 vs AI / 생존 모드 (싱글)</td></tr>
+    <tr><td>한 판 시간</td><td>전투 3분 / 생존 무제한</td></tr>
+    <tr><td>수익화</td><td>F2P + IAP (캐릭터 획득·성장 중심)</td></tr>
+  </table>
+  <h3>핵심 루프</h3>
+  <div class="loop-box">룰렛 자동 회전 (수동 or AUTO 모드)
+  → 행운 소모 (릴 1개 정지당 1회)
+  → 3릴 모두 정지 → 속성 에너지 (🔥불 / ⚔철 / 💚생) 획득
+  → 에너지 소모 → 카드 배치 (유닛 / 건물 / 스킬 / 버프)
+  → 유닛이 몬스터 격퇴 → 기지 방어
+  → 적 기지 파괴 → 승리</div>
+</section>
+
+<!-- 2 -->
+<section id="modes">
+  <h2><span class="num">2</span> 게임 모드</h2>
+  <table>
+    <tr><th>모드</th><th>설명</th></tr>
+    <tr><td><strong>전투 모드</strong></td><td>3분 제한 내 AI 기지 파괴. STAGE 시스템으로 난이도 상승</td></tr>
+    <tr><td><strong>생존 모드</strong></td><td>무한 웨이브를 최대한 버팀. 웨이브마다 몬스터 수·엘리트 비율 증가</td></tr>
+  </table>
+  <ul class="plain" style="margin-top:12px;">
+    <li>게임 시작 시 덱에서 <strong>랜덤 카드 1장</strong> 손패에 지급</li>
+    <li>승패 확정 시 <code>Time.timeScale = 0</code>으로 즉시 게임 정지</li>
+    <li>결과 화면 재시작 버튼 → timeScale 복원 후 씬 리로드</li>
+  </ul>
+</section>
+
+<!-- 3 -->
+<section id="layout">
+  <h2><span class="num">3</span> 씬 레이아웃</h2>
+  <div class="layout-row">
+    <div class="layout-cell cell-player">
+      <div class="lbl">🏰 플레이어 기지</div>
+      <div class="pos">x = -7.5</div>
+      <div style="margin-top:6px;font-size:0.8rem;color:#6af;">시안색 · HP 1000</div>
+    </div>
+    <div class="layout-cell cell-neutral">
+      <div class="lbl">적 웨이브 출구</div>
+      <div class="pos">x = -2.5</div>
+    </div>
+    <div class="layout-cell cell-portal">
+      <div class="lbl">🌀 포탈</div>
+      <div class="pos">x = 0</div>
+      <div style="margin-top:6px;font-size:0.8rem;color:#c6f;">보라 → 빨강</div>
+    </div>
+    <div class="layout-cell cell-neutral">
+      <div class="lbl">AI 웨이브 출구</div>
+      <div class="pos">x = +2.5</div>
+    </div>
+    <div class="layout-cell cell-ai">
+      <div class="lbl">🏯 AI 기지</div>
+      <div class="pos">x = +7.5</div>
+      <div style="margin-top:6px;font-size:0.8rem;color:#fa6;">오렌지 · HP 1000</div>
+    </div>
+  </div>
+  <div class="callout">씬 파일 없음 — <strong>TestSceneBootstrapper.cs</strong>가 런타임에 모든 오브젝트를 코드로 생성.<br>카메라: Orthographic, size=7, z=-10 / 유닛·몬스터 이동 레인: y ≈ 0</div>
+</section>
+
+<!-- 4 -->
+<section id="energy">
+  <h2><span class="num">4</span> 속성 에너지 시스템</h2>
+  <p style="color:var(--muted);margin-bottom:12px;">룰렛 결과로 획득. 카드 배치 시 소모. 속성별 최대 보유량 10.</p>
+  <table>
+    <tr><th>속성</th><th>아이콘</th><th>UI 색상</th><th>대표 용도</th></tr>
+    <tr><td><span class="fire">불 (Fire)</span></td><td>🔥</td><td>#FF8833</td><td>근거리·원거리·스킬 유닛</td></tr>
+    <tr><td><span class="iron">철 (Iron)</span></td><td>⚔</td><td>#99CCFF</td><td>방어·기사 계열</td></tr>
+    <tr><td><span class="life">생 (Life)</span></td><td>💚</td><td>#33FF77</td><td>힐·지원 유닛</td></tr>
+  </table>
+  <ul class="plain" style="margin-top:12px;">
+    <li>HUD 우상단: 아이콘 + 숫자 표시. 0일 때 회색으로 흐려짐</li>
+    <li>배치 실패 시 부족한 속성 레이블 <strong>빨간색 4회 점멸</strong></li>
+    <li>손패 카드 비용: 속성 색상, 부족하면 빨간 강조</li>
+    <li>에너지 충분한 카드: <strong>14px 위로 부상</strong>하여 사용 유도 (에너지 부족 시 어두워짐)</li>
+  </ul>
+</section>
+
+<!-- 5 -->
+<section id="reel">
+  <h2><span class="num">5</span> 룰렛 시스템</h2>
+
+  <h3>5.1 행운(Luck) 충전</h3>
+  <table>
+    <tr><th>항목</th><th>수치</th></tr>
+    <tr><td>자동 충전 주기</td><td>2초마다 +1</td></tr>
+    <tr><td>최대 보유</td><td>10회</td></tr>
+    <tr><td>시작 지급</td><td>3회</td></tr>
+    <tr><td>릴 1개 정지 비용</td><td>행운 1회</td></tr>
+  </table>
+
+  <h3>5.2 릴 동작 방식</h3>
+  <div class="reel-row">
+    <div class="reel"><div class="symbol">🔥</div><div class="label">릴 1</div></div>
+    <div class="reel"><div class="symbol">⚔</div><div class="label">릴 2</div></div>
+    <div class="reel"><div class="symbol">💚</div><div class="label">릴 3</div></div>
+  </div>
+  <ul class="plain">
+    <li>룰렛은 <strong>항상 자동 회전</strong> (게임 내내 멈추지 않음)</li>
+    <li>정지 버튼 클릭마다 행운 1 소모 → 릴 하나 정지</li>
+    <li>3개 모두 정지 → 에너지 계산 후 자동으로 다음 스핀 시작</li>
+    <li><strong>AUTO 버튼</strong>: 켜면 행운 보유 시 자동으로 릴 정지 (0.28초 간격)</li>
+  </ul>
+
+  <h3>5.3 릴 연출</h3>
+  <ul class="plain">
+    <li>회전 중: 심볼 0.04초 간격 교체 + 배경 파란빛 <strong>pulse</strong></li>
+    <li>정지 시: 슬로우다운 플래시(5프레임) → 최종 심볼 → 스케일 1.4× 바운스 → 속성 컬러 플래시 → 페이드</li>
+    <li>정지 버튼: 사용 가능 시 초록 <strong>pulse</strong>, 불가능 시 어둡게</li>
+    <li>행운 게이지: 버튼 아래 황금색 수평 바 + <code>★N / 10  (Xs)</code></li>
+  </ul>
+
+  <h3>5.4 에너지 계산 규칙</h3>
+  <table>
+    <tr><th>결과</th><th>조건</th><th>에너지 보상</th></tr>
+    <tr><td>올미스</td><td>3릴 모두 다른 속성</td><td>각 속성 +1 (총 3)</td></tr>
+    <tr><td>더블</td><td>2릴 동일 속성</td><td>해당 +2, 나머지 +1 (보너스 +1)</td></tr>
+    <tr><td><span class="gold">트리플</span></td><td>3릴 모두 동일</td><td>해당 속성 +6 (보너스 +3) + 금색 화면 플래시</td></tr>
+  </table>
+</section>
+
+<!-- 6 -->
+<section id="hand">
+  <h2><span class="num">6</span> 카드 &amp; 손패</h2>
+  <ul class="plain">
+    <li>손패 슬롯 4개 — <strong>항상 가득 찬 상태</strong> 유지 (카드 사용 즉시 덱에서 보충)</li>
+    <li>카드 종류: 유닛 / 건물 / 스킬 / 버프</li>
+    <li>에너지 충분: 14px 위로 부상 / 에너지 부족: 어두운 배경</li>
+    <li>카드 등장 시: 스케일 0→1.2→1.0 팝인 애니메이션</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section id="units">
+  <h2><span class="num">7</span> 유닛 카드 (10종)</h2>
+  <table>
+    <tr><th>카드</th><th>HP</th><th>피해</th><th>이속</th><th>사거리</th><th>공속</th><th>비용</th><th>특성</th></tr>
+    <tr><td>검사</td><td>80</td><td>15</td><td>2.0</td><td>1.5</td><td>1.0/s</td><td><span class="fire">🔥1</span></td><td></td></tr>
+    <tr><td>궁수</td><td>50</td><td>10</td><td>1.5</td><td>5.0</td><td>2.0/s</td><td><span class="fire">🔥1</span> <span class="iron">⚔1</span></td><td>대공</td></tr>
+    <tr><td>기사</td><td>120</td><td>20</td><td>1.2</td><td>1.0</td><td>0.8/s</td><td><span class="iron">⚔2</span></td><td></td></tr>
+    <tr><td>마법사</td><td>40</td><td>28</td><td>1.8</td><td>4.5</td><td>0.6/s</td><td><span class="fire">🔥2</span></td><td>대공</td></tr>
+    <tr><td>힐러</td><td>70</td><td>—</td><td>1.6</td><td>2.0</td><td>0.8/s</td><td><span class="life">💚2</span></td><td>힐 8/s</td></tr>
+    <tr><td>행운술사</td><td>60</td><td>—</td><td>0.8</td><td>—</td><td>—</td><td><span class="iron">⚔1</span> <span class="life">💚1</span></td><td>행운 0.5/s 생성</td></tr>
+    <tr><td>팔라딘</td><td>200</td><td>18</td><td>0.9</td><td>1.2</td><td>0.7/s</td><td><span class="iron">⚔2</span> <span class="life">💚2</span></td><td></td></tr>
+    <tr><td>화염술사</td><td>40</td><td>35</td><td>1.7</td><td>4.0</td><td>0.5/s</td><td><span class="fire">🔥3</span></td><td>대공</td></tr>
+    <tr><td>성기사</td><td>100</td><td>15</td><td>1.4</td><td>1.5</td><td>1.0/s</td><td><span class="fire">🔥1</span> <span class="iron">⚔2</span> <span class="life">💚1</span></td><td>힐 3/s</td></tr>
+    <tr><td>폭풍궁수</td><td>60</td><td>12</td><td>1.6</td><td>6.0</td><td>2.5/s</td><td><span class="fire">🔥2</span> <span class="iron">⚔2</span></td><td>대공</td></tr>
+  </table>
+  <div class="callout"><strong>대공(canAttackAir)</strong>: 비행 몬스터(박쥐·드래곤) 공격 가능. 없으면 지상 타겟만 공격.</div>
+</section>
+
+<!-- 8 -->
+<section id="skills">
+  <h2><span class="num">8</span> 스킬 카드 (2종)</h2>
+  <table>
+    <tr><th>스킬</th><th>피해</th><th>범위</th><th>비용</th><th>설명</th></tr>
+    <tr><td>번개화살</td><td>80</td><td>반경 2.0</td><td><span class="fire">🔥2</span></td><td>지점 선택 후 범위 폭발</td></tr>
+    <tr><td>포탈폭격</td><td>120</td><td>반경 3.0</td><td><span class="fire">🔥2</span> <span class="iron">⚔1</span></td><td>포탈 겨냥 고위력 폭발</td></tr>
+  </table>
+  <div class="callout red">에너지 부족 시 스킬 카드도 사용 불가 (위로 부상 안 됨, 배경 어두워짐)</div>
+</section>
+
+<!-- 9 -->
+<section id="buildings">
+  <h2><span class="num">9</span> 건물 카드 (현재 구현)</h2>
+  <h3>전투 건물</h3>
+  <table>
+    <tr><th>건물</th><th>비용</th><th>피해</th><th>공속</th><th>사거리</th><th>특성</th></tr>
+    <tr><td>화염탑</td><td><span class="fire">🔥2</span></td><td>20</td><td>1.0/s</td><td>5.0</td><td>대공</td></tr>
+    <tr><td>저격탑</td><td><span class="fire">🔥1</span> <span class="iron">⚔1</span></td><td>50</td><td>0.4/s</td><td>8.0</td><td>대공</td></tr>
+  </table>
+  <h3>에너지 생산 건물</h3>
+  <table>
+    <tr><th>건물</th><th>비용</th><th>효과</th></tr>
+    <tr><td>화염로</td><td><span class="fire">🔥1</span></td><td>🔥 1/초 생산</td></tr>
+    <tr><td>제철소</td><td><span class="iron">⚔1</span></td><td>⚔ 1/초 생산</td></tr>
+    <tr><td>생명의샘</td><td><span class="life">💚1</span></td><td>💚 1/초 생산</td></tr>
+  </table>
+  <h3>유닛 생산 건물</h3>
+  <table>
+    <tr><th>건물</th><th>비용</th><th>효과</th></tr>
+    <tr><td>병영</td><td><span class="iron">⚔2</span></td><td>검사 10초마다 소환</td></tr>
+    <tr><td>마법진</td><td><span class="fire">🔥2</span> <span class="life">💚1</span></td><td>마법사 15초마다 소환</td></tr>
+  </table>
+</section>
+
+<!-- 10 -->
+<section id="buffs">
+  <h2><span class="num">10</span> 버프 카드 (3종)</h2>
+  <table>
+    <tr><th>버프</th><th>공격 배율</th><th>이속 배율</th><th>지속</th></tr>
+    <tr><td>공격 버프</td><td>×2.0</td><td>×1.0</td><td>8초</td></tr>
+    <tr><td>속도 버프</td><td>×1.0</td><td>×1.8</td><td>12초</td></tr>
+    <tr><td>균형 버프</td><td>×1.5</td><td>×1.2</td><td>10초</td></tr>
+  </table>
+  <div class="callout green">버프 카드는 클릭 즉시 발동 (배치 불필요, 에너지 소모 없음)</div>
+</section>
+
+<!-- 11 -->
+<section id="unitai">
+  <h2><span class="num">11</span> 유닛 AI</h2>
+  <div class="loop-box">매 프레임 우선순위:
+  1. sightRange 내 적 몬스터 탐색 (대공 필터 적용)
+  2. 몬스터 발견 → 추격 + attackRange 내 공격
+  3. 힐러: 체력 낮은 아군 탐색 → 근접 힐
+  4. 적 유닛(AI 유닛) 탐색 → 공격
+  5. 적 없음 + 포탈 사거리 내 → 포탈 공격 (플레이어 유닛만)
+  6. 위 모두 해당 없음 → 전방 전진</div>
+  <ul class="plain" style="margin-top:12px;">
+    <li>분리 조향: 모든 유닛 간 겹침 방지 (반경 0.65, 힘 2.0)</li>
+    <li>스티키 타겟팅: 타겟 사망 전까지 유지 → 사망 시 재탐색</li>
+    <li>플레이어↔AI 유닛 서로를 공격 대상으로 지정 가능</li>
+    <li>전역 배율: <code>GlobalDamageMultiplier</code>, <code>GlobalSpeedMultiplier</code> (버프 카드 연동)</li>
+  </ul>
+</section>
+
+<!-- 12 -->
+<section id="monsters">
+  <h2><span class="num">12</span> 몬스터 (4종)</h2>
+  <table>
+    <tr><th>몬스터</th><th>HP</th><th>피해</th><th>이속</th><th>비행</th><th>등급</th></tr>
+    <tr><td>고블린</td><td>40</td><td>6</td><td>1.3</td><td>—</td><td>일반</td></tr>
+    <tr><td>트롤</td><td>200</td><td>15</td><td>0.8</td><td>—</td><td>엘리트</td></tr>
+    <tr><td>박쥐</td><td>15</td><td>5</td><td>3.0</td><td>✓</td><td>일반 비행</td></tr>
+    <tr><td>드래곤</td><td>400</td><td>40</td><td>1.5</td><td>✓</td><td>엘리트 비행</td></tr>
+  </table>
+  <ul class="plain" style="margin-top:12px;">
+    <li>스티키 타겟팅: 유닛 타겟 유지 → 사망 시 최근접 유닛 재탐색</li>
+    <li>몬스터 간 분리 조향: 반경 0.65, 힘 2.0</li>
+    <li><strong>마을과 분리 조향</strong>: 반경 0.85, 힘 4.0 (마을 겹침 방지)</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section id="portal">
+  <h2><span class="num">13</span> 포탈 시스템</h2>
+  <table>
+    <tr><th>속성</th><th>수치</th></tr>
+    <tr><td>HP</td><td>500</td></tr>
+    <tr><td>엘리트 소환 임계값</td><td>HP 40% 미만</td></tr>
+    <tr><td>색상</td><td>HP 100% = 보라 → HP 0% = 빨강</td></tr>
+  </table>
+  <table style="margin-top:12px;">
+    <tr><th>조건</th><th>효과</th></tr>
+    <tr><td>피격마다</td><td>포탈 우측(x+1)에서 일반 몬스터 즉시 소환</td></tr>
+    <tr><td>HP &lt; 40% + 피격</td><td>추가 엘리트 몬스터 소환</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section id="transfer">
+  <h2><span class="num">14</span> 증원 시스템 (TransferSystem)</h2>
+  <div class="callout">몬스터 처치 → <strong>1.5초 딜레이</strong> → 같은 진영 포탈에서 동일 등급 재소환.<br>공격 압박을 지속시키는 메커닉. 포탈 우측(x+1)에서 출현.</div>
+</section>
+
+<!-- 15 -->
+<section id="stage">
+  <h2><span class="num">15</span> 스테이지 시스템 (전투 모드)</h2>
+  <table>
+    <tr><th>스테이지</th><th>경과 시간</th><th>웨이브 간격</th><th>엘리트 출현</th></tr>
+    <tr><td>STAGE 1</td><td>0 ~ 60초</td><td>5초</td><td>없음</td></tr>
+    <tr><td>STAGE 2</td><td>60 ~ 120초</td><td>4.5초</td><td>1/3 확률</td></tr>
+    <tr><td>STAGE 3</td><td>120초 ~</td><td>4초</td><td>1/2 확률</td></tr>
+  </table>
+</section>
+
+<!-- 16 -->
+<section id="survival">
+  <h2><span class="num">16</span> 생존 모드 웨이브</h2>
+  <table>
+    <tr><th>항목</th><th>공식</th></tr>
+    <tr><td>웨이브당 몬스터 수</td><td>min(1 + (웨이브-1)/3, 5)</td></tr>
+    <tr><td>엘리트 출현 확률</td><td>min((웨이브-1) × 7%, 60%)</td></tr>
+    <tr><td>웨이브 간격</td><td>max(2초, 6초 - 웨이브 × 0.18초)</td></tr>
+  </table>
+</section>
+
+<!-- 17 -->
+<section id="ai">
+  <h2><span class="num">17</span> AI 상대방</h2>
+  <table>
+    <tr><th>항목</th><th>값</th></tr>
+    <tr><td>스핀 간격</td><td>4초</td></tr>
+    <tr><td>유닛 배치 간격</td><td>6초 (포탈 HP &lt; 40%: 2초)</td></tr>
+    <tr><td>시작 행운</td><td>3회</td></tr>
+    <tr><td>배치 전략</td><td>손패 첫 유닛 카드를 랜덤 위치에 배치</td></tr>
+  </table>
+  <div class="callout red">미구현: 속성 에너지 활용, 건물 배치</div>
+</section>
+
+<!-- 18 -->
+<section id="hud">
+  <h2><span class="num">18</span> HUD 구성</h2>
+  <table>
+    <tr><th>요소</th><th>위치</th><th>내용</th></tr>
+    <tr><td>속성 에너지 HUD</td><td>우상단</td><td>🔥N ⚔N 💚N — 속성 색상, 0시 회색</td></tr>
+    <tr><td>손패</td><td>하단 위</td><td>카드 4장, 비용 색상, 사용 가능 카드 부상 효과</td></tr>
+    <tr><td>룰렛</td><td>하단 아래</td><td>릴 3개 (pulse 애니) + 정지 버튼 (pulse) + AUTO ON/OFF</td></tr>
+    <tr><td>행운 게이지</td><td>정지 버튼 아래</td><td>황금색 게이지 바 + ★N/10 + 충전까지 초</td></tr>
+    <tr><td>덱 뷰어</td><td>우상단 버튼</td><td>전체 덱 카드 목록 팝업 토글</td></tr>
+    <tr><td>배치 구역 오버레이</td><td>화면 좌 48%</td><td>유닛 선택 시 강조, 드래그 배치 가이드</td></tr>
+    <tr><td>결과 화면</td><td>전체 화면</td><td>승리/패배/무승부 + 전적 요약 + 재시작 버튼</td></tr>
+  </table>
+</section>
+
+<!-- 19 -->
+<section id="record">
+  <h2><span class="num">19</span> 전적 시스템</h2>
+  <p>승/패/무승부/연승 <code>PlayerPrefs</code>에 영속 저장. 결과 화면에 요약 표시.</p>
+</section>
+
+<!-- 20 -->
+<section id="winlose">
+  <h2><span class="num">20</span> 승패 조건</h2>
+  <table>
+    <tr><th>조건</th><th>결과</th></tr>
+    <tr><td>내 기지 HP = 0</td><td>패배</td></tr>
+    <tr><td>적 기지 HP = 0</td><td>승리</td></tr>
+    <tr><td>3분 타임오버</td><td>기지 HP 높은 쪽 승리 (동률=무승부)</td></tr>
+  </table>
+  <div class="callout green">결과 확정 → <code>Time.timeScale = 0</code> 즉시 정지 / 재시작 → timeScale 복원 후 씬 리로드</div>
+</section>
+
+<!-- 21 -->
+<section id="balance">
+  <h2><span class="num">21</span> 밸런스 수치 (확정)</h2>
+  <table>
+    <tr><th>항목</th><th>값</th></tr>
+    <tr><td>기지 최대 HP</td><td>1,000</td></tr>
+    <tr><td>전투 제한 시간</td><td>180초</td></tr>
+    <tr><td>행운 충전 주기</td><td>2초마다 +1</td></tr>
+    <tr><td>행운 최대 보유</td><td>10회</td></tr>
+    <tr><td>에너지 속성별 최대</td><td>10</td></tr>
+    <tr><td>시작 행운</td><td>3회 + 랜덤 카드 1장</td></tr>
+    <tr><td>증원 딜레이</td><td>1.5초</td></tr>
+    <tr><td>AI 스핀 / 배치 주기</td><td>4초 / 6초</td></tr>
+    <tr><td>AUTO 릴 정지 간격</td><td>0.28초</td></tr>
+  </table>
+</section>
+
+<!-- 22 -->
+<section id="bm">
+  <h2><span class="num">22</span> 비즈니스 모델</h2>
+  <h3>22.1 재화 시스템</h3>
+  <table>
+    <tr><th>재화</th><th>획득</th><th>용도</th></tr>
+    <tr><td>골드</td><td>전투 보상, 일일 지급</td><td>유닛 강화, 슬롯 해금</td></tr>
+    <tr><td>크리스탈 (프리미엄)</td><td>IAP, 업적</td><td>프리미엄 스핀, 즉시 해금</td></tr>
+    <tr><td>행운 티켓</td><td>무료 플레이, 퀘스트</td><td>전투 중 추가 행운 충전</td></tr>
+  </table>
+  <h3>22.2 캐릭터 등급</h3>
+  <table>
+    <tr><th>등급</th><th>확률</th></tr>
+    <tr><td>일반 ★★</td><td>60%</td></tr>
+    <tr><td>희귀 ★★★</td><td>30%</td></tr>
+    <tr><td>영웅 ★★★★</td><td>9%</td></tr>
+    <tr><td>전설 ★★★★★</td><td>1%</td></tr>
+  </table>
+  <p style="margin-top:10px;color:var(--muted);">천장: 90회 이내 전설 미획득 시 다음 1회 확정</p>
+</section>
+
+<!-- 23 -->
+<section id="todo">
+  <h2><span class="num">23</span> 향후 과제</h2>
+
+  <h3>UI / 연출</h3>
+  <ul class="progress">
+    <li><span class="done">릴 착지 애니메이션 (슬로우다운 + 바운스 + 컬러 플래시)</span></li>
+    <li><span class="done">결과 화면 게임 정지 (Time.timeScale = 0 / 복원)</span></li>
+    <li><span class="done">사용 가능 카드 부상 연출 + 에너지 부족 시 어두워짐</span></li>
+    <li><span class="done">행운 게이지 바 + AUTO 버튼</span></li>
+    <li><span class="done">정지 버튼 초록 pulse (가능 상태 명시)</span></li>
+    <li><span class="todo">릴 실제 스크롤 애니메이션 (슬롯머신 느낌)</span></li>
+    <li><span class="todo">카드 획득 파티클</span></li>
+    <li><span class="todo">유닛·몬스터 실제 스프라이트 (현재: 도형 placeholder)</span></li>
+  </ul>
+
+  <h3>게임플레이</h3>
+  <ul class="progress">
+    <li><span class="done">몬스터-마을 분리 조향 (겹침 방지)</span></li>
+    <li><span class="done">AUTO 스핀 기능</span></li>
+    <li><span class="part">Triple 강화 효과: 금색 플래시 구현 / CardTier.Enhanced 배치 효과 미구현</span></li>
+    <li><span class="part">AI 상대방: 스핀·유닛 배치 구현 / 속성 에너지·건물 배치 미구현</span></li>
+    <li><span class="part">행운술사: 초당 생성 구현 / 배치 시 즉각 +3 미구현</span></li>
+    <li><span class="todo">덱 편집 기능</span></li>
+  </ul>
+
+  <h3>BM 구현</h3>
+  <ul class="progress">
+    <li><span class="todo">재화 시스템, 유닛 레벨업, 별 등급 돌파</span></li>
+    <li><span class="todo">프리미엄 스핀 배너 UI</span></li>
+    <li><span class="todo">인앱 결제 연동</span></li>
+  </ul>
+
+  <h3>기술</h3>
+  <ul class="progress">
+    <li><span class="todo">사운드 효과 및 BGM</span></li>
+    <li><span class="todo">저장/불러오기</span></li>
+    <li><span class="todo">네트워크 PvP</span></li>
+  </ul>
+</section>
+
+</div>
+
+<footer>
+  LotteryFantasy GDD v2.1 &nbsp;·&nbsp; 2026-05-07 &nbsp;·&nbsp; Unity 2022 URP 2D
+</footer>
+</body>
+</html>
