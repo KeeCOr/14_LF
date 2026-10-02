@@ -1,0 +1,156 @@
+using System.Collections.Generic;
+using UnityEngine;
+namespace SlotDefense
+{
+    public class MonsterController : MonoBehaviour
+    {
+        public static readonly List<MonsterController> AllMonsters = new List<MonsterController>();
+
+        [HideInInspector] public MonsterConfig config;
+        [HideInInspector] public bool isInPlayerArena;
+        [HideInInspector] public Village targetVillage;
+        public bool isFlying;
+
+        private float _currentHp;
+        private float _attackCooldown;
+        private const float AttackInterval = 1f;
+        private const float AttackRange = 0.5f;
+        private HpBar _hpBar;
+        private Rigidbody2D _rb;
+        private UnitController _unitTarget;
+
+        public bool IsDead => _currentHp <= 0f;
+        public MonsterConfig Config => config;
+
+        public void Init(MonsterConfig cfg, Village village, bool playerArena)
+        {
+            config          = cfg;
+            targetVillage   = village;
+            isInPlayerArena = playerArena;
+            _currentHp      = cfg.hp;
+            isFlying        = cfg.isFlying;
+            AllMonsters.Add(this);
+
+            if (_hpBar == null)
+            {
+                _rb              = gameObject.AddComponent<Rigidbody2D>();
+                _rb.gravityScale = 0f;
+                _rb.drag         = 6f;
+                _rb.constraints  = RigidbodyConstraints2D.FreezeRotation;
+                _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                var col    = gameObject.AddComponent<CircleCollider2D>();
+                col.radius = 0.22f;
+
+                _hpBar = gameObject.AddComponent<HpBar>();
+                _hpBar.Setup(yOffset: 0.45f, width: 0.65f);
+            }
+        }
+
+        private void Update()
+        {
+            if (IsDead || targetVillage == null) return;
+            _attackCooldown -= Time.deltaTime;
+
+            // 현재 타겟이 죽었으면 해제 → 가장 가까운 유닛 재탐색
+            if (_unitTarget == null) AcquireUnitTarget();
+
+            var sep = CalcSeparation();
+
+            if (_unitTarget != null)
+            {
+                var dist = Vector2.Distance(transform.position, _unitTarget.transform.position);
+                if (dist > AttackRange)
+                {
+                    var dir = ((Vector2)_unitTarget.transform.position - (Vector2)transform.position).normalized;
+                    _rb.velocity = dir * config.moveSpeed + sep;
+                }
+                else
+                {
+                    _rb.velocity = sep;
+                    if (_attackCooldown <= 0f)
+                    {
+                        _attackCooldown = AttackInterval;
+                        _unitTarget.TakeDamage(config.damage);
+                    }
+                }
+            }
+            else
+            {
+                var dist = Vector2.Distance(transform.position, targetVillage.transform.position);
+                if (dist > AttackRange)
+                {
+                    var dir = ((Vector2)targetVillage.transform.position - (Vector2)transform.position).normalized;
+                    _rb.velocity = dir * config.moveSpeed + sep;
+                }
+                else
+                {
+                    _rb.velocity = sep;
+                    if (_attackCooldown <= 0f)
+                    {
+                        _attackCooldown = AttackInterval;
+                        targetVillage.TakeDamage(config.damage);
+                    }
+                }
+            }
+        }
+
+        // 가장 가까운 플레이어 유닛을 찾아 타겟으로 설정 (타겟이 있으면 유지)
+        private void AcquireUnitTarget()
+        {
+            float nearest = float.MaxValue;
+            foreach (var u in UnitController.ActivePlayerUnits)
+            {
+                if (u == null) continue;
+                float d = Vector2.Distance(transform.position, u.transform.position);
+                if (d < nearest) { nearest = d; _unitTarget = u; }
+            }
+        }
+
+        private Vector2 CalcSeparation()
+        {
+            const float monSepRadius  = 0.65f;
+            const float monSepForce   = 2.0f;
+            const float villSepRadius = 0.85f; // 마을 반폭(0.5) + 몬스터 반경(0.22) + 여유
+            const float villSepForce  = 4.0f;
+            var sep = Vector2.zero;
+
+            foreach (var m in AllMonsters)
+            {
+                if (m == this || m.IsDead) continue;
+                var diff = (Vector2)(transform.position - m.transform.position);
+                float dist = diff.magnitude;
+                if (dist < monSepRadius && dist > 0.01f)
+                    sep += diff.normalized * ((monSepRadius - dist) / monSepRadius) * monSepForce;
+            }
+
+            foreach (var v in Village.AllVillages)
+            {
+                if (v == null) continue;
+                var diff = (Vector2)(transform.position - v.transform.position);
+                float dist = diff.magnitude;
+                if (dist < villSepRadius && dist > 0.01f)
+                    sep += diff.normalized * ((villSepRadius - dist) / villSepRadius) * villSepForce;
+            }
+
+            return sep;
+        }
+
+        public void TakeDamage(float amount)
+        {
+            if (config == null) return;
+            _currentHp -= amount;
+            _hpBar?.SetRatio(_currentHp / config.hp);
+            if (_currentHp <= 0f) Die();
+        }
+
+        private void OnDestroy() => AllMonsters.Remove(this);
+
+        private void Die()
+        {
+            if (config != null)
+                GameEvents.MonsterKilled(isInPlayerArena, config);
+            Destroy(gameObject);
+        }
+    }
+}

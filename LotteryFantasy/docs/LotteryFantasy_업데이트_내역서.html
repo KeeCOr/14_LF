@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LotteryFantasy 기획서 v0.3.2</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;line-height:1.65;max-width:980px;margin:0 auto;padding:40px 24px;color:#20242a;background:#fafafa}main{background:#fff;padding:28px}h1{font-size:34px;margin:0 0 8px}h2{font-size:24px;margin-top:34px;border-bottom:1px solid #ddd;padding-bottom:6px}h3{font-size:18px;margin-top:24px}table{border-collapse:collapse;width:100%;margin:12px 0}td{border:1px solid #ddd;padding:8px 12px;text-align:left}blockquote{color:#555;border-left:4px solid #16a34a;padding-left:12px}</style></head><body><main>
+<h1>LotteryFantasy 업데이트 내역서</h1>
+<blockquote>최신화: 2026-07-01 KST</blockquote>
+<blockquote>현재 버전: v0.3.2</blockquote>
+
+<h2>v0.3.2 - 슬롯 결과별 다음 전투 선택 추천 문장 명확화</h2>
+
+<p>• SpinOutcomeAdvisor의 다음 선택 문장을 Fire는 공격 선택, Iron은 방어 선택, Life는 회복 선택, Mixed는 위험 관리로 구분했다.</p>
+<p>• 결과창은 기존 SlotMachineUI 연결을 유지하면서 릴 결과마다 다음 공격/방어/회복 판단이 더 즉시 읽히도록 문장 첫머리에 선택 유형을 표시한다.</p>
+<p>• SpinOutcomeAdvisorTests를 4개 케이스로 확장해 Fire Triple, Iron Pair, Life Pair, Mixed 결과의 추천 문장이 서로 다르게 유지되는지 검증했다.</p>
+<p>• Unity bundleVersion을 0.3.2로 갱신했다.</p>
+
+<h3>검증</h3>
+<p>• RED: Unity EditMode SpinOutcomeAdvisorTests 3개가 기존 다음 선택 문장 때문에 실패함을 확인했다.</p>
+<p>• GREEN: Unity EditMode SpinOutcomeAdvisorTests 4개 통과, 실패 0개.</p>
+
+<h2>v0.3.1 - 결과창 피드백 연결 확정</h2>
+
+<p>• SlotMachineUI가 SpinOutcomeAdvisor.Describe() 결과를 받아 결과 헤드라인, 에너지 합계, 변화 설명, 다음 선택 안내를 표시하도록 연결했다.</p>
+<p>• Jackpot 연출 조건을 SpinOutcomeTone.Jackpot 기준으로 통일했다.</p>
+<p>• SlotMachineOutcomeFeedbackTests로 결과창 코드가 어드바이저 문구를 사용하는지 검증했다.</p>
+
+<h2>v0.3.0 - 슬롯 결과 전략 피드백 개선</h2>
+
+<p>• SpinOutcomeAdvisor를 추가해 Triple, Pair, Mixed 결과를 전략 문장으로 변환했다.</p>
+<p>• 결과창에 결과 헤드라인, 변화 설명, 다음 선택을 함께 표시했다.</p>
+
+</main></body></html>
